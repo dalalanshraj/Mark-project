@@ -8,6 +8,7 @@ export default function ReviewModal({ onClose }) {
       title: "",
     email: "",
     review: "",
+    stayDate:"",
     rating: 5,
     listingId: "",
   });
@@ -35,6 +36,7 @@ export default function ReviewModal({ onClose }) {
         name: form.firstName + " " + form.lastName,
         message: form.review,
         rating: form.rating,
+        stayDate:form.stayDate,
         email: form.email,
         title: form.title
       });
@@ -106,6 +108,14 @@ export default function ReviewModal({ onClose }) {
             rows={4}
             onChange={(e) => setForm({ ...form, review: e.target.value })}
           />
+           <input
+          type="date"
+          className="border p-2 w-full mb-4"
+          value={form.stayDate}
+          onChange={(e) =>
+            setForm({ ...form, stayDate: e.target.value })
+          }
+        />
 
           <button
             onClick={handleSubmit}

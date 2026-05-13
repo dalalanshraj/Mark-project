@@ -80,11 +80,8 @@ export default function Reviews() {
   // ==============================
   const getImageUrl = (path) => {
     if (!path) return "";
-
     if (path.startsWith("http")) return path;
-
     const base = import.meta.env.VITE_API_URL || "";
-
     return base.replace(/\/$/, "") + "/" + path.replace(/^\//, "");
   };
 
@@ -162,7 +159,7 @@ export default function Reviews() {
         </div>
 
         {/* REVIEWS */}
-        <div className="space-y-6">
+        <div className="space-y-6 overflow-auto">
           {reviews.map((item) => (
             <div
               key={item._id}

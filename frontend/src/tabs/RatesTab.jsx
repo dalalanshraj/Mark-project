@@ -36,6 +36,17 @@ export default function RatesTab({ listingId, goNextTab }) {
   const { showModal } = useModal();
   const [editRateIndex, setEditRateIndex] = useState(null);
 
+  const normalizeDate = (date) => {
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      12, // noon fix
+      0,
+      0,
+    );
+  };
+
   /* ===============================
      LOAD LISTING DATA
   ================================ */
@@ -86,17 +97,8 @@ export default function RatesTab({ listingId, goNextTab }) {
             monthly: Number(form.monthly),
             minNights: Number(form.minNights),
 
-            from: new Date(
-              form.from.getFullYear(),
-              form.from.getMonth(),
-              form.from.getDate(),
-            ),
-
-            to: new Date(
-              form.to.getFullYear(),
-              form.to.getMonth(),
-              form.to.getDate(),
-            ),
+            from: normalizeDate(form.from),
+            to: normalizeDate(form.to),
           },
         });
       } else {
@@ -110,17 +112,8 @@ export default function RatesTab({ listingId, goNextTab }) {
             monthly: Number(form.monthly),
             minNights: Number(form.minNights),
 
-            from: new Date(
-              form.from.getFullYear(),
-              form.from.getMonth(),
-              form.from.getDate(),
-            ),
-
-            to: new Date(
-              form.to.getFullYear(),
-              form.to.getMonth(),
-              form.to.getDate(),
-            ),
+            from: normalizeDate(form.from),
+            to: normalizeDate(form.to),
           },
         });
       }
@@ -286,9 +279,9 @@ export default function RatesTab({ listingId, goNextTab }) {
             className="grid grid-cols-8 gap-2 border p-2 mt-2 bg-white rounded text-sm items-center"
           >
             <div>{rate.season}</div>
-            <div>{new Date(rate.from).toLocaleDateString("en-CA")}</div>
+            <div> {new Date(rate.from).toLocaleDateString("en-CA")}</div>
 
-            <div>{new Date(rate.to).toLocaleDateString("en-CA")}</div>
+            <div> {new Date(rate.to).toLocaleDateString("en-CA")}</div>
             <div>${rate.nightly}</div>
             <div>${rate.weekly}</div>
             <div>${rate.monthly}</div>

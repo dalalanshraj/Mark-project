@@ -207,27 +207,79 @@ export default function RatesTab({ listingId, goNextTab }) {
 
           {/* FROM DATE */}
           <DatePicker
-            selected={form.from}
-            onChange={(date) => setForm({ ...form, from: date })}
-            selectsStart
-            startDate={form.from}
-            endDate={form.to}
-            placeholderText="From"
-            className="border p-2 w-full"
-            portalId="root" //  FIX
-          />
+  selected={form.from}
+  onChange={(date) =>
+    setForm({ ...form, from: date })
+  }
 
-          <DatePicker
-            selected={form.to}
-            onChange={(date) => setForm({ ...form, to: date })}
-            selectsEnd
-            startDate={form.from}
-            endDate={form.to}
-            minDate={form.from}
-            placeholderText="To"
-            className="border p-2 w-full"
-            portalId="root" //  FIX
-          />
+  onChangeRaw={(e) => {
+    const value = e.target.value;
+
+    const parsed = new Date(value);
+
+    if (!isNaN(parsed)) {
+      setForm({
+        ...form,
+        from: parsed,
+      });
+    }
+  }}
+
+  selectsStart
+  startDate={form.from}
+  endDate={form.to}
+
+  dateFormat="yyyy-MM-dd"
+
+  placeholderText="YYYY-MM-DD"
+
+  className="border p-2 w-full"
+
+  isClearable
+
+  portalId="root"
+/>
+
+         <DatePicker
+  selected={form.to}
+
+  onChange={(date) =>
+    setForm({ ...form, to: date })
+  }
+
+  onChangeRaw={(e) => {
+
+    const value = e.target.value;
+
+    const parsed = new Date(value);
+
+    if (!isNaN(parsed)) {
+
+      setForm({
+        ...form,
+        to: parsed,
+      });
+    }
+  }}
+
+  selectsEnd
+
+  startDate={form.from}
+
+  endDate={form.to}
+
+  minDate={form.from}
+
+  dateFormat="yyyy-MM-dd"
+
+  placeholderText="YYYY-MM-DD"
+
+  className="border p-2 w-full"
+
+  isClearable
+
+  portalId="root"
+/>
 
           {/* NIGHTLY */}
           <input

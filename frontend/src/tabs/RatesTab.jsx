@@ -206,57 +206,56 @@ export default function RatesTab({ listingId, goNextTab }) {
           />
 
           {/* FROM DATE */}
-          <DatePicker
-            selected={form.from}
-            onChange={(date) => setForm({ ...form, from: date })}
-            onChangeRaw={(e) => {
-              const value = e.target.value;
+         <DatePicker
+  selected={form.from}
+  onChange={(date) =>
+    setForm({
+      ...form,
+      from: date,
+    })
+  }
 
-              const parsed = new Date(value);
+  selectsStart
+  startDate={form.from}
+  endDate={form.to}
 
-              if (!isNaN(parsed)) {
-                setForm({
-                  ...form,
-                  from: parsed,
-                });
-              }
-            }}
-            selectsStart
-            startDate={form.from}
-            endDate={form.to}
-            dateFormat="MM-DD-YYYY"
-            placeholderText="YYYY-MM-DD"
-            className="border p-2 w-full"
-            isClearable
-            portalId="root"
-          />
+  dateFormat="MM/dd/yyyy"
 
-          <DatePicker
-            selected={form.to}
-            onChange={(date) => setForm({ ...form, to: date })}
-            onChangeRaw={(e) => {
-              const value = e.target.value;
+  placeholderText="MM/DD/YYYY"
 
-              const parsed = new Date(value);
+  className="border p-2 w-full"
 
-              if (!isNaN(parsed)) {
-                setForm({
-                  ...form,
-                  to: parsed,
-                });
-              }
-            }}
-            selectsEnd
-            startDate={form.from}
-            endDate={form.to}
-            minDate={form.from}
-            dateFormat="MM-DD-YYYY"
-            placeholderText="YYYY-MM-DD"
-            className="border p-2 w-full"
-            isClearable
-            portalId="root"
-          />
+  isClearable
 
+  portalId="root"
+/>
+
+      <DatePicker
+  selected={form.to}
+
+  onChange={(date) =>
+    setForm({
+      ...form,
+      to: date,
+    })
+  }
+
+  selectsEnd
+  startDate={form.from}
+  endDate={form.to}
+
+  minDate={form.from}
+
+  dateFormat="MM/dd/yyyy"
+
+  placeholderText="MM/DD/YYYY"
+
+  className="border p-2 w-full"
+
+  isClearable
+
+  portalId="root"
+/>
           {/* NIGHTLY */}
           <input
             type="number"

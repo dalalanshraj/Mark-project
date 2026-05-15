@@ -207,79 +207,55 @@ export default function RatesTab({ listingId, goNextTab }) {
 
           {/* FROM DATE */}
           <DatePicker
-  selected={form.from}
-  onChange={(date) =>
-    setForm({ ...form, from: date })
-  }
+            selected={form.from}
+            onChange={(date) => setForm({ ...form, from: date })}
+            onChangeRaw={(e) => {
+              const value = e.target.value;
 
-  onChangeRaw={(e) => {
-    const value = e.target.value;
+              const parsed = new Date(value);
 
-    const parsed = new Date(value);
+              if (!isNaN(parsed)) {
+                setForm({
+                  ...form,
+                  from: parsed,
+                });
+              }
+            }}
+            selectsStart
+            startDate={form.from}
+            endDate={form.to}
+            dateFormat="MM-DD-YYYY"
+            placeholderText="YYYY-MM-DD"
+            className="border p-2 w-full"
+            isClearable
+            portalId="root"
+          />
 
-    if (!isNaN(parsed)) {
-      setForm({
-        ...form,
-        from: parsed,
-      });
-    }
-  }}
+          <DatePicker
+            selected={form.to}
+            onChange={(date) => setForm({ ...form, to: date })}
+            onChangeRaw={(e) => {
+              const value = e.target.value;
 
-  selectsStart
-  startDate={form.from}
-  endDate={form.to}
+              const parsed = new Date(value);
 
-  dateFormat="yyyy-MM-dd"
-
-  placeholderText="YYYY-MM-DD"
-
-  className="border p-2 w-full"
-
-  isClearable
-
-  portalId="root"
-/>
-
-         <DatePicker
-  selected={form.to}
-
-  onChange={(date) =>
-    setForm({ ...form, to: date })
-  }
-
-  onChangeRaw={(e) => {
-
-    const value = e.target.value;
-
-    const parsed = new Date(value);
-
-    if (!isNaN(parsed)) {
-
-      setForm({
-        ...form,
-        to: parsed,
-      });
-    }
-  }}
-
-  selectsEnd
-
-  startDate={form.from}
-
-  endDate={form.to}
-
-  minDate={form.from}
-
-  dateFormat="yyyy-MM-dd"
-
-  placeholderText="YYYY-MM-DD"
-
-  className="border p-2 w-full"
-
-  isClearable
-
-  portalId="root"
-/>
+              if (!isNaN(parsed)) {
+                setForm({
+                  ...form,
+                  to: parsed,
+                });
+              }
+            }}
+            selectsEnd
+            startDate={form.from}
+            endDate={form.to}
+            minDate={form.from}
+            dateFormat="MM-DD-YYYY"
+            placeholderText="YYYY-MM-DD"
+            className="border p-2 w-full"
+            isClearable
+            portalId="root"
+          />
 
           {/* NIGHTLY */}
           <input
@@ -331,9 +307,9 @@ export default function RatesTab({ listingId, goNextTab }) {
             className="grid grid-cols-8 gap-2 border p-2 mt-2 bg-white rounded text-sm items-center"
           >
             <div>{rate.season}</div>
-            <div> {new Date(rate.from).toLocaleDateString("en-CA")}</div>
+            <div> {new Date(rate.from).toLocaleDateString("en-US")}</div>
 
-            <div> {new Date(rate.to).toLocaleDateString("en-CA")}</div>
+            <div> {new Date(rate.to).toLocaleDateString("en-US")}</div>
             <div>${rate.nightly}</div>
             <div>${rate.weekly}</div>
             <div>${rate.monthly}</div>

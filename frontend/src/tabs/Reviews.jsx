@@ -220,36 +220,106 @@ export default function ReviewsTab({ listingId }) {
           ))}
         </div>
 
-        {/* ===== VIEW MODAL ===== */}
-        {openReview && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-xl max-w-md w-full">
-              <h3 className="text-xl font-bold mb-2">{openReview.title}</h3>
-              <p className="text-sm text-gray-500 mb-2">
-                {openReview.name} • {openReview.email}
-              </p>
-              <p className="mb-2 flex">
-                <IoMdStar size={21} className="text-[#ffd250]" />
-                {openReview.rating}/5
-              </p>
-              <p className="bg-gray-100 p-3 rounded">{openReview.message}</p>
-              {openReview.reply && (
-                <div className="mt-3 bg-green-50 p-3 rounded">
-                  <p className="text-sm font-semibold text-green-700">
-                    Admin Reply:
-                  </p>
-                  <p className="text-sm">{openReview.reply}</p>
-                </div>
-              )}
-              <button
-                onClick={() => setOpenReview(null)}
-                className="mt-4 w-full bg-black text-white py-2 rounded"
-              >
-                Close
-              </button>
-            </div>
+       {/* ===== VIEW MODAL ===== */}
+{openReview && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+
+    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden">
+
+      {/* HEADER */}
+      <div className="border-b px-6 py-5 flex justify-between items-start">
+
+        <div>
+          <h3 className="text-2xl font-bold text-gray-800">
+            {openReview.title}
+          </h3>
+
+          <p className="text-sm text-black mt-1">
+            {openReview.name} • {openReview.email}
+          </p>
+
+          <p className="text-sm text-black mt-1">
+            Stay Date:
+            {" "}
+            {openReview.stayDate
+              ? new Date(
+                  openReview.stayDate
+                ).toLocaleDateString("en-CA")
+              : "N/A"}
+          </p>
+        </div>
+
+        <button
+          onClick={() => setOpenReview(null)}
+          className="text-2xl text-gray-400 hover:text-black"
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* BODY */}
+      <div className="p-6 space-y-5">
+
+        {/* RATING */}
+        <div className="flex items-center gap-2">
+
+          <div className="flex">
+            {[...Array(openReview.rating)].map(
+              (_, i) => (
+                <IoMdStar
+                  key={i}
+                  size={24}
+                  className="text-[#ffd250]"
+                />
+              )
+            )}
+          </div>
+
+          <span className="font-semibold text-gray-700">
+            {openReview.rating}/5
+          </span>
+        </div>
+
+        {/* REVIEW */}
+        <div className="bg-gray-50 border rounded-2xl p-5 max-h-[300px] overflow-y-auto">
+
+          <p className="text-gray-700 leading-7 whitespace-pre-wrap">
+            {openReview.message}
+          </p>
+
+        </div>
+
+        {/* ADMIN REPLY */}
+        {openReview.reply && (
+
+          <div className="bg-green-50 border border-green-200 rounded-2xl p-5 max-h-[220px] overflow-y-auto">
+
+            <p className="text-sm font-bold text-green-700 mb-2">
+              Admin Reply
+            </p>
+
+            <p className="text-gray-700 whitespace-pre-wrap leading-7">
+              {openReview.reply}
+            </p>
+
           </div>
         )}
+      </div>
+
+      {/* FOOTER */}
+      <div className="border-t px-6 py-4">
+
+        <button
+          onClick={() => setOpenReview(null)}
+          className="w-full bg-black hover:bg-gray-800 text-white py-3 rounded-2xl font-semibold transition"
+        >
+          Close Review
+        </button>
+
+      </div>
+    </div>
+  </div>
+)}
 
         {/* ===== REPLY MODAL ===== */}
         {replyReview && (

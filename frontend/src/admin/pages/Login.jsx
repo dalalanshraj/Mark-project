@@ -120,7 +120,7 @@ const Login = () => {
         </button>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Just Beachy Rentals Admin Panel
+          Donna Daniel Realty Admin Panel
         </p>
 
       </form>

@@ -72,8 +72,7 @@ const Navbar = () => {
 
   return (
     <header
-    style={{ zIndex: 1 }}
-      className={`fixed w-full z-10 transition-all duration-300 ${
+      className={`fixed w-full z-50 transition-all duration-300 ${
         isScrolled ? "bg-white shadow-md" : "bg-transparent"
       }`}
     >

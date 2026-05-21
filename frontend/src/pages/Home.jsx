@@ -21,11 +21,7 @@ const HeroSection = ({listingId}) => {
   const navigate = useNavigate();
   const [listings, setListings] = useState([]);
 
-  const formatDate = (date) => {
-    if (!date) return "";
-    return date.toISOString().split("T")[0];
-  };
-
+ 
   
 
   const handleSearch = (e) => {
@@ -60,6 +56,24 @@ const HeroSection = ({listingId}) => {
       .catch(console.error);
   }, []);
 
+  const formatDate = (date) => {
+  if (!date) return "";
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
+
+const parseLocalDate = (dateString) => {
+  if (!dateString) return null;
+
+  const [year, month, day] = dateString.split("-");
+
+  return new Date(year, month - 1, day);
+};
   return (
     <>
       {/* HERO */}
@@ -101,37 +115,36 @@ const HeroSection = ({listingId}) => {
             flex flex-col md:flex-row gap-3 md:gap-10 items-stretch md:items-center"
           >
             
-            {/* CHECK IN */}
-            <DatePicker
-              selected={formData.checkIn ? new Date(formData.checkIn) : null}
-              onChange={(date) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  checkIn: formatDate(date),
-                }))
-              }
-              placeholderText="Check In"
-              className="w-full border rounded-lg px-3 py-2"
-              minDate={new Date()}
-            />
+          <DatePicker
+  selected={parseLocalDate(formData.checkIn)}
+  onChange={(date) =>
+    setFormData((prev) => ({
+      ...prev,
+      checkIn: formatDate(date),
+    }))
+  }
+  placeholderText="Check In"
+  className="w-full border rounded-lg px-3 py-2"
+  minDate={new Date()}
+/>
 
-            {/* CHECK OUT */}
-            <DatePicker
-              selected={formData.checkOut ? new Date(formData.checkOut) : null}
-              onChange={(date) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  checkOut: formatDate(date),
-                }))
-              }
-              placeholderText="Check Out"
-              className="w-full border rounded-lg px-3 py-2"
-              minDate={
-                formData.checkIn
-                  ? new Date(formData.checkIn)
-                  : new Date()
-              }
-            />
+{/* CHECK OUT */}
+<DatePicker
+  selected={parseLocalDate(formData.checkOut)}
+  onChange={(date) =>
+    setFormData((prev) => ({
+      ...prev,
+      checkOut: formatDate(date),
+    }))
+  }
+  placeholderText="Check Out"
+  className="w-full border rounded-lg px-3 py-2"
+  minDate={
+    formData.checkIn
+      ? parseLocalDate(formData.checkIn)
+      : new Date()
+  }
+/>
 
             {/* GUESTS */}
             <select

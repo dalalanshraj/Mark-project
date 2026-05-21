@@ -63,7 +63,7 @@ const Footer = () => {
         <p className="text-sm text-center md:text-left">
       © 2026 <a href="https://www.digifyamerica.com/">Digify America.</a>  All rights reserved.
         </p>
-        <div className="flex space-x-4 mt-3 md:mt-0">
+        {/* <div className="flex space-x-4 mt-3 md:mt-0">
           <a
             href="#"
             className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all"
@@ -76,7 +76,7 @@ const Footer = () => {
           >
             <FaTwitter />
           </a>
-        </div>
+        </div> */}
       </div>
     </footer>
   );

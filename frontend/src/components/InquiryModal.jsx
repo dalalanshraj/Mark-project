@@ -143,11 +143,11 @@ export default function InquiryModal({ propertyId, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-start z-100 pt-34 px-4 overflow-y-auto"
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-start z-[9999] pt-34 px-4 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl w-[50%] h-[87%]  p-8 relative mt-16 shadow-2xl border"
+        className="bg-white rounded-2xl w-[40%] h-[77%]  p-8 relative mt-33 shadow-2xl border"
         onClick={(e) => e.stopPropagation()}
       >
         {/* CLOSE */}
@@ -210,25 +210,75 @@ export default function InquiryModal({ propertyId, onClose }) {
           />
 
           {/* DATE PICKER */}
-          <div className="grid grid-cols-2 gap-1">
-            <DatePicker
-              selected={form.Arrival}
-              onChange={(date) => setForm({ ...form, Arrival: date })}
-              placeholderText="Arrival Date"
-              className="w-full border border-gray-300 p-3 rounded-xl"
-              dateFormat="dd-MM-yyyy"
-              minDate={new Date()}
-            />
+         <div className="grid grid-cols-2 gap-4 items-start">
+  {/* ARRIVAL */}
+  <div className="w-full min-w-0">
+    <DatePicker
+      selected={form.Arrival}
+      onChange={(date) =>
+        setForm({ ...form, Arrival: date })
+      }
+      placeholderText="Arrival Date"
+      dateFormat="dd-MM-yyyy"
+      minDate={new Date()}
+      popperPlacement="bottom-start"
+      popperClassName="z-[999999]"
+      showPopperArrow={false}
+      wrapperClassName="w-full"
+      calendarClassName="shadow-xl border rounded-xl"
+        popperModifiers={[
+    {
+      name: "flip",
+      enabled: false,
+    },
+  ]}
+      className="
+        w-full
+        min-w-0
+        h-[52px]
+        border border-gray-300
+        px-4
+        rounded-xl
+        outline-none
+        focus:ring-2 focus:ring-blue-500
+      "
+    />
+  </div>
 
-            <DatePicker
-              selected={form.Departure}
-              onChange={(date) => setForm({ ...form, Departure: date })}
-              placeholderText="Departure Date"
-              className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-              dateFormat="dd-MM-yyyy"
-              minDate={form.Arrival || new Date()}
-            />
-          </div>
+  {/* DEPARTURE */}
+  <div className="w-full min-w-0">
+    <DatePicker
+      selected={form.Departure}
+      onChange={(date) =>
+        setForm({ ...form, Departure: date })
+      }
+      placeholderText="Departure Date"
+      dateFormat="dd-MM-yyyy"
+      minDate={form.Arrival || new Date()}
+      popperPlacement="bottom-start"
+      popperClassName="z-[999999]"
+      showPopperArrow={false}
+      wrapperClassName="w-full"
+      calendarClassName="shadow-xl border rounded-xl"
+        popperModifiers={[
+    {
+      name: "flip",
+      enabled: false,
+    },
+  ]}
+      className="
+        w-full
+        min-w-0
+        h-[52px]
+        border border-gray-300
+        px-4
+        rounded-xl
+        outline-none
+        focus:ring-2 focus:ring-blue-500
+      "
+    />
+  </div>
+</div>
 
           {/* GUESTS */}
           <div className="grid grid-cols-2 gap-4">

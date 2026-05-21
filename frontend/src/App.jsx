@@ -29,6 +29,7 @@ import AboutUs from "./pages/About";
 import CommunityDetails from "./pages/CommunityDetails";
 import GalleryAdmin from "./admin/pages/Gallery";
 import Gallery from "./pages/Gallerypage";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function App() {
 
   return (
     <>
+    <ScrollToTop />
       {/* FRONTEND ONLY */}
       {!isAdminRoute && <Navbar />}
 

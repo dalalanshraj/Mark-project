@@ -388,12 +388,15 @@ const PropertyDetail = () => {
               Send Inquiry
             </button>
             <PropertyminiCalendar listingId={listing._id} className="mt-20" />
+            <div className="overflow-hidden">
             {openInquiry && (
               <InquiryModal
                 propertyId={id}
                 onClose={() => setOpenInquiry(false)}
               />
+              
             )}
+            </div>
           </div>
         </div>
       </div>

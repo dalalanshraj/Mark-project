@@ -119,7 +119,7 @@ const getImageUrl = (photo) => {
 
   const heroImage =
     images[0] ||
-    "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
+    "https://donnadanielrealty.com/gallery-uploads/1779470823258-32899616.webp";
 
   return (
     <>

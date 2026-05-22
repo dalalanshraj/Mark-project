@@ -4,23 +4,43 @@ import { Link } from "react-router-dom";
 const PropertyCard = ({ listing }) => {
   if (!listing) return null;
 
-  const getImageUrl = (path) => {
-    if (!path || typeof path !== "string") return "";
+  const getImageUrl = (photo) => {
+  const base =
+    import.meta.env.VITE_API_URL || "";
 
-    const base = import.meta.env.VITE_API_URL || "";
-
-    if (path.startsWith("http")) return path;
+  // new object format
+  if (photo?.url) {
+    if (photo.url.startsWith("http")) {
+      return photo.url;
+    }
 
     return (
-      base.replace(/\/$/, "") + "/" + path.replace(/^\//, "")
+      base.replace(/\/$/, "") +
+      "/" +
+      photo.url.replace(/^\//, "")
     );
-  };
+  }
+
+  // old string fallback
+  if (typeof photo === "string") {
+    if (photo.startsWith("http")) {
+      return photo;
+    }
+
+    return (
+      base.replace(/\/$/, "") +
+      "/" +
+      photo.replace(/^\//, "")
+    );
+  }
+
+  return "https://via.placeholder.com/400x300?text=No+Image";
+};
 
   // IMAGE
-  const image =
-    listing?.photos?.length > 0
-      ? getImageUrl(listing.photos[0])
-      : "https://via.placeholder.com/400x300?text=No+Image";
+  const image = getImageUrl(
+  listing?.photos?.[0]
+);
 
   // PRICE
   const originalPrice = listing?.rates?.[0]?.nightly || null;

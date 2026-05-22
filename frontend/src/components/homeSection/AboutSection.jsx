@@ -164,7 +164,8 @@ export default function AboutSection({ listingId }) {
     </div>
 
     <p className="text-white text-sm sm:text-base leading-relaxed">
-      Florida, United States
+      4321 Carriage Ln
+Destin, FL 32541,
     </p>
   </div>
 </div>

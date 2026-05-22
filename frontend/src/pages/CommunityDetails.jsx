@@ -18,7 +18,7 @@ export default function CommunityDetails() {
         "You can't describe the view from this unit. The sugar white sand, emerald green water and activity on the water and the sun setting in the evening leaves one wishing they had more time to enjoy Crystal Sands.",
 
       heroImage:
-        "https://donnadaniel.mysawgrasspointe.com/gallery-uploads/1778084473593-2.17.jpg",
+        "https://donnadanielrealty.com/gallery-uploads/1779469070677-606811805.webp",
     },
 
     mediterranea: {
@@ -28,7 +28,7 @@ export default function CommunityDetails() {
         "The Mediterrania is very special and is designed with luxury in mind. It is close to wonderful restaurants, shopping, near Pompano Joes, and just minutes from the outlet mall and Destin Commons.",
 
       heroImage:
-        "https://donnadaniel.mysawgrasspointe.com/gallery-uploads/1778256119380-3.3.jpg",
+        "https://donnadanielrealty.com/gallery-uploads/1779469935010-248028726.webp",
     },
   };
 

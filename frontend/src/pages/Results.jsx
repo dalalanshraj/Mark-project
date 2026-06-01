@@ -57,7 +57,7 @@ const ResultsPage = () => {
     <>
       {/* ================= HERO ================= */}
       <section
-        className="relative h-[40vh] bg-cover bg-center flex items-center justify-center text-white text-center"
+        className="relative h-[53vh] bg-cover bg-center flex items-center justify-center text-white text-center"
         style={{
           backgroundImage:
             "url(https://donnadanielrealty.com/gallery-uploads/1779470823258-32899616.webp)",

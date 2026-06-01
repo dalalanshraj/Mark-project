@@ -117,38 +117,39 @@ const ResultsPage = () => {
       : `${import.meta.env.VITE_API_URL}${cleanPath}`
     : "/placeholder.jpg";
 
-  return (
-    <div
-      key={p._id}
-      onClick={() => setSelectedProperty(p)}
-      className={`border rounded-xl p-4 cursor-pointer transition ${
-        selectedProperty?._id === p._id
-          ? "border-blue-600 bg-blue-50"
-          : "hover:bg-gray-50"
-      }`}
-    >
-      <img
-        src={imageUrl}
-        alt={p.property?.title}
-        className="w-full h-44 object-cover rounded-lg"
-        loading="lazy"
-        onError={(e) => {
-          e.currentTarget.src = "/placeholder.jpg";
-        }}
-      />
 
-      <div className="flex justify-between items-center mt-3">
-        <h3 className="font-semibold text-lg">
-          {p.property?.title}
-        </h3>
+                return (
+                  <div
+                    key={p._id}
+                    onClick={() => setSelectedProperty(p)}
+                    className={`border rounded-xl p-4 cursor-pointer transition ${
+                      selectedProperty?._id === p._id
+                        ? "border-blue-600 bg-blue-50"
+                        : "hover:bg-gray-50"
+                    }`}
+                  >
+                    <img
+                      src={imageUrl}
+                      alt={p.property?.title}
+                      className="w-full h-44 object-cover rounded-lg"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.src = "/placeholder.jpg";
+                      }}
+                    />
 
-        <Link to={`/${p._id}`}>
-          <ArrowUpRight className="w-6 h-6 text-sky-600 hover:text-sky-800" />
-        </Link>
-      </div>
-    </div>
-  );
-})}
+                    <div className="flex justify-between items-center mt-3">
+                      <h3 className="font-semibold text-lg">
+                        {p.property?.title}
+                      </h3>
+
+                      <Link to={`/${p._id}`}>
+                        <ArrowUpRight className="w-6 h-6 text-sky-600 hover:text-sky-800" />
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

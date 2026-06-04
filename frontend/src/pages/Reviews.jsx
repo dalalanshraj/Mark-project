@@ -108,9 +108,11 @@ export default function Reviews() {
 
         <div className="absolute inset-0 bg-black/60" />
 
-        <h1 className="relative text-3xl md:text-6xl font-bold mt-25">
+        <div className="relative text-center px-4 sm:px-6 mt-34">
+          <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold mt-15">
           Reviews
         </h1>
+        </div>
       </section>
 
       {/* MAIN */}

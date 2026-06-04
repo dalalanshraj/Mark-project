@@ -52,8 +52,8 @@ export default function Gallery() {
         <div className="absolute inset-0 bg-black/50" />
 
         {/* CONTENT */}
-        <div className="relative text-center px-6">
-          <h1 className="text-4xl md:text-6xl font-semibold mt-20">
+       <div className="relative text-center px-4 sm:px-6 mt-34">
+          <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold mt-15">
             Our Gallery
           </h1>
 

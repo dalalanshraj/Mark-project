@@ -58,15 +58,18 @@ const Properties = () => {
     <>
       {/* HERO */}
       <section
-        className="relative h-[60vh] md:h-[70vh] bg-cover bg-center flex items-center justify-center text-white"
+        className="relative h-[60vh] md:h-[70vh]  bg-cover bg-center flex items-center justify-center text-white"
         style={{
             backgroundImage: `url(${heroImage})`,
           }}
       >
-        <div className="absolute inset-0 bg-black/50"></div>
-        <h1 className="relative text-6xl font-extrabold mt-20">
+         <div className="absolute inset-0 bg-black/60" />
+
+         <div className="relative text-center px-4 sm:px-6 mt-34">
+          <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold mt-15">
           Properties
         </h1>
+        </div>
       </section>
 
       {/* LISTINGS */}

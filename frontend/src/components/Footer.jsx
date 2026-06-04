@@ -45,11 +45,11 @@ const Footer = () => {
         <div>
           <div className="flex items-center justify-between md:justify-start md:space-x-4 mb-4">
             {/* <h2 className="text-xl font-semibold">Location</h2> */}
-            <Link to="/admin/login">
+            {/* <Link to="/admin/login">
               <button className="bg-[#F8F812] text-black hover:bg-[#1B252F] hover:text-white text-sm font-medium px-4 py-2 rounded shadow flex items-center gap-2">
                 <MdEmail />Admin Login 
               </button>
-            </Link>
+            </Link> */}
           </div>
           <ul className="space-y-2">
            
@@ -63,6 +63,11 @@ const Footer = () => {
         <p className="text-sm text-center md:text-left">
       © 2026 <a href="https://www.digifyamerica.com/">Digify America.</a>  All rights reserved.
         </p>
+         <Link to="/admin/login">
+              <button className=" text-white hover:bg-[#1B252F] hover:text-white text-sm font-medium px-4 py-2 rounded  flex items-center gap-2">
+                <MdEmail /> Login 
+              </button>
+            </Link>
         {/* <div className="flex space-x-4 mt-3 md:mt-0">
           <a
             href="#"

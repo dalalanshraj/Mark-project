@@ -1,7 +1,7 @@
 import React from "react";
 import { FaFacebookF, FaTwitter } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import logoIme from "../assets/logo/LOGO5.png"; // Default logo
+import logoIme from "../assets/logo/Beach.png"; // Default logo
 import { Link } from "react-router-dom";
 
 const Footer = () => {

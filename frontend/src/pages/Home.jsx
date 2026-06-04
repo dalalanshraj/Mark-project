@@ -8,6 +8,7 @@ import PropertyCard from "../components/PropertyCard";
 import AboutSection from "../components/homeSection/AboutSection.jsx";
 import heroVideo from "../assets/video.mp4";
 import GallerySection from "../components/gallarySection.jsx";
+import DealsCTA from "../components/DealsCTA.jsx";
 
 const HeroSection = ({ listingId }) => {
   const [formData, setFormData] = useState({
@@ -74,7 +75,7 @@ const HeroSection = ({ listingId }) => {
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-[70vh] md:min-h-[100vh] flex items-center justify-center text-center overflow-hidden">
+      <section className="relative  min-h-[70vh] md:min-h-[100vh] flex items-center justify-center text-center overflow-hidden">
         {/* VIDEO */}
         <video
           autoPlay
@@ -87,10 +88,10 @@ const HeroSection = ({ listingId }) => {
         </video>
 
         {/* OVERLAY */}
-        <div className="absolute inset-0 bg-black/9"></div>
+        <div className="absolute inset-0 bg-black/10"></div>
 
         {/* CONTENT */}
-        <div className="relative z-10 text-white px-4 w-full max-w-6xl">
+        <div className="relative mt-30 z-10 text-white px-4 w-full max-w-6xl">
           {/* HEADING */}
          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-semibold mb-4 leading-tight">
   Experience the Beauty of 30A
@@ -190,7 +191,8 @@ const HeroSection = ({ listingId }) => {
       </div>
 
       <FeaturedActivities />
-      <AboutSection listingId="6a1606de8ee2fa44c5186e4b" />
+      <DealsCTA />
+      {/* <AboutSection listingId="6a1606de8ee2fa44c5186e4b" /> */}
       {/* <DiscoverDestinSection /> */}
       <GallerySection />
 

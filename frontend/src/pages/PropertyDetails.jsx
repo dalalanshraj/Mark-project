@@ -102,8 +102,7 @@ const PropertyDetail = () => {
   if (!listing) return <p className="p-10">Property not found</p>;
 
   // ================= IMAGES =================
-  const imageUrls =
-  listing.photos || [];
+  const imageUrls = listing.photos || [];
   // ================= REVIEWS =================
   const publishedReviews =
     listing.reviews?.filter((r) => r.published === true) || [];
@@ -120,12 +119,11 @@ const PropertyDetail = () => {
 
   // ================= MAP =================
   const getMapEmbedUrl = (lat, lng) => {
+    const finalLat = Number(lat);
+    const finalLng = Number(lng);
 
-  const finalLat = Number(lat);
-  const finalLng = Number(lng);
-
-  return `https://maps.google.com/maps?q=${finalLat},${finalLng}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
-};
+    return `https://maps.google.com/maps?q=${finalLat},${finalLng}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  };
   const formatDate = (date) => {
     if (!date) return "";
 
@@ -135,6 +133,14 @@ const PropertyDetail = () => {
 
     return `${year}-${month}-${day}`;
   };
+
+  const formatDisplayDate = (date) => {
+  if (!date) return "";
+
+  return `${date.toLocaleString("en-US", {
+    month: "short",
+  })} ${date.getDate()}, ${date.getFullYear()}`;
+};
 
   // ================= MIN NIGHT AUTO FIX =================
   // 🔹 single function
@@ -243,34 +249,20 @@ const PropertyDetail = () => {
           )}
 
           {/* MAP */}
-          {listing?.location?.lat &&
- listing?.location?.lng && (
+          {listing?.location?.lat && listing?.location?.lng && (
+            <div className="mt-10">
+              <h2 className="text-2xl font-semibold mb-4">Location</h2>
 
-  <div className="mt-10">
-
-    <h2 className="text-2xl font-semibold mb-4">
-      Location
-    </h2>
-
-    <iframe
-      src={getMapEmbedUrl(
-        listing.location.lat,
-        listing.location.lng
-      )}
-
-      className="w-full h-96 rounded-xl border"
-
-      loading="lazy"
-
-      allowFullScreen
-
-      referrerPolicy="no-referrer-when-downgrade"
-
-      title="Property Location"
-    />
-
-  </div>
-)}
+              <iframe
+                src={getMapEmbedUrl(listing.location.lat, listing.location.lng)}
+                className="w-full h-96 rounded-xl border"
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Property Location"
+              />
+            </div>
+          )}
 
           {/* REVIEWS */}
           {publishedReviews.length > 0 && (
@@ -335,38 +327,20 @@ const PropertyDetail = () => {
         <div className="lg:col-span-1">
           <div className="sticky top-[0px] self-start bg-white rounded-2xl shadow p-6 space-y-5 ">
             <div className="flex gap-2">
-              <DatePicker
-                selected={checkIn}
-                onChange={(date) => {
-                  setCheckIn(date);
-                  setCheckOut(null);
-                }}
-                excludeDates={blockedDates}
-                placeholderText="Check-in"
-                minDate={new Date()}
-                className="border p-3 rounded w-full"
+              <input
+                type="text"
+                readOnly
+                value={formatDisplayDate(checkIn)}
+                placeholder="Check-in"
+                className="border p-3 rounded w-full bg-white"
               />
 
-              <DatePicker
-                selected={checkOut}
-                onChange={(date) => setCheckOut(date)}
-                excludeDates={blockedDates}
-                placeholderText="Check-out"
-                minDate={
-                  checkIn
-                    ? (() => {
-                        const d = new Date(checkIn);
-
-                        // ✅ IMPORTANT FIX
-                        d.setHours(12, 0, 0, 0);
-
-                        d.setDate(d.getDate() + getMinNightsForDate(checkIn));
-
-                        return d;
-                      })()
-                    : new Date()
-                }
-                className="border p-3 rounded w-full"
+              <input
+                type="text"
+                readOnly
+               value={formatDisplayDate(checkOut)}
+                placeholder="Check-out"
+                className="border p-3 rounded w-full bg-white"
               />
             </div>
             {/* <button
@@ -386,15 +360,24 @@ const PropertyDetail = () => {
             >
               Send Inquiry
             </button>
-            <PropertyminiCalendar listingId={listing._id} className="mt-20" />
+            <PropertyminiCalendar
+              listingId={listing._id}
+              className="mt-20"
+              checkIn={checkIn}
+              checkOut={checkOut}
+              setCheckIn={setCheckIn}
+              setCheckOut={setCheckOut}
+            />
             <div className="overflow-hidden">
-            {openInquiry && (
-              <InquiryModal
-                propertyId={id}
-                onClose={() => setOpenInquiry(false)}
-              />
-              
-            )}
+              {openInquiry && (
+  <InquiryModal
+    propertyId={listing._id}
+    listing={listing}
+    checkIn={checkIn}
+    checkOut={checkOut}
+    onClose={() => setOpenInquiry(false)}
+  />
+)}
             </div>
           </div>
         </div>

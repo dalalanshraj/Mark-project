@@ -70,20 +70,20 @@ const whyChooseUsImage =
         <div
           className="absolute inset-0 bg-fixed bg-cover bg-center"
           style={{
-            backgroundImage: `url(${heroImage})`,
+            backgroundImage: `url(${image})`,
           }}
         />
 
         <div className="absolute inset-0 bg-black/60" />
 
-        <div className="relative text-center px-4 sm:px-6">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mt-15">
-  About Beach Therapy 30A
+        <div className="relative text-center px-4 sm:px-6 mt-20">
+          <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold mt-15">
+  About 
 </h1>
 
-<p className="text-gray-200 text-sm sm:text-base max-w-3xl mx-auto">
+{/* <p className="text-gray-200 text-sm sm:text-base max-w-3xl mx-auto">
   Meet Shawn and Eileen O'Sullivan, the proud owners of Beach Therapy 30A in beautiful Grayton Beach, Florida. We are excited to share our slice of paradise with guests from around the world.
-</p>
+</p> */}
         </div>
       </section>
 

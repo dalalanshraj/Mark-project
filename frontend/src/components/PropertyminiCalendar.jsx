@@ -3,7 +3,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from "../api/axios";
 
-export default function PropertyminiCalendar({ listingId }) {
+export default function PropertyminiCalendar({
+  listingId,
+  checkIn,
+  checkOut,
+  setCheckIn,
+  setCheckOut,
+}) {
   const [calendarDates, setCalendarDates] = useState([]);
 
   useEffect(() => {
@@ -14,9 +20,7 @@ export default function PropertyminiCalendar({ listingId }) {
 
   const fetchDates = async () => {
     try {
-      const res = await api.get(
-        `/listings/${listingId}/calendar`
-      );
+      const res = await api.get(`/listings/${listingId}/calendar`);
 
       console.log("CALENDAR API:", res.data);
 
@@ -24,10 +28,9 @@ export default function PropertyminiCalendar({ listingId }) {
         Array.isArray(res.data.calendar)
           ? res.data.calendar
           : Array.isArray(res.data)
-          ? res.data
-          : []
+            ? res.data
+            : [],
       );
-
     } catch (err) {
       console.log(err);
     }
@@ -37,176 +40,140 @@ export default function PropertyminiCalendar({ listingId }) {
   const normalizeDate = (date) => {
     const d = new Date(date);
 
-    return `${d.getFullYear()}-${
-      d.getMonth()
-    }-${d.getDate()}`;
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
   };
-     const formatLocalDate = (date) => {
+  const formatLocalDate = (date) => {
+    const d = new Date(date);
 
-  const d = new Date(date);
+    if (isNaN(d)) {
+      return "";
+    }
 
-  if (isNaN(d)) {
-    return "";
-  }
-
-  return new Intl.DateTimeFormat(
-    "en-CA",
-    {
+    return new Intl.DateTimeFormat("en-CA", {
       timeZone: "America/Chicago",
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
-    }
-  ).format(d);
-
-};
+    }).format(d);
+  };
 
   // DAY CLASS
-const getDateType = (date) => {
+  const getDateType = (date) => {
+    // TODAY
+    const today = new Date();
 
-  // TODAY
-  const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  today.setHours(0, 0, 0, 0);
+    const currentDate = new Date(date);
 
-  const currentDate = new Date(date);
+    currentDate.setHours(0, 0, 0, 0);
 
-  currentDate.setHours(0, 0, 0, 0);
+    // PAST
+    if (currentDate < today) {
+      return "past-day";
+    }
 
-  // PAST
-  if (currentDate < today) {
-    return "past-day";
-  }
+    // CURRENT DATE KEY
+    const current = normalizeDate(currentDate);
 
-  // CURRENT DATE KEY
-  const current =
-    normalizeDate(currentDate);
-
-  // SAME DAY ITEMS
-  const sameDayItems =
-    calendarDates.filter(
-      (d) =>
-        normalizeDate(d.date) === current
+    // SAME DAY ITEMS
+    const sameDayItems = calendarDates.filter(
+      (d) => normalizeDate(d.date) === current,
     );
 
-  // PREVIOUS DAY
-  const prevDate =
-    new Date(currentDate);
+    // PREVIOUS DAY
+    const prevDate = new Date(currentDate);
 
-  prevDate.setDate(
-    prevDate.getDate() - 1
-  );
+    prevDate.setDate(prevDate.getDate() - 1);
 
-  const prev =
-    normalizeDate(prevDate);
+    const prev = normalizeDate(prevDate);
 
-  // PREVIOUS ITEMS
-  const prevDayItems =
-    calendarDates.filter(
-      (d) =>
-        normalizeDate(d.date) === prev
+    // PREVIOUS ITEMS
+    const prevDayItems = calendarDates.filter(
+      (d) => normalizeDate(d.date) === prev,
     );
 
-  // CURRENT STATUSES
-  const hasCIN =
-    sameDayItems.some(
-      (d) => d.status === "CIN"
+    // CURRENT STATUSES
+    const hasCIN = sameDayItems.some((d) => d.status === "CIN");
+
+    const hasCOUT = sameDayItems.some((d) => d.status === "COUT");
+
+    const hasR = sameDayItems.some((d) => d.status === "R");
+
+    const hasH = sameDayItems.some((d) => d.status === "H");
+
+    // PREVIOUS DAY STATUS
+    const prevHasBooking = prevDayItems.some(
+      (d) => d.status === "R" || d.status === "COUT",
     );
 
-  const hasCOUT =
-    sameDayItems.some(
-      (d) => d.status === "COUT"
-    );
+    // =====================================
+    // TURNOVER
+    // =====================================
 
-  const hasR =
-    sameDayItems.some(
-      (d) => d.status === "R"
-    );
+    if (hasCIN && (hasCOUT || prevHasBooking)) {
+      return "turnover-day";
+    }
 
-  const hasH =
-    sameDayItems.some(
-      (d) => d.status === "H"
-    );
+    // CHECK-IN
+    if (hasCIN) {
+      return "checkin-day";
+    }
 
-  // PREVIOUS DAY STATUS
-  const prevHasBooking =
-    prevDayItems.some(
-      (d) =>
-        d.status === "R" ||
-        d.status === "COUT"
-    );
+    // CHECK-OUT
+    if (hasCOUT) {
+      return "checkout-day";
+    }
 
-  // =====================================
-  // TURNOVER
-  // =====================================
+    // BOOKED
+    if (hasR) {
+      return "blocked-day";
+    }
 
-  if (
-    hasCIN &&
-    (
-      hasCOUT ||
-      prevHasBooking
-    )
-  ) {
-    return "turnover-day";
-  }
+    // HOLD
+    if (hasH) {
+      return "hold-day";
+    }
 
-  // CHECK-IN
-  if (hasCIN) {
-    return "checkin-day";
-  }
+    return "available-day";
+  };
+ const isDateSelectable = (date) => {
+  const type = getDateType(date);
 
-  // CHECK-OUT
-  if (hasCOUT) {
-    return "checkout-day";
-  }
-
-  // BOOKED
-  if (hasR) {
-    return "blocked-day";
-  }
-
-  // HOLD
-  if (hasH) {
-    return "hold-day";
-  }
-
-  return "available-day";
+  return [
+    "available-day",
+    "checkin-day",
+    "checkout-day",
+    "turnover-day",
+  ].includes(type);
 };
 
   return (
     <div className="w-full">
-
       <h3 className="text-lg font-semibold text-center mb-4">
         Availability Calendar
       </h3>
 
-     <DatePicker
-  inline
-  selected={null}
-  onChange={() => {}}
-  minDate={new Date()}
-  dayClassName={getDateType}
-  fixedHeight
-  showPopperArrow={false}
-
-  // DISABLE PAST DATES
-  filterDate={(date) => {
-
-    const today = new Date();
-
-today.setHours(0, 0, 0, 0);
-
-const current = new Date(date);
-
-current.setHours(0, 0, 0, 0);
-
-return current >= today;
-  }}
-/>
+      <DatePicker
+        inline
+        selectsRange
+        selected={null}
+        startDate={checkIn}
+        endDate={checkOut}
+        minDate={new Date()}
+        dayClassName={getDateType}
+        fixedHeight
+        showPopperArrow={false}
+        onChange={(dates) => {
+          const [start, end] = dates;
+          setCheckIn(start);
+          setCheckOut(end);
+        }}
+        filterDate={isDateSelectable}
+      />
 
       {/* LEGEND */}
       <div className="flex justify-center gap-4 mt-5 flex-wrap text-sm">
-
         {/* AVAILABLE */}
         <div className="flex items-center gap-2">
           <span className="w-4 h-4 rounded bg-[#d1fae5]"></span>
@@ -224,8 +191,7 @@ return current >= today;
           <span
             className="w-4 h-4 rounded border"
             style={{
-              background:
-                "linear-gradient(135deg, #5C5CFF 50%, #d1fae5 50%)",
+              background: "linear-gradient(135deg, #5C5CFF 50%, #d1fae5 50%)",
             }}
           ></span>
           Check-Out
@@ -236,8 +202,7 @@ return current >= today;
           <span
             className="w-4 h-4 rounded border"
             style={{
-              background:
-                "linear-gradient(315deg, #5C5CFF 50%, #d1fae5 50%)",
+              background: "linear-gradient(315deg, #5C5CFF 50%, #d1fae5 50%)",
             }}
           ></span>
           Check-In
@@ -246,9 +211,7 @@ return current >= today;
         {/* TURNOVER */}
         <div className="flex items-center gap-2">
           <span className="relative w-4 h-4 rounded bg-[#5C5CFF] overflow-hidden">
-            <span
-              className="absolute w-[140%] h-[2px] bg-black top-1/2 left-[-20%] rotate-135"
-            ></span>
+            <span className="absolute w-[140%] h-[2px] bg-black top-1/2 left-[-20%] rotate-135"></span>
           </span>
           Turnover
         </div>
@@ -258,7 +221,6 @@ return current >= today;
           <span className="w-4 h-4 rounded bg-yellow-400"></span>
           Hold
         </div>
-
       </div>
 
       {/* STYLES */}
@@ -334,7 +296,7 @@ return current >= today;
 
   /* TURNOVER */
 .react-datepicker__day.turnover-day {
-
+ transform: translateY(44%);
   position: relative !important;
 
   isolation: isolate;

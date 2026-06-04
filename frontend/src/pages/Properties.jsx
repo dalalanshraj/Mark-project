@@ -64,7 +64,7 @@ const Properties = () => {
           }}
       >
         <div className="absolute inset-0 bg-black/50"></div>
-        <h1 className="relative text-6xl font-extrabold mt-15">
+        <h1 className="relative text-6xl font-extrabold mt-20">
           Properties
         </h1>
       </section>

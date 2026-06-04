@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
 import api from "../api/axios.js";
-import logoIme from "../assets/logo/LOGO5.png";
-import logoScrolled from "../assets/logo/logo4.png";
+import logoIme from "../assets/logo/BEACH2.png";
+import logoScrolled from "../assets/logo/BEACH.png";
 
 const Navbar = () => {
   const location = useLocation();
@@ -82,7 +82,7 @@ const Navbar = () => {
         <Link to="/">
           <img
             src={isScrolled ? logoScrolled : logoIme}
-            className="w-40 md:w-34 transition-all duration-300"
+            className="w-40 md:w-44 transition-all duration-300"
             alt="logo"
           />
         </Link>

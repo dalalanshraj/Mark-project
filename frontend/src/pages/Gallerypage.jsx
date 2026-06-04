@@ -25,7 +25,7 @@ export default function Gallery() {
   }, []);
 
   const image1 =
-    images[0] || "https://images.unsplash.com/photo-1505691938895-1758d7feb511";
+    images[0] || "https://beachtherapy30a.com/gallery-uploads/1779828994964-193545868.webp";
 
   const image2 =
     images[1] || "https://images.unsplash.com/photo-1560185007-cde436f6a4d0";
@@ -44,7 +44,7 @@ export default function Gallery() {
         <div
           className="absolute inset-0 bg-fixed bg-center bg-cover"
           style={{
-            backgroundImage: `url(${image2})`,
+            backgroundImage: `url(${image1})`,
           }}
         />
 
@@ -53,12 +53,10 @@ export default function Gallery() {
 
         {/* CONTENT */}
         <div className="relative text-center px-6">
-          <h1 className="text-4xl md:text-6xl font-semibold mt-15">
+          <h1 className="text-4xl md:text-6xl font-semibold mt-20">
             Our Gallery
           </h1>
-          <p className="text-gray-200">
-            Explore beautiful moments & property visuals
-          </p>
+
         </div>
       </section>
 

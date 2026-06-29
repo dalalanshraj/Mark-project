@@ -28,8 +28,8 @@ const PropertyDetail = () => {
   const [openReview, setOpenReview] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
 
-  const [checkIn, setCheckIn] = useState(null);
-  const [checkOut, setCheckOut] = useState(null);
+  const [arrival, setarrival] = useState(null);
+  const [departure, setdeparture] = useState(null);
 
   const [blockedDates, setBlockedDates] = useState([]);
   const [openInquiry, setOpenInquiry] = useState(false);
@@ -85,18 +85,18 @@ const PropertyDetail = () => {
 
   // 🔹 useEffect
   useEffect(() => {
-    if (checkIn && checkOut && listing) {
-      const minNights = getMinNightsForDate(checkIn);
+    if (arrival && departure && listing) {
+      const minNights = getMinNightsForDate(arrival);
 
-      const diff = (checkOut - checkIn) / (1000 * 60 * 60 * 24);
+      const diff = (departure - arrival) / (1000 * 60 * 60 * 24);
 
       if (diff < minNights) {
-        const newDate = new Date(checkIn);
+        const newDate = new Date(arrival);
         newDate.setDate(newDate.getDate() + minNights);
-        setCheckOut(newDate);
+        setdeparture(newDate);
       }
     }
-  }, [checkIn, checkOut, listing]);
+  }, [arrival, departure, listing]);
 
   if (loading) return <p className="p-10">Loading...</p>;
   if (!listing) return <p className="p-10">Property not found</p>;
@@ -330,7 +330,7 @@ const PropertyDetail = () => {
               <input
                 type="text"
                 readOnly
-                value={formatDisplayDate(checkIn)}
+                value={formatDisplayDate(arrival)}
                 placeholder="Check-in"
                 className="border p-3 rounded w-full bg-white"
               />
@@ -338,16 +338,16 @@ const PropertyDetail = () => {
               <input
                 type="text"
                 readOnly
-               value={formatDisplayDate(checkOut)}
+               value={formatDisplayDate(departure)}
                 placeholder="Check-out"
                 className="border p-3 rounded w-full bg-white"
               />
             </div>
             {/* <button
-            disabled={!checkIn || !checkOut}
+            disabled={!arrival || !departure}
             onClick={() => setOpenBooking(true)}
             className={`w-full py-3 rounded-xl font-semibold text-white 
-      ${!checkIn || !checkOut
+      ${!arrival || !departure
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-blue-600 hover:bg-blue-700 cursor-pointer"
               }`}
@@ -363,18 +363,18 @@ const PropertyDetail = () => {
             <PropertyminiCalendar
               listingId={listing._id}
               className="mt-20"
-              checkIn={checkIn}
-              checkOut={checkOut}
-              setCheckIn={setCheckIn}
-              setCheckOut={setCheckOut}
+              arrival={arrival}
+                  departure={departure}
+              setarrival={setarrival}
+              setdeparture={setdeparture}
             />
             <div className="overflow-hidden">
               {openInquiry && (
   <InquiryModal
     propertyId={listing._id}
     listing={listing}
-    checkIn={checkIn}
-    checkOut={checkOut}
+    arrival={arrival}
+                  departure={departure}
     onClose={() => setOpenInquiry(false)}
   />
 )}
@@ -387,8 +387,8 @@ const PropertyDetail = () => {
       {openBooking && (
         <BookingPreviewModal
           propertyId={id}
-          checkIn={formatDate(checkIn)}
-          checkOut={formatDate(checkOut)}
+          arrival={formatDate(arrival)}
+          departure={formatDate(departure)}
           onClose={() => setOpenBooking(false)}
         />
       )}

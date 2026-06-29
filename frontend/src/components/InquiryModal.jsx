@@ -8,33 +8,28 @@ import emailjs from "@emailjs/browser";
 export default function InquiryModal({
   propertyId,
   listing,
-  checkIn,
-  checkOut,
+   arrival,
+  departure,
   onClose,
 }) {
-  const [form, setForm] = useState({
+   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    Arrival: checkIn || null,
-    Departure: checkOut || null,
-    Adults: "",
-    Kids: "",
     message: "",
   });
-
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [propertyTitle, setPropertyTitle] = useState("");
 
-  useEffect(() => {
-    setForm((prev) => ({
-      ...prev,
-      Arrival: checkIn || null,
-      Departure: checkOut || null,
-    }));
-  }, [checkIn, checkOut]);
+ useEffect(() => {
+  setForm((prev) => ({
+    ...prev,
+    Arrival: arrival || null,
+    Departure: departure || null,
+  }));
+}, [arrival, departure]);
 
   // 🔒 Lock background scroll
   useEffect(() => {
@@ -78,8 +73,8 @@ const handleSubmit = async (e) => {
       phone: form.phone,
       message: form.message,
 
-      Arrival: form.Arrival,
-      Departure: form.Departure,
+      Arrival: arrival,
+        Departure: departure,
 
       Adults: String(form.Adults || "1"),
       Kids: String(form.Kids || "0"),
@@ -119,8 +114,18 @@ const propertyName =
       email: form.email,
       phone: form.phone,
 
-      checkIn: form.Arrival.toDateString(),
-      checkOut: form.Departure.toDateString(),
+ Arrival: arrival.toLocaleDateString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+}),
+
+Departure: departure.toLocaleDateString("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+}),
+
 
       adults: form.Adults || "1",
       kids: form.Kids || "0",

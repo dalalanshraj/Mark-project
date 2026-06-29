@@ -5,10 +5,10 @@ import api from "../api/axios";
 
 export default function PropertyminiCalendar({
   listingId,
-  checkIn,
-  checkOut,
-  setCheckIn,
-  setCheckOut,
+  arrival,
+  departure,
+  setarrival,
+  setdeparture,
 }) {
   const [calendarDates, setCalendarDates] = useState([]);
 
@@ -117,12 +117,12 @@ export default function PropertyminiCalendar({
 
     // CHECK-IN
     if (hasCIN) {
-      return "checkin-day";
+      return "arrival-day";
     }
 
     // CHECK-OUT
     if (hasCOUT) {
-      return "checkout-day";
+      return "departure-day";
     }
 
     // BOOKED
@@ -142,8 +142,8 @@ export default function PropertyminiCalendar({
 
   return [
     "available-day",
-    "checkin-day",
-    "checkout-day",
+    "arrival-day",
+    "departure-day",
     "turnover-day",
   ].includes(type);
 };
@@ -158,16 +158,16 @@ export default function PropertyminiCalendar({
         inline
         selectsRange
         selected={null}
-        startDate={checkIn}
-        endDate={checkOut}
+        startDate={arrival}
+        endDate={departure}
         minDate={new Date()}
         dayClassName={getDateType}
         fixedHeight
         showPopperArrow={false}
         onChange={(dates) => {
           const [start, end] = dates;
-          setCheckIn(start);
-          setCheckOut(end);
+          setarrival(start);
+          setdeparture(end);
         }}
         filterDate={isDateSelectable}
       />
@@ -273,7 +273,7 @@ export default function PropertyminiCalendar({
 }
 
 /* CHECK-IN */
-.react-datepicker__day.checkin-day {
+.react-datepicker__day.arrival-day {
   background: linear-gradient(
     135deg,
     #d1fae5 50%,
@@ -284,7 +284,7 @@ export default function PropertyminiCalendar({
 }
 
 /* CHECK-OUT */
-.react-datepicker__day.checkout-day {
+.react-datepicker__day.departure-day {
   background: linear-gradient(
     315deg,
     #d1fae5 50%,

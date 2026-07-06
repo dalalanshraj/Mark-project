@@ -65,7 +65,7 @@ const Footer = () => {
         </p>
          <Link to="/admin/login">
               <button className=" text-white hover:bg-[#1B252F] hover:text-white text-sm font-medium px-4 py-2 rounded  flex items-center gap-2">
-                <MdEmail /> Login 
+                <MdEmail /> Owner Login 
               </button>
             </Link>
         {/* <div className="flex space-x-4 mt-3 md:mt-0">

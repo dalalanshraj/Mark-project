@@ -33,8 +33,8 @@ import profileRoutes from "./routes/profileRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 4012;
 const allowedOrigins = [
-//  "https://bestinpcbrentals.com",
-  // "https://www.bestinpcbrentals.com",
+  "https://destinbeachcondorentals.com",
+   "https://www.destinbeachcondorentals.com",
   "http://localhost:5174", "http://localhost:5173", "http://localhost:5175",
 ];
 

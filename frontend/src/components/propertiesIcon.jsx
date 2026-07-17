@@ -8,7 +8,7 @@ export default function PropertyIcon({ listing }) {
       id: 1,
       title: "Unit 908 Surfside",
       links: {
-        ecbyo: " ",
+        ecbyo: "https://www.emeraldcoastbyowner.com/e1641",
         vrbo: "",
         airbnb:
           " ",
@@ -18,7 +18,7 @@ export default function PropertyIcon({ listing }) {
       id: 2,
       title: "1001 OCEAN FRONT",
       links: {
-        ecbyo: " ",
+        ecbyo: "https://www.emeraldcoastbyowner.com/e1907",
         vrbo: " ",
         airbnb:
           " ",

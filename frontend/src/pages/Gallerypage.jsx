@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-
+import herobg from "../assets/herobg.jpg";
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -105,7 +105,7 @@ export default function Gallery() {
         <div
           className="absolute inset-0 bg-fixed bg-center bg-cover"
           style={{
-            backgroundImage: `url("${image1}")`,
+            backgroundImage: `url("${herobg}")`,
           }}
         />
 

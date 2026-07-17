@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
+
 // FRONTEND
 import HeroSection from "./pages/Home";
 import Properties from "./pages/Properties";

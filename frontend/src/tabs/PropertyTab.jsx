@@ -9,10 +9,11 @@ export default function PropertyTab({
   goNextTab,
 }) {
   const { showModal } = useModal();
+  const [icalUrl, setIcalUrl] = useState("");
 
   const [form, setForm] = useState({
     title: "",
-    category: "",
+    category: "", 
     type: "",
     bedrooms: "",
     bathrooms: "",
@@ -27,7 +28,7 @@ export default function PropertyTab({
     if (initialData) {
       setForm({
         title: initialData.title || "",
-        category: initialData.category || "",
+        category: initialData.category || "", 
         type: initialData.type || "",
         bedrooms: initialData.bedrooms || "",
         bathrooms: initialData.bathrooms || "",
@@ -89,7 +90,7 @@ export default function PropertyTab({
       </div>
 
       {/* CATEGORY & TYPE */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
             Category
@@ -98,25 +99,25 @@ export default function PropertyTab({
             className="w-full rounded-lg border border-gray-300 px-4 py-2
                        focus:ring-2 focus:ring-blue-500"
             value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
+            onChange={e => setForm({ ...form, category: e.target.value })}
           >
             <option value="">Select Category</option>
             <option>Adventure Trip</option>
             <option>Bayfront</option>
             <option>Beach House</option>
-            <option>Beach Near</option>
+             <option>Beach Near</option>
             <option>Children Retreat</option>
-            <option>Condo</option>
+             <option>Condo</option>
             <option>Corporate Rental</option>
-            <option>Discounted Trips</option>
+             <option>Discounted Trips</option>
             <option>Generic Rental Property</option>
-            <option>Golf</option>
+             <option>Golf</option>
             <option>Lake</option>
-            <option>Long Term Rentals</option>
+             <option>Long Term Rentals</option>
             <option>Luxury</option>
-            <option>Ocean Front</option>
+             <option>Ocean Front</option>
             <option>Ocean Near</option>
-            <option>Ocean View</option>
+             <option>Ocean View</option>
             <option>Romantic</option>
           </select>
         </div>
@@ -129,28 +130,28 @@ export default function PropertyTab({
             className="w-full rounded-lg border border-gray-300 px-4 py-2
                        focus:ring-2 focus:ring-blue-500"
             value={form.type}
-            onChange={(e) => setForm({ ...form, type: e.target.value })}
+            onChange={e => setForm({ ...form, type: e.target.value })}
           >
             <option value="">Select Type</option>
             <option>Apartment</option>
             <option>BnB</option>
-            <option>Bungalow</option>
+             <option>Bungalow</option>
             <option>Cabin</option>
-            <option>Castle</option>
+             <option>Castle</option>
             <option>Chalet</option>
-            <option>Condo</option>
+             <option>Condo</option>
             <option>Cottage</option>
-            <option>Estate</option>
+             <option>Estate</option>
             <option>Farmhouse</option>
-            <option>Hotel</option>
+             <option>Hotel</option>
             <option>House</option>
-            <option>Lodge</option>
+             <option>Lodge</option>
             <option>Resort</option>
-            <option>Studio</option>
+             <option>Studio</option>
             <option>Timeshare</option>
-            <option>Townhome</option>
+             <option>Townhome</option>
             <option>Villa</option>
-            <option></option>
+             <option></option>
             <option></option>
           </select>
         </div>

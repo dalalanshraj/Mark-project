@@ -8,14 +8,18 @@ import emailjs from "@emailjs/browser";
 export default function InquiryModal({
   propertyId,
   listing,
-   arrival,
+  arrival,
   departure,
   onClose,
 }) {
-   const [form, setForm] = useState({
+  const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
+    Arrival: arrival || null,
+    Departure: departure || null,
+    Adults: "1",
+    Kids: "0",
     message: "",
   });
   const [loading, setLoading] = useState(false);
@@ -23,13 +27,13 @@ export default function InquiryModal({
   const [error, setError] = useState("");
   const [propertyTitle, setPropertyTitle] = useState("");
 
- useEffect(() => {
-  setForm((prev) => ({
-    ...prev,
-    Arrival: arrival || null,
-    Departure: departure || null,
-  }));
-}, [arrival, departure]);
+  //  useEffect(() => {
+  //   setForm((prev) => ({
+  //     ...prev,
+  //     Arrival: arrival || null,
+  //     Departure: departure || null,
+  //   }));
+  // }, [arrival, departure]);
 
   // 🔒 Lock background scroll
   useEffect(() => {
@@ -43,152 +47,152 @@ export default function InquiryModal({
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
 
-  setLoading(true);
-  setError("");
-  setSuccess("");
+    try {
+      // Validation
+      if (!propertyId) {
+        throw new Error("Property ID missing");
+      }
 
-  try {
-    // Validation
-    if (!propertyId) {
-      throw new Error("Property ID missing");
-    }
+      if (!form.Arrival || !form.Departure) {
+        throw new Error("Please select dates");
+      }
 
-    if (!form.Arrival || !form.Departure) {
-      throw new Error("Please select dates");
-    }
+      // =====================================
+      // DATABASE SAVE
+      // =====================================
 
-    // =====================================
-    // DATABASE SAVE
-    // =====================================
+     const payload = {
+  property: propertyId,
 
-    const payload = {
-      property: propertyId,
+  name: form.name,
+  email: form.email,
+  phone: form.phone,
+  message: form.message,
 
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-      message: form.message,
+  Arrival: form.Arrival,
+  Departure: form.Departure,
 
-      Arrival: arrival,
-        Departure: departure,
-
-      Adults: String(form.Adults || "1"),
-      Kids: String(form.Kids || "0"),
-    };
-
-    // console.log("PAYLOAD:", payload);
-
-    const res = await api.post("/inquiries", payload);
-
-    // console.log("DB SUCCESS:", res.data);
-
-    // =====================================
-    // EMAILJS TEST
-    // =====================================
-
-   const toEmail = [
-  listing?.property?.email,
-  listing?.property?.altEmail,
-]
-  .filter(Boolean)
-  .join(",");
-
-    // console.log("TO EMAIL:", toEmail);
-
-    if (!toEmail) {
-      throw new Error("No recipient email found");
-    }
-const propertyName =
-  listing?.property?.title ||
-  res?.data?.inquiry?.property?.property?.title ||
-  "Property";
-  
-    const templateParams = {
-      to_email: toEmail,
-
-      name: form.name,
-      email: form.email,
-      phone: form.phone,
-
- Arrival: arrival.toLocaleDateString("en-US", {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-}),
-
-Departure: departure.toLocaleDateString("en-US", {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-}),
-
-
-      adults: form.Adults || "1",
-      kids: form.Kids || "0",
-
-      message: form.message || "",
-      property: propertyName,
-    };
-
-    // console.log("EMAIL PARAMS:", templateParams);
-
-    const emailRes = await emailjs.send(
-      "service_dgkqbam",
-      "template_jk0rjyg",
-      templateParams,
-      "WEcEr8ZPeRbDNB9Ay"
-    );
-
-    // console.log("EMAIL SUCCESS:", emailRes);
-
-    // =====================================
-    // SUCCESS
-    // =====================================
-
-    setSuccess("Inquiry sent successfully!");
-
-    setForm({
-      name: "",
-      email: "",
-      phone: "",
-      Arrival: null,
-      Departure: null,
-      Adults: "",
-      Kids: "",
-      message: "",
-    });
-
-    setTimeout(() => {
-      onClose();
-    }, 1500);
-
-  } catch (err) {
-    // console.error("FULL ERROR:", err);
-
-
-    setError(
-      err?.text ||
-      err?.message ||
-      err?.response?.data?.message ||
-      err?.response?.data?.error ||
-      "Something went wrong"
-    );
-  } finally {
-    setLoading(false);
-  }
+  Adults: String(form.Adults || "1"),
+  Kids: String(form.Kids || "0"),
 };
+      // console.log("PAYLOAD:", payload);
+      console.log({
+        Arrival: form.Arrival,
+        Departure: form.Departure,
+      });
+
+      const res = await api.post("/inquiries", payload);
+
+      // console.log("DB SUCCESS:", res.data);
+
+      // =====================================
+      // EMAILJS TEST
+      // =====================================
+
+      const toEmail = [listing?.property?.email, listing?.property?.altEmail]
+        .filter(Boolean)
+        .join(",");
+
+      // console.log("TO EMAIL:", toEmail);
+
+      if (!toEmail) {
+        throw new Error("No recipient email found");
+      }
+      const propertyName =
+        listing?.property?.title ||
+        res?.data?.inquiry?.property?.property?.title ||
+        "Property";
+
+    const templateParams = {
+  to_email: toEmail,
+ from_name: "Mark Hall Rental",
+  name: form.name,
+  email: form.email,
+  phone: form.phone,
+
+  Arrival: form.Arrival
+    ? form.Arrival.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "",
+
+  Departure: form.Departure
+    ? form.Departure.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "",
+
+  adults: form.Adults || "1",
+  kids: form.Kids || "0",
+
+  message: form.message || "",
+  property: propertyName,
+};
+
+      // console.log("EMAIL PARAMS:", templateParams);
+
+      const emailRes = await emailjs.send(
+        "service_4f5lqrd",
+        "template_z8xtl64",
+        templateParams,
+        "3nPh-Y0a99gtk1fpP",
+      );
+
+      // console.log("EMAIL SUCCESS:", emailRes);
+
+      // =====================================
+      // SUCCESS
+      // =====================================
+
+      setSuccess("Inquiry sent successfully!");
+
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        Arrival: null,
+        Departure: null,
+        Adults: "",
+        Kids: "",
+        message: "",
+      });
+
+      setTimeout(() => {
+        onClose();
+      }, 1500);
+    } catch (err) {
+      // console.error("FULL ERROR:", err);
+
+      setError(
+        err?.text ||
+          err?.message ||
+          err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          "Something went wrong",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-start z-[9999] pt-34 px-4 overflow-y-auto"
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-start z-[9999] pt-3 px-4 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl w-[40%] h-[77%]  p-8 relative mt-33 shadow-2xl border"
+        className="bg-white rounded-2xl md:w-[50%] w-[100%] h-[77%]  p-8 relative mt-33 shadow-2xl border"
         onClick={(e) => e.stopPropagation()}
       >
         {/* CLOSE */}
@@ -251,9 +255,9 @@ Departure: departure.toLocaleDateString("en-US", {
           />
 
           {/* DATE PICKER */}
-          <div className="grid grid-cols-2 gap-4 items-start">
+          <div className="grid grid-cols-2 gap-4 items-start ">
             {/* ARRIVAL */}
-            <div className="w-full min-w-0">
+            <div className="w-full min-w-0 ">
               <DatePicker
                 selected={form.Arrival}
                 onChange={(date) => setForm({ ...form, Arrival: date })}
@@ -265,12 +269,12 @@ Departure: departure.toLocaleDateString("en-US", {
                 showPopperArrow={false}
                 wrapperClassName="w-full"
                 calendarClassName="shadow-xl border rounded-xl"
-                popperModifiers={[
-                  {
-                    name: "flip",
-                    enabled: false,
-                  },
-                ]}
+                // popperModifiers={[
+                //   {
+                //     name: "flip",
+                //     enabled: false,
+                //   },
+                // ]}
                 className="
         w-full
         min-w-0
@@ -297,12 +301,12 @@ Departure: departure.toLocaleDateString("en-US", {
                 showPopperArrow={false}
                 wrapperClassName="w-full"
                 calendarClassName="shadow-xl border rounded-xl"
-                popperModifiers={[
-                  {
-                    name: "flip",
-                    enabled: false,
-                  },
-                ]}
+                // popperModifiers={[
+                //   {
+                //     name: "flip",
+                //     enabled: false,
+                //   },
+                // ]}
                 className="
         w-full
         min-w-0

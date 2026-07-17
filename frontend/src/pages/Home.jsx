@@ -9,8 +9,9 @@ import AboutSection from "../components/homeSection/AboutSection.jsx";
 import heroVideo from "../assets/video.mp4";
 import GallerySection from "../components/gallarySection.jsx";
 import DealsCTA from "../components/DealsCTA.jsx";
+import PropertyIcon from "../components/propertiesIcon.jsx";
 
-const HeroSection = ({ listingId }) => {
+const HeroSection = ({ listingId, userId }) => {
   const [formData, setFormData] = useState({
     checkIn: "",
     checkOut: "",
@@ -88,18 +89,19 @@ const HeroSection = ({ listingId }) => {
         </video>
 
         {/* OVERLAY */}
-        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
 
         {/* CONTENT */}
         <div className="relative mt-30 z-10 text-white px-4 w-full max-w-6xl">
           {/* HEADING */}
-         <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-semibold mb-4 leading-tight">
-  Experience the Beauty of 30A
-</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white text-center leading-tight">
+            Experience Coastal Luxury
+          </h1>
 
-<p className="text-sm sm:text-base md:text-lg mb-6 md:mb-10">
-  Stay at Beach Therapy 30A and enjoy pristine beaches, scenic trails, and the charm of Grayton Beach.
-</p>
+          <p className=" text-white max-w-4xl mx-auto text-lg md:text-xl leading-[2]">
+            Relax in a spacious beachfront retreat featuring wraparound
+            balconies, spectacular ocean views, and premium resort amenities.
+          </p>
 
           {/* FORM */}
           <form
@@ -163,17 +165,18 @@ const HeroSection = ({ listingId }) => {
           </form>
         </div>
       </section>
+
       <div className="py-16 bg-white">
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-sky-900 text-center leading-tight">
-          Available Vacation Rentals
+          Explore Our Vacation Rentals
         </h2>
 
-        <p className="text-center text-gray-500 max-w-2xl mx-auto mb-12">
-          Experience the serene allure of the coast while enjoying the comfort
-          and luxury our homes provide.
+        <p className=" p-10 text-gray-600 text-center max-w-3xl mx-auto text-lg md:text-xl leading-[2]">
+          Find the perfect beachfront condo for your next family vacation,
+          romantic escape, or relaxing coastal retreat.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-10">
           {(listings || []).slice(0, 4).map((listing) => (
             <PropertyCard key={listing._id} listing={listing} />
           ))}
@@ -189,10 +192,11 @@ const HeroSection = ({ listingId }) => {
           </Link>
         </div>
       </div>
-
+      <AboutSection userId="6a59081d8e08e38026c7b78b" />
       <FeaturedActivities />
+      <PropertyIcon />
       <DealsCTA />
-      {/* <AboutSection listingId="6a1606de8ee2fa44c5186e4b" /> */}
+
       {/* <DiscoverDestinSection /> */}
       <GallerySection />
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axios.js";
 import PropertyCard from "../components/PropertyCard";
+import herobg from "../assets/herobg.jpg";
 
 const Properties = () => {
   const [listings, setListings] = useState([]);
@@ -60,7 +61,7 @@ const Properties = () => {
       <section
         className="relative h-[60vh] md:h-[70vh]  bg-cover bg-center flex items-center justify-center text-white"
         style={{
-            backgroundImage: `url(${heroImage})`,
+            backgroundImage: `url(${herobg})`,
           }}
       >
          <div className="absolute inset-0 bg-black/60" />

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios.js";
 import ReviewModal from "../components/homeSection/ReviewModal";
+import herobg from "../assets/herobg.jpg";
 
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
@@ -102,7 +103,7 @@ export default function Reviews() {
         <div
           className="absolute inset-0 bg-fixed bg-cover bg-center"
           style={{
-            backgroundImage: `url(${heroImage})`,
+            backgroundImage: `url(${herobg})`,
           }}
         />
 
@@ -130,7 +131,7 @@ export default function Reviews() {
                     onClick={() => setCurrentPage(num)}
                     className={`px-4 py-2 rounded border transition ${
                       currentPage === num
-                        ? "bg-yellow-500 text-white"
+                        ? " bg-[#F8F812] text-black"
                         : "bg-white hover:bg-gray-100"
                     }`}
                   >
@@ -166,7 +167,7 @@ export default function Reviews() {
           {/* BUTTON */}
           <button
             onClick={() => setShowModal(true)}
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded shadow w-full md:w-auto transition"
+            className=" bg-[#F8F812] hover:bg-[#1B252F] hover:text-white text-black px-6 py-3 rounded shadow w-full md:w-auto transition"
           >
             WRITE REVIEW
           </button>

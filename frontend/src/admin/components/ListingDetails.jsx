@@ -13,20 +13,7 @@ export default function ListingCard({
   const base =
     import.meta.env.VITE_API_URL || "";
 
-  // new object format
-  if (photo?.url) {
-    if (photo.url.startsWith("http")) {
-      return photo.url;
-    }
-
-    return (
-      base.replace(/\/$/, "") +
-      "/" +
-      photo.url.replace(/^\//, "")
-    );
-  }
-
-  // old string fallback
+  // string
   if (typeof photo === "string") {
     if (photo.startsWith("http")) {
       return photo;
@@ -39,8 +26,50 @@ export default function ListingCard({
     );
   }
 
+  // proper object
+  if (
+    photo &&
+    typeof photo === "object"
+  ) {
+    // normal object
+    if (photo.url) {
+      return (
+        base.replace(/\/$/, "") +
+        "/" +
+        String(photo.url).replace(
+          /^\//,
+          ""
+        )
+      );
+    }
+
+    // corrupted mongo object
+    const reconstructed =
+      Object.values(photo)
+        .filter(
+          (v) => typeof v === "string"
+        )
+        .join("");
+
+    if (
+      reconstructed.includes(
+        "/gallery-uploads/"
+      )
+    ) {
+      return (
+        base.replace(/\/$/, "") +
+        "/" +
+        reconstructed.replace(
+          /^\//,
+          ""
+        )
+      );
+    }
+  }
+
   return "https://via.placeholder.com/400x300?text=No+Image";
 };
+
   const image = getImageUrl(
   listing?.photos?.[0]
 );
@@ -108,10 +137,7 @@ export default function ListingCard({
           {new Date(listing.createdAt).toLocaleDateString()}
         </p>
 
-        <p className="md:col-span-2">
-          <span className="font-medium">Updated:</span>{" "}
-          {new Date(listing.updatedAt).toLocaleDateString()}
-        </p>
+
       </div>
     </div> 
 

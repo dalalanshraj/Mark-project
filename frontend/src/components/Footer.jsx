@@ -61,7 +61,7 @@ const Footer = () => {
       {/* Bottom Section */}
       <div className="mt-10 border-t border-white/30 pt-6 flex flex-col md:flex-row items-center justify-between">
         <p className="text-sm text-center md:text-left">
-      © 2026 <a href="https://www.digifyamerica.com/">Digify America.</a>  All rights reserved.
+      Copyright © 2026 Destin Beach Condo Rentals |  Designed & Developed by <a href="https://www.digifyamerica.com/"> Digify America</a>
         </p>
          <Link to="/admin/login">
               <button className=" text-white hover:bg-[#1B252F] hover:text-white text-sm font-medium px-4 py-2 rounded  flex items-center gap-2">

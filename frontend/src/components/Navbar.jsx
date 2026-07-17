@@ -82,7 +82,7 @@ const Navbar = () => {
         <Link to="/">
           <img
             src={isScrolled ? logoScrolled : logoIme}
-            className="w-40 md:w-44 transition-all duration-300"
+            className="w-40 md:w-34 transition-all duration-300"
             alt="logo"
           />
         </Link>
@@ -107,7 +107,7 @@ const Navbar = () => {
               href="tel:4042756533"
               className="text-1xl font-bold text-white hover:text-gray-200 transition"
             >
-              +1 (631) 946-1189
+              +1 (334) 319-5912
             </a>
           </div>
         </div>
@@ -124,7 +124,23 @@ const Navbar = () => {
       </div>
 
       {/* DESKTOP NAV */}
-      <nav className="hidden md:flex justify-center bg-[#467FF7] text-white text-xl font-bold cursor-pointer">
+     <nav
+  className={`
+    hidden
+    md:flex
+    justify-center
+    text-white
+    text-lg
+    font-semibold
+    transition-all
+    duration-500
+    ${
+      isScrolled
+        ? "bg-[#2563EB]"
+        : "bg-white/10 backdrop-blur-xl shadow-xl"
+    }
+  `}
+>
         {menuItems.map((item) => {
           const hasDropdown = dropdowns[item.name];
 

@@ -1,46 +1,39 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { IoLocationOutline , IoBedOutline } from "react-icons/io5";
+import { PiBathtub } from "react-icons/pi";
+import { MdPeopleOutline } from "react-icons/md";
+ 
 
 const PropertyCard = ({ listing }) => {
   if (!listing) return null;
 
   const getImageUrl = (photo) => {
-  const base =
-    import.meta.env.VITE_API_URL || "";
+    const base = import.meta.env.VITE_API_URL || "";
 
-  // new object format
-  if (photo?.url) {
-    if (photo.url.startsWith("http")) {
-      return photo.url;
+    // new object format
+    if (photo?.url) {
+      if (photo.url.startsWith("http")) {
+        return photo.url;
+      }
+
+      return base.replace(/\/$/, "") + "/" + photo.url.replace(/^\//, "");
     }
 
-    return (
-      base.replace(/\/$/, "") +
-      "/" +
-      photo.url.replace(/^\//, "")
-    );
-  }
+    // old string fallback
+    if (typeof photo === "string") {
+      if (photo.startsWith("http")) {
+        return photo;
+      }
 
-  // old string fallback
-  if (typeof photo === "string") {
-    if (photo.startsWith("http")) {
-      return photo;
+      return base.replace(/\/$/, "") + "/" + photo.replace(/^\//, "");
     }
 
-    return (
-      base.replace(/\/$/, "") +
-      "/" +
-      photo.replace(/^\//, "")
-    );
-  }
-
-  return "https://via.placeholder.com/400x300?text=No+Image";
-};
+    return "https://via.placeholder.com/400x300?text=No+Image";
+  };
 
   // IMAGE
-  const image = getImageUrl(
-  listing?.photos?.[0]
-);
+  const image = getImageUrl(listing?.photos?.[0]);
 
   // PRICE
   const originalPrice = listing?.rates?.[0]?.nightly || null;
@@ -48,174 +41,72 @@ const PropertyCard = ({ listing }) => {
 
   return (
     <Link to={`/${listing?._id}`} className="block h-full">
-      <div
-        className="
-          bg-white
-          rounded-2xl
-          shadow-md
-          hover:shadow-2xl
-          transition-all
-          duration-300
-          overflow-hidden
-          relative
-          h-full
-          flex
-          flex-col
-          group
-        "
-      >
+      <div className=" group bg-white rounded-[28px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100 h-full flex flex-col ">
         {/* DEAL RIBBON */}
         {listing?.deal && (
           <div
-            className="
-              absolute
-              top-3
-              left-[-35px]
-              bg-orange-500
-              text-white
-              text-[10px]
-              sm:text-xs
-              font-semibold
-              px-10
-              py-1
-              rotate-[-45deg]
-              z-20
-              shadow-md
-            "
-          >
-            DEAL
+            className=" absolute top-16 left-4 bg-red-500 text-white px-4 py-1 rounded-full text-xs font-bold shadow " >
+            🔥 Special Deal
           </div>
         )}
 
         {/* IMAGE */}
-        <div className="overflow-hidden">
+        <div className="relative overflow-hidden">
           <img
-            src={
-  listing.photos?.[0]?.url
-    ? `${
-        import.meta.env.VITE_API_URL
-      }/${listing.photos[0].url.replace(
-        /^\//,
-        ""
-      )}`
-    : "/placeholder.png"
-}
-            alt={listing?.property?.title || "Property"}
-            className="
-              w-full
-              h-52
-              sm:h-56
-              md:h-60
-              object-cover
-              transition-transform
-              duration-500
-              group-hover:scale-105
-            "
+            src={image}
+            alt={listing?.property?.title}
+            className=" w-full h-72 object-cover duration-700 group-hover:scale-110 "
           />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+          {/* Heart */}
+
+          <button className=" absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center hover:scale-110 duration-300 ">
+            ❤️
+          </button>
+
+          {/* Rating */}
+
+          <div className=" absolute top-4 left-4 bg-white rounded-full px-3 py-1 text-sm font-semibold shadow ">
+            ⭐ 4.9
+          </div>
+
+          {/* Price */}
+
+          <div className=" absolute bottom-4 right-4 bg-[#F8F812] rounded-full px-5 py-2 font-bold shadow-xl ">
+            ${dealPrice || originalPrice}
+            <span className="text-sm font-normal">/night</span>
+          </div>
         </div>
 
         {/* CONTENT */}
-        <div
-          className="
-            p-4
-            sm:p-5
-            flex
-            flex-col
-            flex-grow
-          "
-        >
+        <div className="p-6 flex flex-col flex-grow">
           {/* TITLE */}
-          <h3
-            className="
-              text-lg
-              sm:text-xl
-              font-semibold
-              leading-snug
-              mb-2
-              line-clamp-2
-            "
-          >
-            {listing?.property?.title ?? "Property"}
+          <h3 className=" text-2xl font-bold line-clamp-2 group-hover:text-[#44AAD8] duration-300 ">
+            {listing?.property?.title}
           </h3>
 
-          {/* CATEGORY */}
-          <p
-            className="
-              text-gray-600
-              text-sm
-              sm:text-base
-              mb-3
-            "
-          >
-            {listing?.property?.category ?? "Vacation Rental"}
-          </p>
+          <p className="text-gray-900 mt-2 flex gap-1"><IoLocationOutline size={22} className="mt-0" /> {listing.location?.address || "Location"}</p>
 
           {/* PRICE */}
-          <div className="mb-4">
-            {listing?.deal ? (
-              <div className="flex items-center flex-wrap gap-2">
-                <span
-                  className="
-                    text-red-500
-                    font-bold
-                    text-lg
-                    sm:text-xl
-                  "
-                >
-                  ${listing.deal.discountedRate}
-                </span>
+          <div className="flex gap-21 text-gray-600 text-sm mt-5">
+            <div className="flex text-[16px] gap-1"> <IoBedOutline size={25}/> {listing?.property?.bedrooms || 3} Beds</div>
 
-                <span
-                  className="
-                    line-through
-                    text-gray-400
-                    text-sm
-                  "
-                >
-                  ${originalPrice}
-                </span>
-              </div>
-            ) : (
-              <span
-                className="
-                  text-[#44AAD8]
-                  font-semibold
-                  text-base
-                  sm:text-lg
-                "
-              >
-                {typeof originalPrice === "number"
-                  ? `$${originalPrice} / Night`
-                  : "Call for price"}
-              </span>
-            )}
+           <div className="flex text-[16px] gap-1"><PiBathtub size={25}/> {listing?.property?.bathrooms || 2} Baths</div>
+
+            <div className="flex text-[16px] gap-1"><MdPeopleOutline size={25}/> {listing?.property?.maxSleeps || 8}</div>
           </div>
 
           {/* BUTTON */}
-          <div className="mt-auto">
-            <span
-              className="
-                inline-flex
-                items-center
-                justify-center
-                w-full
-                sm:w-auto
-                px-5
-                py-3
-                rounded-xl
-                bg-[#F8F812]
-                text-black
-                font-semibold
-                text-sm
-                sm:text-base
-                transition-all
-                duration-300
-                hover:bg-[#1B252F]
-                hover:text-white
-              "
-            >
-              View Details →
-            </span>
+          <div className="mt-6">
+            <div className=" flex justify-between items-center bg-[#1B252F] text-white rounded-xl px-5 py-3 group-hover:bg-[#44AAD8] duration-300 ">
+              <span>View Details</span>
+
+              <span className=" group-hover:translate-x-2 duration-300 ">
+                →
+              </span>
+            </div>
           </div>
         </div>
       </div>

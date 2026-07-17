@@ -19,6 +19,7 @@ export default function Listings() {
    const fetchListings = async () => {
   try {
     const res = await api.get("/listings"); // 🔥 admin route
+    console.log("Listings API Response:", res.data);
     setListings(res.data || []);
   } catch (err) {
     console.error("Fetch listings error:", err);

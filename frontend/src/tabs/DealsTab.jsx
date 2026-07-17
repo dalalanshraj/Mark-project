@@ -46,10 +46,21 @@ export default function DealsTab({ listingId }) {
         const payload = {
             ...form,
             listingId,
-            displayFrom: form.displayFrom?.toISOString(),
-            displayEnd: form.displayEnd?.toISOString(),
-            dealStartDate: form.dealStartDate?.toISOString(),
-            dealEndDate: form.dealEndDate?.toISOString(),
+           displayFrom: form.displayFrom
+  ? form.displayFrom.toISOString()
+  : null,
+
+displayEnd: form.displayEnd
+  ? form.displayEnd.toISOString()
+  : null,
+
+dealStartDate: form.dealStartDate
+  ? form.dealStartDate.toISOString()
+  : null,
+
+dealEndDate: form.dealEndDate
+  ? form.dealEndDate.toISOString()
+  : null,
         };
 // console.log("LISTING ID 👉", listingId);
 // console.log("PAYLOAD 👉", payload);
@@ -244,21 +255,39 @@ export default function DealsTab({ listingId }) {
 
                         <div className="flex gap-3 mb-3">
 
-                            <DatePicker
-                                selected={form.dealStartDate}
-                                onChange={(date) => setForm({ ...form, dealStartDate: date })}
-                                minDate={today}
-                                className="w-full border p-2 rounded"
-                                placeholderText="Deal Start Date"
-                            />
+                           <DatePicker
+  selected={form.dealStartDate}
+  onChange={(date) =>
+    setForm((prev) => ({
+      ...prev,
+      dealStartDate: date,
+    }))
+  }
+  dateFormat="yyyy-MM-dd"
+  placeholderText="Deal Start Date"
+  className="w-full border p-2 rounded"
+  isClearable
+  showMonthDropdown
+  showYearDropdown
+  dropdownMode="select"
+/>
 
-                            <DatePicker
-                                selected={form.dealEndDate}
-                                onChange={(date) => setForm({ ...form, dealEndDate: date })}
-                                minDate={form.dealStartDate || today}
-                                className="w-full border p-2 rounded"
-                                placeholderText="Deal End Date"
-                            />
+                         <DatePicker
+  selected={form.dealEndDate}
+  onChange={(date) =>
+    setForm((prev) => ({
+      ...prev,
+      dealEndDate: date,
+    }))
+  }
+  dateFormat="yyyy-MM-dd"
+  placeholderText="Deal End Date"
+  className="w-full border p-2 rounded"
+  isClearable
+  showMonthDropdown
+  showYearDropdown
+  dropdownMode="select"
+/>
 
                         </div>
 

@@ -28,33 +28,42 @@ import calendarRoutes from "./routes/listingCalendarRoutes.js";
 import dealRoutes from    "./routes/dealRoutes.js"
 import galleryRoutes from "./routes/galleryRoutes.js";
 import icalcalendarRoutes from "./routes/icalRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 
 const app = express();
-const PORT = process.env.PORT || 4006;
+const PORT = process.env.PORT || 4012;
 const allowedOrigins = [
-  "https://beachtherapy30a.com",
-  "https://www.beachtherapy30a.com",
-  "http://localhost:5174",
-  "http://localhost:5173",
-  "http://localhost:5175",
+//  "https://bestinpcbrentals.com",
+  // "https://www.bestinpcbrentals.com",
+  "http://localhost:5174", "http://localhost:5173", "http://localhost:5175",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
+
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(null, false);
+        callback(new Error("Not allowed by CORS"));
       }
     },
 
     credentials: true,
 
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "OPTIONS",
+    ],
 
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
+  })
 );
 
 app.use(express.json());
@@ -84,12 +93,15 @@ app.use(
   "/gallery-uploads",
   express.static("gallery-uploads")
 );
+
 app.use(
   "/uploads",
   express.static("uploads")
 );
 
+
 app.use("/api", icalcalendarRoutes);
+app.use("/api/profile", profileRoutes);
 
 
 
@@ -98,14 +110,13 @@ app.use("/api", icalcalendarRoutes);
 // CONNECT MONGO
 // -------------------------------------------------------
 mongoose
-  .connect(MONGO, {
-    serverSelectionTimeoutMS: 4001,
-    tls: true,
-    ssl: true,
-    tlsAllowInvalidCertificates: true, // ⚠️ dev only
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ MongoDB Connected");
   })
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ Database Error:", err.message));
+  .catch((err) => {
+    console.error("❌ MongoDB Error:", err);
+  });
 
 app.listen(PORT, () =>
   console.log(`🚀 Server running at http://localhost:${PORT}`)

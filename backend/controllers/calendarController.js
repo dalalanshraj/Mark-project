@@ -149,64 +149,74 @@ export const getCalendar = async (req, res) => {
 
 export const blockDates = async (req, res) => {
   try {
-    const { startDate, endDate, status = "H", source = "admin" } = req.body;
+    const {
+      startDate,
+      endDate,
+
+      customerName,
+      customerEmail,
+      customerPhone,
+      comment,
+    } = req.body;
 
     if (!startDate || !endDate) {
-      return res
-        .status(400)
-        .json({ error: "Start date and end date required" });
-    }
-
-    const start = toValidDate(startDate);
-    const end = toValidDate(endDate);
-
-    if (!start || !end) {
-      return res.status(400).json({ error: "Invalid startDate or endDate" });
-    }
-
-    if (start > end) {
-      return res
-        .status(400)
-        .json({ error: "Start date cannot be after end date" });
-    }
-
-    const listing = await Listing.findById(req.params.id);
-    if (!listing) {
-      return res.status(404).json({ error: "Listing not found" });
-    }
-
-    listing.calendar = normalizeCalendar(listing.calendar);
-
-    for (let i = 0; i <= (end - start) / (1000 * 60 * 60 * 24); i++) {
-      const current = new Date(start);
-      current.setDate(start.getDate() + i);
-      const key = dateOnly(current);
-      if (!key) continue;
-
-      const exists = listing.calendar.some((c) => dateOnly(c.date) === key);
-
-      listing.calendar = listing.calendar.filter(
-        (c) => dateOnly(c.date) !== key,
-      );
-
-      listing.calendar.push({
-        date: current,
-        status,
-        source,
+      return res.status(400).json({
+        error: "Start Date and End Date required",
       });
     }
 
-    listing.calendar = normalizeCalendar(listing.calendar);
+    const listing = await Listing.findById(req.params.id);
+
+    if (!listing) {
+      return res.status(404).json({
+        error: "Listing not found",
+      });
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+  const totalDays =
+  (end - start) /
+  (1000 * 60 * 60 * 24);
+
+for (let i = 0; i <= totalDays; i++) {
+
+  const current = new Date(start);
+
+  current.setDate(start.getDate() + i);
+
+  let status;
+
+  if (i === 0) {
+    status = "CIN";
+  }
+  else if (i === totalDays) {
+    status = "COUT";
+  }
+  else {
+    status = "R";
+  }
+
+  listing.calendar.push({
+    date: current,
+    status,
+    source: "ical"
+  });
+}
 
     await listing.save();
 
     res.json({
-      message: "Dates blocked successfully",
-      calendar: listing.calendar,
+      success: true,
+      message: "Booking saved",
     });
   } catch (err) {
-    console.error("blockDates error:", err);
-    res.status(500).json({ error: "Block failed" });
+    console.log("BLOCK DATES ERROR =>", err);
+
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 
@@ -373,6 +383,13 @@ export const importICal = async (req, res) => {
     // =====================================
 
     const listing = await Listing.findById(id);
+    if (req.body.icalUrl?.trim()) {
+  listing.icalUrl = req.body.icalUrl;
+
+  // yahan tumhari existing importICal logic call hogi
+  // ya helper function bana lo:
+  await importICalData(listing._id, req.body.icalUrl);
+}
 
     if (!listing) {
       return res.status(404).json({
@@ -390,108 +407,99 @@ export const importICal = async (req, res) => {
 
     const bookingDates = [];
 
-   
+    // 🔥 parse all bookings
+    // =====================================
+    // LOOP EVENTS
+    // =====================================
 
-   // 🔥 parse all bookings
-// =====================================
-// LOOP EVENTS
-// =====================================
+    for (const key in events) {
+      const event = events[key];
 
-for (const key in events) {
+      if (event.type !== "VEVENT") continue;
 
-  const event = events[key];
+      if (!event.start || !event.end) continue;
 
-  if (event.type !== "VEVENT") continue;
+      // =====================================
+      // SAFE DATES
+      // =====================================
 
-  if (!event.start || !event.end) continue;
-
-  // =====================================
-  // SAFE DATES
-  // =====================================
-
-  const start = new Date(
-    event.start.getFullYear(),
-    event.start.getMonth(),
-    event.start.getDate(),
-    12, 0, 0, 0
-  );
-
-  const end = new Date(
-    event.end.getFullYear(),
-    event.end.getMonth(),
-    event.end.getDate(),
-    12, 0, 0, 0
-  );
-
-  // TOTAL NIGHTS
-  const totalNights = Math.round(
-    (end - start) /
-    (1000 * 60 * 60 * 24)
-  );
-
-  if (totalNights <= 0) continue;
-
-  // =====================================
-  // SINGLE NIGHT
-  // =====================================
-
-  if (totalNights === 1) {
-
-    bookingDates.push({
-      date: new Date(start),
-      status: "CIN",
-      source: "ical",
-    });
-
-    bookingDates.push({
-      date: new Date(end),
-      status: "COUT",
-      source: "ical",
-    });
-
-  }
-
-  // =====================================
-  // MULTI NIGHT
-  // =====================================
-
-  else {
-
-    // CHECK-IN
-    bookingDates.push({
-      date: new Date(start),
-      status: "CIN",
-      source: "ical",
-    });
-
-    // BOOKED NIGHTS
-    for (let i = 1; i < totalNights; i++) {
-
-      const booked = new Date(start);
-
-      booked.setDate(
-        start.getDate() + i
+      const start = new Date(
+        event.start.getFullYear(),
+        event.start.getMonth(),
+        event.start.getDate(),
+        12,
+        0,
+        0,
+        0,
       );
 
-      booked.setHours(
-        12, 0, 0, 0
+      const end = new Date(
+        event.end.getFullYear(),
+        event.end.getMonth(),
+        event.end.getDate(),
+        12,
+        0,
+        0,
+        0,
       );
 
-      bookingDates.push({
-        date: booked,
-        status: "R",
-        source: "ical",
-      });
+      // TOTAL NIGHTS
+      const totalNights = Math.round((end - start) / (1000 * 60 * 60 * 24));
+
+      if (totalNights <= 0) continue;
+
+      // =====================================
+      // SINGLE NIGHT
+      // =====================================
+
+      if (totalNights === 1) {
+        bookingDates.push({
+          date: new Date(start),
+          status: "CIN",
+          source: "ical",
+        });
+
+        bookingDates.push({
+          date: new Date(end),
+          status: "COUT",
+          source: "ical",
+        });
+      }
+
+      // =====================================
+      // MULTI NIGHT
+      // =====================================
+      else {
+        // CHECK-IN
+        bookingDates.push({
+          date: new Date(start),
+          status: "CIN",
+          source: "ical",
+        });
+
+        // BOOKED NIGHTS
+        for (let i = 1; i < totalNights; i++) {
+          const booked = new Date(start);
+
+          booked.setDate(start.getDate() + i);
+
+          booked.setHours(12, 0, 0, 0);
+
+          bookingDates.push({
+            date: booked,
+            status: "R",
+            source: "ical",
+          });
+        }
+
+        // REAL CHECKOUT DAY
+        bookingDates.push({
+          date: new Date(end),
+          status: "COUT",
+          source: "ical",
+        });
+      }
     }
-
-    // REAL CHECKOUT DAY
-    bookingDates.push({
-      date: new Date(end),
-      status: "COUT",
-      source: "ical",
-    });
-  }
-}
 
     // =====================================
     // MERGE DATES
@@ -512,73 +520,101 @@ for (const key in events) {
         map.get(key).push(c);
       });
 
-  // ADD ICAL DATES
-bookingDates.forEach((d) => {
-
+    // ADD ICAL DATES
+   bookingDates.forEach((d) => {
   const key = dateOnly(d.date);
 
-  // CREATE ARRAY
   if (!map.has(key)) {
     map.set(key, []);
   }
 
-  const existing =
-    map.get(key) || [];
+  const existing = map.get(key) || [];
 
-  // =====================================
-  // PREVENT SAME STATUS DUPLICATE
-  // =====================================
-
-  const alreadyExists =
-    existing.some(
-      (x) =>
-        x.source === "ical" &&
-        x.status === d.status
-    );
-
-  // =====================================
-  // ALLOW:
-  // SAME DATE + DIFFERENT STATUS
-  // =====================================
-
-  if (!alreadyExists) {
-
-    existing.push({
-      date: d.date,
-      status: d.status,
-      source: d.source,
-    });
-
-  }
+  existing.push({
+    date: d.date,
+    status: d.status,
+    source: d.source,
+  });
 
   map.set(key, existing);
+});
+    // =====================================
+    // CREATE TURNOVER DATES
+    // =====================================
 
+
+const grouped = {};
+
+bookingDates.forEach((item) => {
+  const key = dateOnly(item.date);
+
+  if (!grouped[key]) {
+    grouped[key] = [];
+  }
+
+  grouped[key].push(item);
 });
 
-    // =====================================
-    // FINAL CALENDAR
-    // =====================================
+Object.keys(grouped).forEach((key) => {
+  const statuses = grouped[key].map((x) => x.status);
 
-    listing.calendar = Array.from(map.values()).flat();
+  const hasCin = statuses.includes("CIN");
+  const hasCout = statuses.includes("COUT");
 
-    // REMOVE INVALID
-    listing.calendar = listing.calendar.filter((c) => c && c.date);
+  if (hasCin && hasCout) {
+    console.log("TURNOVER:", key);
+  }
+});
 
-    // SAVE URL
-    listing.icalUrl = url;
+   // =====================================
+// FINAL CALENDAR
+// =====================================
 
-    // SAVE
-    await listing.save();
+listing.calendar = Array.from(map.values()).flat();
 
-    // =====================================
-    // RESPONSE
-    // =====================================
+// remove invalid
+listing.calendar = listing.calendar.filter(
+  (c) => c && c.date
+);
 
-    res.json({
-      message: "iCal imported successfully",
-      total: bookingDates.length,
-      calendar: listing.calendar,
-    });
+// sort by date
+listing.calendar.sort(
+  (a, b) => new Date(a.date) - new Date(b.date)
+);
+
+// save url
+listing.icalUrl = url;
+console.log(
+  "CIN/COUT DATES =>",
+  listing.calendar.filter(
+    (x) =>
+      x.status === "CIN" ||
+      x.status === "COUT"
+  )
+);
+
+
+await listing.save();
+
+
+// res.json({
+//   message: "iCal imported successfully",
+//   total: bookingDates.length,
+//   calendar: listing.calendar,
+// });
+//  const grouped = {};
+
+bookingDates.forEach((x) => {
+  const key = dateOnly(x.date);
+
+  if (!grouped[key]) {
+    grouped[key] = [];
+  }
+
+  grouped[key].push(x.status);
+});
+
+console.log(grouped);
   } catch (err) {
     console.error("ICAL FINAL ERROR:", err);
 
@@ -586,6 +622,7 @@ bookingDates.forEach((d) => {
       error: err.message,
     });
   }
+  
 };
 
 export const resetICal = async (req, res) => {
@@ -613,3 +650,38 @@ export const resetICal = async (req, res) => {
     res.status(500).json({ error: "Reset failed" });
   }
 };
+// export const clearCalendar = async (
+//   req,
+//   res
+// ) => {
+//   try {
+//     const listing =
+//       await Listing.findById(
+//         req.params.id
+//       );
+
+//     if (!listing) {
+//       return res
+//         .status(404)
+//         .json({
+//           error: "Listing not found",
+//         });
+//     }
+
+//     listing.calendar = [];
+
+//     await listing.save();
+
+//     res.json({
+//       message:
+//         "Calendar cleared successfully",
+//     });
+
+//   } catch (err) {
+//     console.log(err);
+
+//     res.status(500).json({
+//       error: err.message,
+//     });
+//   }
+// };

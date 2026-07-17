@@ -239,7 +239,7 @@ export default function ReviewsTab({ listingId }) {
           </p>
 
           <p className="text-sm text-black mt-1">
-            Stay Date:
+            Stay  Date:
             {" "}
             {openReview.stayDate
               ? new Date(

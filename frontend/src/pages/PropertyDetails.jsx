@@ -18,6 +18,7 @@ import { activitiesData } from "../activitiesData.js";
 import InquiryModal from "../components/InquiryModal.jsx";
 import DisplayCalendar from "../components/miniCalendar.jsx";
 import PropertyminiCalendar from "../components/PropertyminiCalendar.jsx";
+import PropertyIcon from "../components/propertiesIcon.jsx";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -34,6 +35,7 @@ const PropertyDetail = () => {
   const [blockedDates, setBlockedDates] = useState([]);
   const [openInquiry, setOpenInquiry] = useState(false);
   const [calendarData, setCalendarData] = useState([]);
+  const [owner, setOwner] = useState(null);
 
   // ================= FETCH LISTING =================
   useEffect(() => {
@@ -82,6 +84,12 @@ const PropertyDetail = () => {
 
     return selected?.minNights || 1;
   };
+
+  useEffect(() => {
+    api
+      .get(`/profile/public/6a59081d8e08e38026c7b78b`)
+      .then((res) => setOwner(res.data));
+  }, []);
 
   // 🔹 useEffect
   useEffect(() => {
@@ -135,12 +143,12 @@ const PropertyDetail = () => {
   };
 
   const formatDisplayDate = (date) => {
-  if (!date) return "";
+    if (!date) return "";
 
-  return `${date.toLocaleString("en-US", {
-    month: "short",
-  })} ${date.getDate()}, ${date.getFullYear()}`;
-};
+    return `${date.toLocaleString("en-US", {
+      month: "short",
+    })} ${date.getDate()}, ${date.getFullYear()}`;
+  };
 
   // ================= MIN NIGHT AUTO FIX =================
   // 🔹 single function
@@ -199,7 +207,7 @@ const PropertyDetail = () => {
 
             return (
               <div key={section.title} className="mb-6">
-                <h5 className="bg-[#2f9bad] text-white p-2 rounded-xl text-lg mb-2">
+                <h5 className="bg-[#2563EB] text-white p-2 rounded-xl text-lg mb-2">
                   {section.title}
                 </h5>
 
@@ -222,7 +230,7 @@ const PropertyDetail = () => {
             return (
               <div key={section.title} className="mb-6">
                 <h2 className="text-2xl font-semibold mt-8 mb-4">Activities</h2>
-                <h5 className="bg-[#2f9bad] text-white p-2 rounded-xl text-lg mb-2">
+                <h5 className="bg-[#2563EB] text-white p-2 rounded-xl text-lg mb-2">
                   {section.title}
                 </h5>
 
@@ -324,62 +332,115 @@ const PropertyDetail = () => {
         {/* RIGHT BOOKING */}
         {/* CALENDAR */}
 
-        <div className="lg:col-span-1">
-          <div className="sticky top-[0px] self-start bg-white rounded-2xl shadow p-6 space-y-5 ">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                readOnly
-                value={formatDisplayDate(arrival)}
-                placeholder="Check-in"
-                className="border p-3 rounded w-full bg-white"
-              />
-
-              <input
-                type="text"
-                readOnly
-               value={formatDisplayDate(departure)}
-                placeholder="Check-out"
-                className="border p-3 rounded w-full bg-white"
-              />
-            </div>
-            {/* <button
-            disabled={!arrival || !departure}
-            onClick={() => setOpenBooking(true)}
-            className={`w-full py-3 rounded-xl font-semibold text-white 
-      ${!arrival || !departure
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700 cursor-pointer"
-              }`}
+        <div className="lg:col-span-0">
+          <div
+            className=" sticky top-24 bg-white rounded-[32px] relative shadow-[0_25px_70px_rgba(0,0,0,.12)] "
           >
-            Book Now
-          </button> */}
-            <button
-              onClick={() => setOpenInquiry(true)}
-              className="w-full py-3 rounded-xl font-semibold bg-green-600 hover:bg-green-700 text-white cursor-pointer"
+            {/* ================= OWNER ================= */}
+
+            <div
+              className="
+        relative
+
+        pt-20
+        pb-10
+        px-8
+        
+        bg-gradient-to-br
+        from-[#0c8b8d]
+        via-[#1587d6]
+        to-[#2557e5]
+
+        text-white
+      "
             >
-              Send Inquiry
-            </button>
-            <PropertyminiCalendar
-              listingId={listing._id}
-              className="mt-20"
-              arrival={arrival}
-                  departure={departure}
-              setarrival={setarrival}
-              setdeparture={setdeparture}
-            />
-            <div className="overflow-hidden">
-              {openInquiry && (
-  <InquiryModal
-    propertyId={listing._id}
-    listing={listing}
-    arrival={arrival}
-                  departure={departure}
-    onClose={() => setOpenInquiry(false)}
-  />
-)}
+              {/* IMAGE */}
+
+              <div
+                className="
+          absolute
+
+       top-0
+translate-y-[-50%]
+          left-1/2
+          -translate-x-1/2
+
+          w-24
+          h-24
+
+          rounded-full
+
+          overflow-hidden
+
+          border-[5px]
+          border-white
+
+          shadow-2xl
+
+          bg-white
+        "
+              >
+                <img
+                  src={`${import.meta.env.VITE_API_URL}${owner?.photo}`}
+                  alt={owner?.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <p
+                className="
+          text-center
+
+          uppercase
+
+          tracking-[5px]
+
+          text-xs
+
+          text-white/80
+        "
+              >
+                Property Host
+              </p>
+
+              <h2
+                className="
+          mt-2
+
+          text-center
+
+          text-3xl
+
+          font-bold
+        "
+              >
+                {owner?.name}
+              </h2>
+            </div>
+            <PropertyIcon listing={listing} />
+
+            {/* ================= BOOKING ================= */}
+
+            <div className="p-8">
+             <div className="flex justify-center pt-10">
+  <button
+    onClick={() => setOpenInquiry(true)}
+    className=" w-full sm:w-auto px-8 py-5 text-white bg-black uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500 " >
+    Send Inquiry
+  </button>
+</div>
             </div>
           </div>
+
+          {openInquiry && (
+            <InquiryModal
+  propertyId={id}
+  listing={listing}
+  arrival={arrival}
+  departure={departure}
+  onClose={() => setOpenInquiry(false)}
+/>
+          )}
         </div>
       </div>
 

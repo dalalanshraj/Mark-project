@@ -3,6 +3,7 @@ import { FaFacebookF, FaTwitter } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import logoIme from "../assets/logo/BEACH2.png"; // Default logo
 import { Link } from "react-router-dom";
+import { FaInstagram } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -40,6 +41,30 @@ const Footer = () => {
             </li> */}
           </ul>
         </div>
+        <div>
+         <h2 className="text-xl font-semibold mb-4">Social media Links </h2>
+           <div className="flex space-x-8 mt-3 md:mt-0">
+          <a
+            href="#"
+            className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all"
+          >
+            <FaFacebookF />
+          </a>
+          <a
+            href="#"
+            className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all"
+          >
+            <FaTwitter />
+          </a>
+           <a
+            href="#"
+            className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all"
+          >
+  <FaInstagram />
+          </a>
+        
+        </div>
+        </div>
 
         {/* Right Section - Menu */}
         <div>
@@ -68,20 +93,7 @@ const Footer = () => {
                 <MdEmail /> Owner Login 
               </button>
             </Link>
-        {/* <div className="flex space-x-4 mt-3 md:mt-0">
-          <a
-            href="#"
-            className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all"
-          >
-            <FaFacebookF />
-          </a>
-          <a
-            href="#"
-            className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all"
-          >
-            <FaTwitter />
-          </a>
-        </div> */}
+       
       </div>
     </footer>
   );

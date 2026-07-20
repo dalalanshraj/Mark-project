@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import herobg from "../assets/herobg.jpg";
+import Masonry from "react-masonry-css";
+
+
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
+
+  
+
 
   const getImageUrl = (path) => {
     if (!path || typeof path !== "string") return "";
@@ -95,6 +101,12 @@ export default function Gallery() {
     };
   }, [activeIndex, images.length]);
 
+  const breakpointColumnsObj = {
+  default: 3,
+  1024: 2,
+  640: 1,
+};
+
   return (
     <>
       {/* ================= HERO SECTION ================= */}
@@ -124,53 +136,34 @@ export default function Gallery() {
 
       {/* ================= GALLERY GRID ================= */}
 
-      <section className="bg-white px-6 md:px-16 py-16">
-        <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
-          {images.map((img, index) => (
-            <div
-              key={img._id || index}
-              className="
-                relative
-                break-inside-avoid
-                overflow-hidden
-                rounded-2xl
-                group
-                cursor-pointer
-              "
-              onClick={() => setActiveIndex(index)}
-            >
-              <img
-                src={getImageUrl(img.image)}
-                alt={`Gallery ${index + 1}`}
-                loading="lazy"
-                className="
-                  block
-                  w-full
-                  h-auto
-                  rounded-2xl
-                  transition-transform
-                  duration-700
-                  group-hover:scale-110
-                "
-                onError={(event) => {
-                  console.log(
-                    "Gallery IMG ERROR:",
-                    event.currentTarget.src
-                  );
-
-                  event.currentTarget.onerror = null;
-                  event.currentTarget.src = "/placeholder.png";
-                }}
-              />
-
-              {/* OVERLAY */}
-
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition pointer-events-none" />
-            </div>
-          ))}
+     <section className="bg-white py-16">
+  <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <Masonry
+      breakpointCols={breakpointColumnsObj}
+      className="flex gap-6"
+      columnClassName="space-y-6"
+    >
+      {images.map((img, index) => (
+        <div
+          key={img._id || index}
+          className="overflow-hidden rounded-2xl group cursor-pointer"
+          onClick={() => setActiveIndex(index)}
+        >
+          <img
+            src={getImageUrl(img.image)}
+            alt={`Gallery ${index + 1}`}
+            loading="lazy"
+            className="w-full rounded-2xl transition-transform duration-700 group-hover:scale-110"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "/placeholder.png";
+            }}
+          />
         </div>
-      </section>
-
+      ))}
+    </Masonry>
+  </div>
+</section>
       {/* ================= LIGHTBOX SLIDER ================= */}
 
       {activeIndex !== null && images[activeIndex] && (

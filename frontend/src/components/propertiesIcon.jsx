@@ -6,7 +6,7 @@ export default function PropertyIcon({ listing }) {
   const properties = [
     {
       id: 1,
-      title: "Unit 908 Surfside",
+      title: "Coastal Elegance with Panoramic Ocean Views",
       links: {
         ecbyo: "https://www.emeraldcoastbyowner.com/e1641",
         vrbo: "https://www.vrbo.com/1079434?dateless=true&brandcid=VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&shortlink=xxluafk1&af_siteid=9001001&af_sub1=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&af_ad=BRAND.VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&deep_link_value=https%3A%2F%2Fwww.vrbo.com%2F1079434%3Fdateless%3Dtrue&af_adset=VRBO&pid=BRAND&source_caller=api_v2&custom_web_attribute=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&s_dev_type=DESKTOP&c=SHARELINK-LODGINGPDP&af_sub_siteid=SHARELINK-LODGINGPDP",
@@ -16,7 +16,7 @@ export default function PropertyIcon({ listing }) {
     },
     {
       id: 2,
-      title: "1001 OCEAN FRONT",
+      title: "Endless Blue: Oceanfront Luxury at Surfside",
       links: {
         ecbyo: "https://www.emeraldcoastbyowner.com/e1907",
         vrbo: "https://www.vrbo.com/1079379?dateless=true&brandcid=VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&custom_web_attribute=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&c=SHARELINK-LODGINGPDP&deep_link_value=https%3A%2F%2Fwww.vrbo.com%2F1079379%3Fdateless%3Dtrue&af_adset=VRBO&source_caller=api_v2&af_siteid=9001001&af_sub1=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&af_sub_siteid=SHARELINK-LODGINGPDP&af_ad=BRAND.VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&shortlink=bwnkzcju&pid=BRAND&s_dev_type=DESKTOP",

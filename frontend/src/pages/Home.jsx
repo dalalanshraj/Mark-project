@@ -11,6 +11,7 @@ import GallerySection from "../components/gallarySection.jsx";
 import DealsCTA from "../components/DealsCTA.jsx";
 import PropertyIcon from "../components/propertiesIcon.jsx";
 
+
 const HeroSection = ({ listingId, userId }) => {
   const [formData, setFormData] = useState({
     checkIn: "",

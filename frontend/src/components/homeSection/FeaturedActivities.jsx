@@ -58,7 +58,7 @@ const FeaturedActivities = () => {
  
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-sky-900 text-center leading-tight">
 
-            Thing To Do
+            Things To Do
           </h2>
 
          <p className="  text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-[2]">

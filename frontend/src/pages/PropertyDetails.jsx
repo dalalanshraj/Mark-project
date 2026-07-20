@@ -333,9 +333,7 @@ const PropertyDetail = () => {
         {/* CALENDAR */}
 
         <div className="lg:col-span-0">
-          <div
-            className=" sticky top-24 bg-white rounded-[32px] relative shadow-[0_25px_70px_rgba(0,0,0,.12)] "
-          >
+          <div className=" sticky top-24 bg-white rounded-[32px] relative shadow-[0_25px_70px_rgba(0,0,0,.12)] ">
             {/* ================= OWNER ================= */}
 
             <div
@@ -422,24 +420,25 @@ translate-y-[-50%]
             {/* ================= BOOKING ================= */}
 
             <div className="p-8">
-             <div className="flex justify-center pt-10">
-  <button
-    onClick={() => setOpenInquiry(true)}
-    className=" w-full sm:w-auto px-8 py-5 text-white bg-black uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500 " >
-    Send Inquiry
-  </button>
-</div>
+              <div className="flex justify-center">
+                <button
+                  onClick={() => setOpenInquiry(true)}
+                  className=" w-full sm:w-auto px-8 py-5 text-white bg-black uppercase tracking-[4px] text-sm hover:bg-blue-500 transition-all duration-500 "
+                >
+                  Send Inquiry
+                </button>
+              </div>
             </div>
           </div>
 
           {openInquiry && (
             <InquiryModal
-  propertyId={id}
-  listing={listing}
-  arrival={arrival}
-  departure={departure}
-  onClose={() => setOpenInquiry(false)}
-/>
+              propertyId={id}
+              listing={listing}
+              arrival={arrival}
+              departure={departure}
+              onClose={() => setOpenInquiry(false)}
+            />
           )}
         </div>
       </div>

@@ -9,9 +9,9 @@ export default function PropertyIcon({ listing }) {
       title: "Unit 908 Surfside",
       links: {
         ecbyo: "https://www.emeraldcoastbyowner.com/e1641",
-        vrbo: "",
-        airbnb:
-          " ",
+        vrbo: "https://www.vrbo.com/1079434?dateless=true&brandcid=VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&shortlink=xxluafk1&af_siteid=9001001&af_sub1=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&af_ad=BRAND.VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&deep_link_value=https%3A%2F%2Fwww.vrbo.com%2F1079434%3Fdateless%3Dtrue&af_adset=VRBO&pid=BRAND&source_caller=api_v2&custom_web_attribute=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&s_dev_type=DESKTOP&c=SHARELINK-LODGINGPDP&af_sub_siteid=SHARELINK-LODGINGPDP",
+        // airbnb:
+        //   " ",
       },
     },
     {
@@ -19,9 +19,9 @@ export default function PropertyIcon({ listing }) {
       title: "1001 OCEAN FRONT",
       links: {
         ecbyo: "https://www.emeraldcoastbyowner.com/e1907",
-        vrbo: " ",
-        airbnb:
-          " ",
+        vrbo: "https://www.vrbo.com/1079379?dateless=true&brandcid=VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&custom_web_attribute=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&c=SHARELINK-LODGINGPDP&deep_link_value=https%3A%2F%2Fwww.vrbo.com%2F1079379%3Fdateless%3Dtrue&af_adset=VRBO&source_caller=api_v2&af_siteid=9001001&af_sub1=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&af_sub_siteid=SHARELINK-LODGINGPDP&af_ad=BRAND.VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&shortlink=bwnkzcju&pid=BRAND&s_dev_type=DESKTOP",
+        // airbnb:
+        //   " ",
       },
     },
   ];
@@ -37,7 +37,7 @@ export default function PropertyIcon({ listing }) {
     const currentProperty = properties.find(
       (property) =>
         normalizeTitle(property.title) ===
-        normalizeTitle(listing?.property?.title)
+        normalizeTitle(listing?.property?.title),
     );
 
     if (!currentProperty) {
@@ -45,14 +45,17 @@ export default function PropertyIcon({ listing }) {
     }
 
     return (
-      <div className="w-full bg-white px-5 py-6">
+      <div className="w-full  bg-white px-5 py-6">
         {/* HEADING */}
-
-        <h2 className="font-playfair text-xl font-bold text-center text-black">
+ <div className="absolute top-10 left-10 w-48 h-48 rounded-full bg-[#FFE600]/20 blur-3xl"></div>
+      <div className="absolute bottom-10 right-10 w-72 h-72 rounded-full bg-sky-400/20 blur-3xl"></div>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-extrabold text-sky-900 text-center leading-tight">
           Book Your Way
         </h2>
-
-        <div className="w-10 h-[2px] bg-black mx-auto mt-3 mb-7" />
+        <p className="mt-1 text-lg text-center font-light text-black">
+          Best Direct Booking Option
+        </p>
+        <div className="w-10 h-[2px] bg-blue-500 mx-auto mt-3 mb-7" />
 
         {/* ECBYO */}
 
@@ -61,38 +64,46 @@ export default function PropertyIcon({ listing }) {
           target="_blank"
           rel="noopener noreferrer"
           className="
-            relative
-            w-full
-            flex
-            items-center
-            justify-center
-            gap-3
-            px-4
-            py-5
-            border-2
-            border-[#2f9bad]
-            rounded-xl
-            transition-all
-            duration-300
-            hover:shadow-md
-          "
+                  relative
+                  w-full
+                  max-w-[430px]
+                  min-h-[145px]
+                  px-6
+                  py-5
+                  flex
+                  flex-col
+                  sm:flex-row
+                  items-center
+                  justify-center
+                  gap-25
+                 
+                  rounded-2xl
+                  shadow-md
+                  transition-all
+                  duration-300
+                  hover:border-2
+                  hover:border-blue-500
+                  hover:-translate-y-1
+                  hover:shadow-xl
+                "
         >
+          
           <span
             className="
-              absolute
-              -top-3
-              left-1/2
-              -translate-x-1/2
-              whitespace-nowrap
-              px-3
-              py-1
-              rounded-full
-              bg-[#2f9bad]
-              text-white
-              text-[11px]
-              font-semibold
-              tracking-[1px]
-            "
+                    absolute
+                    -top-3
+                    left-1/2
+                    -translate-x-1/2
+                    whitespace-nowrap
+                    bg-sky-900
+                    text-white
+                    px-4
+                    py-1
+                    rounded-full
+                    text-xs
+                    font-semibold
+                    tracking-wide
+                  "
           >
             BOOK DIRECT & SAVE
           </span>
@@ -104,47 +115,22 @@ export default function PropertyIcon({ listing }) {
           />
 
           <div>
-            <p className="text-[11px] uppercase tracking-[1px] text-[#2f9bad] font-semibold">
-              Recommended
-            </p>
-
-            <p className="text-md text-black mt-1">
-              Direct Booking
-            </p>
+            <a
+              href={currentProperty.links.vrbo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-[75px] h-[40px] flex items-center justify-center opacity-70 hover:opacity-100"
+            >
+              <img
+                src={VrboLogo}
+                alt="VRBO"
+                className="max-w-full max-h-[35px] object-contain"
+              />
+            </a>
           </div>
         </a>
 
         {/* VRBO + AIRBNB */}
-
-        <div className="flex items-center justify-center gap-7 mt-7">
-          <a
-            href={currentProperty.links.vrbo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-[75px] h-[40px] flex items-center justify-center opacity-70 hover:opacity-100"
-          >
-            <img
-              src={VrboLogo}
-              alt="VRBO"
-              className="max-w-full max-h-[35px] object-contain"
-            />
-          </a>
-
-          <div className="h-7 w-px bg-gray-200" />
-
-          <a
-            href={currentProperty.links.airbnb}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-[75px] h-[40px] flex items-center justify-center opacity-70 hover:opacity-100"
-          >
-            <img
-              src={AirbnbLogo}
-              alt="Airbnb"
-              className="max-w-full max-h-[35px] object-contain"
-            />
-          </a>
-        </div>
       </div>
     );
   }
@@ -157,20 +143,18 @@ export default function PropertyIcon({ listing }) {
   return (
     <section className="w-full bg-white py-20 px-5">
       <div className="max-w-6xl mx-auto">
-
         {/* HEADING */}
 
         <div className="text-center mb-16">
-       <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-sky-900 text-center leading-tight">
-
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-sky-900 text-center leading-tight">
             Book Your Way
           </h2>
 
           <p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-[2]">
             Whether you prefer to book directly through{" "}
             <strong className="text-black">ECBYO</strong> for potential savings
-            and personalized service, or  through the other platforms Airbnb or VRBO  
-             you’ll enjoy the same exceptional Gulf Life’s a Beach
+            and personalized service, or through the other platforms Airbnb or
+            VRBO you’ll enjoy the same exceptional Gulf Life’s a Beach
             experience, responsive local support, and professionally maintained
             accommodations.
           </p>
@@ -186,27 +170,32 @@ export default function PropertyIcon({ listing }) {
                 group
                 border
                 border-gray-200
-                bg-[#f8f8f6]
+                 bg-sky-400/10 blur-1xl
+                 bg-[#FFE600]/10 blur-1xl
                 px-6
                 sm:px-10
                 py-10
                 flex
-                flex-col
+                flex-col 
                 items-center
                 justify-center
                 transition-all
                 duration-500
                 hover:-translate-y-2
-                hover:shadow-xl
+              
               "
             >
+              <div className="absolute top-10 left-10 w-48 h-48 rounded-full bg-[#FFE600]/20 blur-3xl"></div>
+              <div className="absolute bottom-10 right-10 w-72 h-72 rounded-full bg-sky-400/20 blur-3xl"></div>
               {/* PROPERTY NAME */}
 
               <h3 className="font-playfair text-2xl sm:text-3xl font-bold text-center text-black">
                 {property.title}
               </h3>
-
-              <div className="w-12 h-[2px] bg-black mt-6 mb-8 group-hover:w-24 transition-all duration-500" />
+              <p className="mt-1 text-lg font-light text-black">
+                Best Direct Booking Option
+              </p>
+              <div className="w-12 h-[2px] bg-blue-500 mt-6 mb-8 group-hover:w-24 transition-all duration-500" />
 
               {/* ECBYO */}
 
@@ -227,13 +216,13 @@ export default function PropertyIcon({ listing }) {
                   items-center
                   justify-center
                   gap-4
-                  bg-white
-                  border-2
-                  border-[#2f9bad]
+                 
                   rounded-2xl
                   shadow-md
                   transition-all
                   duration-300
+                  hover:border-2
+                  hover:border-blue-500
                   hover:-translate-y-1
                   hover:shadow-xl
                 "
@@ -245,7 +234,7 @@ export default function PropertyIcon({ listing }) {
                     left-1/2
                     -translate-x-1/2
                     whitespace-nowrap
-                    bg-[#2f9bad]
+                    bg-sky-900
                     text-white
                     px-4
                     py-1
@@ -265,19 +254,24 @@ export default function PropertyIcon({ listing }) {
                 />
 
                 <div className="text-center sm:text-left">
-                  <p className="text-xs uppercase tracking-[2px] text-[#2f9bad] font-semibold">
-                    Recommended
-                  </p>
-
-                  <p className="mt-1 text-lg font-light text-black">
-                    Best Direct Booking Option
-                  </p>
+                  <a
+                    href={property.links.vrbo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-[100px] sm:w-[125px] h-[60px] flex items-center justify-center opacity-70 hover:opacity-100"
+                  >
+                    <img
+                      src={VrboLogo}
+                      alt="VRBO"
+                      className="max-w-full max-h-[65px] object-contain"
+                    />
+                  </a>
                 </div>
               </a>
 
               {/* DIVIDER */}
 
-              <div className="w-full flex items-center gap-4 my-6">
+              {/* <div className="w-full flex items-center gap-4 my-6">
                 <div className="h-px bg-gray-300 flex-1" />
 
                 <span className="text-xs uppercase tracking-[3px] text-gray-400 whitespace-nowrap">
@@ -285,11 +279,11 @@ export default function PropertyIcon({ listing }) {
                 </span>
 
                 <div className="h-px bg-gray-300 flex-1" />
-              </div>
+              </div> */}
 
               {/* VRBO + AIRBNB */}
 
-              <div className="flex items-center justify-center gap-8 sm:gap-12">
+              {/* <div className="flex items-center justify-center gap-8 sm:gap-12">
                 <a
                   href={property.links.vrbo}
                   target="_blank"
@@ -303,19 +297,8 @@ export default function PropertyIcon({ listing }) {
                   />
                 </a>
 
-                <a
-                  href={property.links.airbnb}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-[100px] sm:w-[125px] h-[60px] flex items-center justify-center opacity-70 hover:opacity-100"
-                >
-                  <img
-                    src={AirbnbLogo}
-                    alt="Airbnb"
-                    className="max-w-full max-h-[65px] object-contain"
-                  />
-                </a>
-              </div>
+                
+              </div> */}
             </div>
           ))}
         </div>

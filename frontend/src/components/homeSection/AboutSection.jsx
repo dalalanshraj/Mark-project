@@ -151,7 +151,7 @@ if (!owner) {
             {owner?.name}
           </h1>
 
-          <p className="text-white">Owners of Beach Therapy 30A</p>
+           
           {/* <p className="text-white">A Licensed Real Estate Broker in Florida</p> */}
           <div className="mt-5 space-y-3">
             {/* PHONE */}

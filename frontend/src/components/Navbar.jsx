@@ -82,7 +82,7 @@ const Navbar = () => {
         <Link to="/">
           <img
             src={isScrolled ? logoScrolled : logoIme}
-            className="w-40 md:w-34 transition-all duration-300"
+            className="w-40 md:w-25 transition-all duration-300"
             alt="logo"
           />
         </Link>
@@ -90,8 +90,8 @@ const Navbar = () => {
         {/* DESKTOP CONTACT */}
         <div className="hidden md:flex items-center gap-4 bg-gradient-to-r from-[#0B63F6] to-[#467FF7] px-3 py-2 rounded-2xl shadow-lg">
           {/* Animated Phone Icon */}
-          <div className="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center animate-pulse">
-            <Phone className="text-white w-5 h-5 animate-bounce" />
+          <div className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center animate-pulse">
+            <Phone className="text-white w-4 h-4 animate-bounce" />
           </div>
 
           {/* Divider */}
@@ -147,7 +147,7 @@ const Navbar = () => {
           return (
             <div
               key={item.name}
-              className="relative px-10 py-6 cursor-pointer"
+              className="relative px-10 py-5 cursor-pointer"
               onMouseEnter={() => hasDropdown && setOpenDropdown(item.name)}
               onMouseLeave={() => setOpenDropdown(null)}
             >

@@ -29,6 +29,7 @@ import dealRoutes from    "./routes/dealRoutes.js"
 import galleryRoutes from "./routes/galleryRoutes.js";
 import icalcalendarRoutes from "./routes/icalRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 4012;
@@ -93,6 +94,7 @@ app.use(
   "/gallery-uploads",
   express.static("gallery-uploads")
 );
+app.use("/api/contact", contactRoutes);
 
 app.use(
   "/uploads",

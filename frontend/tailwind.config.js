@@ -9,7 +9,17 @@ export default {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },
-      
+      extend: {
+      fontFamily: {
+        yellowtail: ['Yellowtail', 'cursive'],
+      },
+    },
+     extend: {
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+        yellowtail: ['Yellowtail', 'cursive'],
+      },
+    },
       
     },
   },

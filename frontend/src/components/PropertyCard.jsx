@@ -45,8 +45,8 @@ const PropertyCard = ({ listing }) => {
         {/* DEAL RIBBON */}
         {listing?.deal && (
           <div
-            className=" absolute top-16 left-4 bg-red-500 text-white px-4 py-1 rounded-full text-xs font-bold shadow " >
-            🔥 Special Deal
+            className="   top-16 left-4 bg-red-500 text-center text-white px-4 py-1 rounded-full text-xs font-bold shadow " >
+              Special Deal
           </div>
         )}
 
@@ -62,22 +62,22 @@ const PropertyCard = ({ listing }) => {
 
           {/* Heart */}
 
-          <button className=" absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center hover:scale-110 duration-300 ">
+          {/* <button className=" absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center hover:scale-110 duration-300 ">
             ❤️
-          </button>
+          </button> */}
 
           {/* Rating */}
 
-          <div className=" absolute top-4 left-4 bg-white rounded-full px-3 py-1 text-sm font-semibold shadow ">
+          {/* <div className=" absolute top-4 left-4 bg-white rounded-full px-3 py-1 text-sm font-semibold shadow ">
             ⭐ 4.9
-          </div>
+          </div> */}
 
           {/* Price */}
 
-          <div className=" absolute bottom-4 right-4 bg-[#F8F812] rounded-full px-5 py-2 font-bold shadow-xl ">
+          {/* <div className=" absolute bottom-4 right-4 bg-[#F8F812] rounded-full px-5 py-2 font-bold shadow-xl ">
             ${dealPrice || originalPrice}
             <span className="text-sm font-normal">/night</span>
-          </div>
+          </div> */}
         </div>
 
         {/* CONTENT */}

@@ -50,6 +50,7 @@ export default function PropertyIcon({ listing }) {
  <div className="absolute top-10 left-10 w-48 h-48 rounded-full bg-[#FFE600]/20 blur-3xl"></div>
       <div className="absolute bottom-10 right-10 w-72 h-72 rounded-full bg-sky-400/20 blur-3xl"></div>
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-extrabold text-sky-900 text-center leading-tight">
+          
           Book Your Way
         </h2>
         <p className="mt-1 text-lg text-center font-light text-black">
@@ -146,11 +147,12 @@ export default function PropertyIcon({ listing }) {
         {/* HEADING */}
 
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-sky-900 text-center leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[94px]  text-sky-900 text-center leading-tight"
+             style={{ fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive' }}>
             Book Your Way
           </h2>
 
-          <p className="mt-8 text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-[2]">
+         <p className="font-montserrat p-5 text-gray-600 text-center max-w-3xl mx-auto text-lg md:text-xl">
             Whether you prefer to book directly through{" "}
             <strong className="text-black">ECBYO</strong> for potential savings
             and personalized service, or through the other platforms Airbnb or

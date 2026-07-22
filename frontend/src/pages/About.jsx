@@ -3,6 +3,7 @@ import api from "../api/axios";
 import AboutSection from "../components/homeSection/AboutSection";
 import FeaturedActivities from "../components/homeSection/FeaturedActivities";
 import herobg from "../assets/herobg.jpg";
+import surfsideVideo from "../assets/surfside.mp4";
 import {
   MapPin,
   Home,
@@ -76,6 +77,121 @@ export default function About({ userId }) {
           {/* <p className="text-gray-200 text-sm sm:text-base max-w-3xl mx-auto">
   Meet Shawn and Eileen O'Sullivan, the proud owners of Beach Therapy 30A in beautiful Grayton Beach, Florida. We are excited to share our slice of paradise with guests from around the world.
 </p> */}
+        </div>
+      </section>
+
+           {/* SECTION 1 */}
+      <section className="bg-gray-50 py-16 lg:py-24">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-center">
+      
+            {/* Left - Video */}
+      
+            <div className="order-2 lg:order-1">
+        <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+      
+          <video
+            src={surfsideVideo}
+            className="w-full h-full object-cover rounded-3xl"
+            autoPlay
+            muted
+            loop
+            playsInline
+            controls
+            preload="metadata"
+          />
+      
+        </div>
+      </div>
+      
+            {/* Right - Content */}
+      
+            <div className="order-1 lg:order-2 text-center lg:text-left">
+              <h2
+                className="mt-6 text-[#2C5A7B] leading-tight text-4xl sm:text-5xl lg:text-6xl"
+                style={{
+                  fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive',
+                }}
+              >
+                Experience Luxury
+                <br />
+                Along The Emerald Coast
+              </h2>
+      
+              <p className="mt-8 text-gray-600 text-lg leading-8 font-montserrat">
+                Welcome to Paradise Found and Sun N Sea, two beautifully appointed
+                beachfront condominiums located at Surfside Beach Resort in
+                Miramar Beach, Florida. Whether you're planning a relaxing family
+                vacation, a couples' getaway, or a trip with friends, our homes
+                provide the perfect combination of comfort, space, and breathtaking
+                Gulf Coast scenery.
+              </p>
+      
+              <p className="mt-6 text-gray-600 text-lg leading-8 font-montserrat">
+                Enjoy spacious three-bedroom accommodations, oversized private
+                balconies, resort-style amenities, and direct access to Surfside's
+                private white-sand beach. Every detail has been thoughtfully prepared
+                to help you relax, reconnect, and create unforgettable memories on
+                Florida's Emerald Coast.
+              </p>
+      
+              {/* Highlights */}
+      
+              <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-blue-600"></div>
+                  <span className="text-gray-700 font-medium">
+                    Private Beach Access
+                  </span>
+                </div>
+      
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-blue-600"></div>
+                  <span className="text-gray-700 font-medium">
+                    Complimentary Beach Service
+                  </span>
+                </div>
+      
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-blue-600"></div>
+                  <span className="text-gray-700 font-medium">
+                    Resort Pool & Hot Tubs
+                  </span>
+                </div>
+      
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-blue-600"></div>
+                  <span className="text-gray-700 font-medium">
+                    Panoramic Gulf Views
+                  </span>
+                </div>
+      
+              </div>
+      
+              {/* Buttons */}
+      
+              <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+      
+                <a
+                  href="/properties"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300"
+                >
+                  Explore Our Condos
+                </a>
+      
+                <a
+                  href="/#contact"
+                  className="border border-gray-300 hover:border-blue-600 hover:text-blue-600 px-8 py-4 rounded-full font-semibold transition-all duration-300"
+                >
+                  Contact Us
+                </a>
+      
+              </div>
+      
+            </div>
+      
+          </div>
         </div>
       </section>
 

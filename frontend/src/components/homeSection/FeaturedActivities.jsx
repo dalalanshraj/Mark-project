@@ -56,12 +56,12 @@ const FeaturedActivities = () => {
 
         <div className="text-center mb-14">
  
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-sky-900 text-center leading-tight">
-
+           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[94px]  text-sky-900 text-center leading-tight"
+             style={{ fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive' }}>
             Things To Do
           </h2>
 
-         <p className="  text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-[2]">
+       <p className="font-montserrat p-5 text-gray-600 text-center max-w-3xl mx-auto text-lg md:text-xl">
             Discover unforgettable experiences around the Emerald Coast,
             from relaxing parks to exciting outdoor adventures.
           </p>
@@ -70,7 +70,7 @@ const FeaturedActivities = () => {
 
         {/* Cards */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
+        <div id="activities" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
 
           {activities.map((item) => (
 

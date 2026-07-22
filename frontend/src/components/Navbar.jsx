@@ -28,6 +28,25 @@ const Navbar = () => {
     };
     fetchCommunities();
   }, []);
+ const communityDropdown = [
+  
+   ...communities.map((listing) => {
+    let shortName = listing.property?.title || "Untitled Property";
+
+    if (shortName === "Endless Blue: Oceanfront Luxury at Surfside") {
+      shortName = "Endless Blue";
+    }
+
+    if (shortName === "Coastal Elegance with Panoramic Ocean Views") {
+      shortName = "Coastal Elegance";
+    }
+
+    return {
+      name: shortName,
+      link: `/${listing._id}`,
+    };
+  }),
+];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,27 +67,56 @@ const Navbar = () => {
   }, []);
 
   const dropdowns = {
-    // ABOUT: [{ name: "ABOUT", }],
-    COMMUNITIES: [
-      {
-        name: "",
-        link: "/community/crystal-sands",
-      },
-      {
-        name: "",
-        link: "/community/mediterranea",
-      },
-    ],
+   ABOUT: [
+  {
+    name: "About Us",
+    link: "/about-us",
+  },
+  {
+    name: "FAQ",
+    link: "/#faq",
+  },
+  {
+    name: "Contact Us",
+    link: "/#contact",
+  },
+],
+  PROPERTIES: communityDropdown,
+    // COMMUNITIES: [
+    //   {
+    //     name: "",
+    //     link: "/community/crystal-sands",
+    //   },
+    //   {
+    //     name: "",
+    //     link: "/community/mediterranea",
+    //   },
+    // ],
+   "WHAT WE OFFER": [
+  {
+    name: "Property Management",
+    link: "/property-management",
+  },
+],
   };
 
   const menuItems = [
-    { name: "HOME", link: "/" },
-    { name: "ABOUT", link: "/about-us" },
-    // { name: "COMMUNITIES" },
-    { name: "PROPERTIES", link: "/properties" },
-    { name: "GALLERY", link: "/gallery" },
-    { name: "REVIEWS", link: "/reviews" },
-  ];
+  { name: "HOME", link: "/" },
+
+  { name: "ABOUT" },
+
+  { name: "PROPERTIES", link:"/properties" },
+
+  { name: "WHAT WE OFFER" },
+
+  { name: "SPECIALS", link: "/specials" },
+
+  { name: "ACTIVITIES", link: "/#activities" },
+
+  { name: "REVIEWS", link: "/reviews" },
+
+  { name: "CALENDARS", link: "/properties-calendar" },
+];
 
   return (
     <header
@@ -175,6 +223,7 @@ const Navbar = () => {
             </div>
           );
         })}
+        
       </nav>
 
       {/* MOBILE NAV */}

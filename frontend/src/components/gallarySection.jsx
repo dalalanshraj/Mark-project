@@ -84,11 +84,12 @@ export default function GallerySection() {
 
        
 
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[94px]  text-sky-900 text-center leading-tight"
+             style={{ fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive' }}>
           Property Gallery
         </h2>
 
-           <p className="  text-gray-600 max-w-4xl mx-auto text-lg md:text-xl leading-[2]">
+           <p className="font-montserrat p-5 text-gray-600 text-center max-w-3xl mx-auto text-lg md:text-xl">
           Explore stunning interiors, breathtaking views, luxurious amenities,
           and everything waiting for you during your stay.
         </p>

@@ -650,6 +650,34 @@ export const resetICal = async (req, res) => {
     res.status(500).json({ error: "Reset failed" });
   }
 };
+
+export const getAllListingCalendars = async (req, res) => {
+  try {
+    const listings = await Listing.find()
+      .select({
+        property: 1,
+        calendar: 1,
+        icalUrl: 1,
+        status: 1,
+      })
+      .sort({ "property.title": 1 });
+
+    const data = listings.map((listing) => ({
+      _id: listing._id,
+      title: listing.property?.title || "Untitled Property",
+      icalUrl: listing.icalUrl || "",
+      calendar: normalizeCalendar(listing.calendar || []),
+    }));
+
+    res.json(data);
+  } catch (err) {
+    console.error("getAllListingCalendars:", err);
+
+    res.status(500).json({
+      error: "Failed to fetch calendars",
+    });
+  }
+};
 // export const clearCalendar = async (
 //   req,
 //   res

@@ -31,6 +31,9 @@ import CommunityDetails from "./pages/CommunityDetails";
 import GalleryAdmin from "./admin/pages/Gallery";
 import Gallery from "./pages/Gallerypage";
 import ScrollToTop from "./components/ScrollToTop";
+import ScrollToHash from "./components/ScrollToHash";
+import PropertyManagementIntro from "./pages/PropertyManagementHero";
+import AdminCalendar from "./pages/AdminCalendar";
 
 function App() {
   const location = useLocation();
@@ -41,6 +44,7 @@ function App() {
   return (
     <>
     <ScrollToTop />
+    <ScrollToHash />
       {/* FRONTEND ONLY */}
       {!isAdminRoute && <Navbar />}
 
@@ -57,6 +61,10 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/community/:slug" element={<CommunityDetails />} />
         <Route path="/gallery" element={<Gallery />} />
+         <Route path="/property-management" element={<PropertyManagementIntro />} />
+         <Route path="/properties-calendar" element={<AdminCalendar />} />
+
+
         
           
 

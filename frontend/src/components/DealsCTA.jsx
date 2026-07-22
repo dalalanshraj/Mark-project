@@ -48,7 +48,8 @@ export default function DealsCTA() {
          
           {/* Heading */}
 
-          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold text-white leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold text-white leading-tight"
+           style={{ fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive' }}>
             Escape To Paradise
             <span className="block text-[#F8F812]">
               Save More On Every Stay

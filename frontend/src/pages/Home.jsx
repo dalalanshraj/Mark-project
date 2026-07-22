@@ -10,7 +10,9 @@ import heroVideo from "../assets/video.mp4";
 import GallerySection from "../components/gallarySection.jsx";
 import DealsCTA from "../components/DealsCTA.jsx";
 import PropertyIcon from "../components/propertiesIcon.jsx";
-
+import FAQ from "../components/homeSection/faq.jsx";
+import ContactSection from "../components/homeSection/ContactSection.jsx";
+import TestimonialCarousel from "../components/Testimonial.jsx";
 
 const HeroSection = ({ listingId, userId }) => {
   const [formData, setFormData] = useState({
@@ -95,11 +97,14 @@ const HeroSection = ({ listingId, userId }) => {
         {/* CONTENT */}
         <div className="relative mt-30 z-10 text-white px-4 w-full max-w-6xl">
           {/* HEADING */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white text-center leading-tight">
+          <h1
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-[99px] text-white text-center  "
+            style={{ fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive' }}
+          >
             Experience Coastal Luxury
           </h1>
 
-          <p className=" text-white max-w-4xl mx-auto text-lg md:text-xl leading-[2]">
+          <p className="font-montserrat text-white max-w-4xl mx-auto text-lg md:text-[24px]  mt-5">
             Relax in a spacious beachfront retreat featuring wraparound
             balconies, spectacular ocean views, and premium resort amenities.
           </p>
@@ -107,7 +112,7 @@ const HeroSection = ({ listingId, userId }) => {
           {/* FORM */}
           <form
             onSubmit={handleSearch}
-            className="bg-white text-black rounded-xl shadow-xl p-4 md:p-5  w-[95%] max-w-3xl mx-auto
+            className="bg-white text-black mt-5 rounded-xl shadow-xl p-4 md:p-5  w-[95%] max-w-3xl mx-auto
             flex flex-col md:flex-row gap-3 md:gap-10 items-stretch md:items-center"
           >
             <DatePicker
@@ -119,7 +124,7 @@ const HeroSection = ({ listingId, userId }) => {
                 }))
               }
               placeholderText="Check In"
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-9 py-2"
               minDate={new Date()}
             />
 
@@ -133,7 +138,7 @@ const HeroSection = ({ listingId, userId }) => {
                 }))
               }
               placeholderText="Check Out"
-              className="w-full border rounded-lg px-3 py-2"
+              className="w-full border rounded-lg px-9 py-2"
               minDate={
                 formData.checkIn ? parseLocalDate(formData.checkIn) : new Date()
               }
@@ -146,7 +151,7 @@ const HeroSection = ({ listingId, userId }) => {
               onChange={(e) =>
                 setFormData({ ...formData, guests: e.target.value })
               }
-              className="w-full md:w-[150px] border rounded-lg px-3 py-2"
+              className="w-full md:w-[150px] border rounded-lg px-9 py-2"
             >
               {[...Array(10)].map((_, i) => (
                 <option key={i + 1} value={i + 1}>
@@ -168,11 +173,12 @@ const HeroSection = ({ listingId, userId }) => {
       </section>
 
       <div className="py-16 bg-white">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-sky-900 text-center leading-tight">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[94px]  text-sky-900 text-center leading-tight"
+             style={{ fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive' }}>
           Explore Our Vacation Rentals
         </h2>
 
-        <p className=" p-10 text-gray-600 text-center max-w-3xl mx-auto text-lg md:text-xl leading-[2]">
+        <p className="font-montserrat p-5 text-gray-600 text-center max-w-3xl mx-auto text-lg md:text-xl">
           Find the perfect beachfront condo for your next family vacation,
           romantic escape, or relaxing coastal retreat.
         </p>
@@ -193,13 +199,16 @@ const HeroSection = ({ listingId, userId }) => {
           </Link>
         </div>
       </div>
-      <AboutSection userId="6a59081d8e08e38026c7b78b" />
+      {/* <AboutSection userId="6a59081d8e08e38026c7b78b" /> */}
       <FeaturedActivities />
       <PropertyIcon />
       <DealsCTA />
+      <ContactSection />
 
       {/* <DiscoverDestinSection /> */}
       <GallerySection />
+ <TestimonialCarousel />
+      <FAQ />
 
       {/* MODAL */}
       {showModal && (

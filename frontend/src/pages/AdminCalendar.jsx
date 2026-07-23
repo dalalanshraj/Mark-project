@@ -185,7 +185,7 @@ export default function AdminCalendar() {
     <div className="min-h-screen bg-gray-100 p-4 md:p-6 lg:p-8 ">
       {/* Header */}
 
-      <div className="">
+      {/* <div className="">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
           Admin Calendar
         </h1>
@@ -193,7 +193,7 @@ export default function AdminCalendar() {
         <p className="mt-2 text-gray-600">
           View and manage property availability for the entire year.
         </p>
-      </div>
+      </div> */}
 
       {/* Toolbar */}
 
@@ -259,13 +259,13 @@ export default function AdminCalendar() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <div className="flex items-center gap-2">
-            <span className="h-5 w-5 rounded bg-green-500"></span>
+            <span className="h-5 w-5 rounded bg-[#d9f8e8]"></span>
             <span>Available</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="h-5 w-5 rounded bg-red-500"></span>
-            <span>Reserved</span>
+            <span className="h-5 w-5 rounded bg-[#5C5CFF]"></span>
+            <span>Booked</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -274,19 +274,22 @@ export default function AdminCalendar() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="h-5 w-5 rounded bg-blue-500"></span>
+            <span className="h-5 w-5 rounded bg-[linear-gradient(135deg,#d9f8e8_0%,#d9f8e8_50%,#5B5BF7_50%,#5B5BF7_100%)]"></span>
             <span>Check In</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="h-5 w-5 rounded bg-purple-600"></span>
+            <span className="h-5 w-5 rounded bg-[linear-gradient(315deg,#d9f8e8_0%,#d9f8e8_50%,#5B5BF7_50%,#5B5BF7_100%)]"></span>
             <span>Check Out</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="h-5 w-5 rounded bg-gray-700"></span>
-            <span>Turnover</span>
+            <span className="relative w-5 h-5 rounded bg-[#5C5CFF] overflow-hidden">
+              <span className="absolute w-[140%] h-[2px] bg-black top-1/2 left-[-20%] rotate-135"></span>
+            </span>
+            Turnover
           </div>
+          
         </div>
       </div>
 

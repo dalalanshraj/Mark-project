@@ -52,8 +52,8 @@ export default function About({ userId }) {
     ? getImageUrl(galleryImages[2].image)
     : herobg;
 
-  const whyChooseUsImage = galleryImages[3]?.image
-    ? getImageUrl(galleryImages[3].image)
+  const whyChooseUsImage = galleryImages[18]?.image
+    ? getImageUrl(galleryImages[18].image)
     : "/placeholder.png";
      const Guestsimg  = galleryImages?.[15]?.image
     ? getImageUrl(galleryImages[15].image)
@@ -226,7 +226,7 @@ export default function About({ userId }) {
             <div className="relative order-2 lg:order-1">
               <div className="overflow-hidden rounded-[32px] shadow-2xl group">
                 <img
-                  src={image}
+                  src={whyChooseUsImage}
                   alt="Why Choose This Property"
                   className="w-full h-[320px] sm:h-[450px] lg:h-[900px] object-cover duration-700 group-hover:scale-110"
                 />

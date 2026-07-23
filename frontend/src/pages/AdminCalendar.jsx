@@ -183,18 +183,7 @@ export default function AdminCalendar() {
            </div>
          </section>
     <div className="min-h-screen bg-gray-100 p-4 md:p-6 lg:p-8 ">
-      {/* Header */}
-
-      {/* <div className="">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-          Admin Calendar
-        </h1>
-
-        <p className="mt-2 text-gray-600">
-          View and manage property availability for the entire year.
-        </p>
-      </div> */}
-
+     
       {/* Toolbar */}
 
       <div className="bg-white rounded-xl shadow-md p-5 mb-6">

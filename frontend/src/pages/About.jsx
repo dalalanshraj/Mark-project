@@ -36,9 +36,9 @@ export default function About({ userId }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const image = galleryImages?.[1]?.image
-    ? getImageUrl(galleryImages[0].image)
-    : "https://via.placeholder.com/600x400";
+  const image = galleryImages?.[12]?.image
+    ? getImageUrl(galleryImages[12].image)
+    : "https://www.coastaldreamrentals.com/img/home/d74d56b0-b8ac-4d34-84c0-ede6d2f0569c.jpeg";
 
   const heroImage = galleryImages[0]?.image
     ? getImageUrl(galleryImages[0].image)
@@ -55,6 +55,9 @@ export default function About({ userId }) {
   const whyChooseUsImage = galleryImages[3]?.image
     ? getImageUrl(galleryImages[3].image)
     : "/placeholder.png";
+     const Guestsimg  = galleryImages?.[15]?.image
+    ? getImageUrl(galleryImages[15].image)
+    : "https://destinbeachcondorentals.com/gallery-uploads/1784561207521-97328694.webp";
   return (
     <>
       {/* 🔥 HERO (FIXED IMAGE) */}
@@ -231,19 +234,16 @@ export default function About({ userId }) {
 
               {/* Floating Badge */}
 
-              <div className="absolute bottom-8 left-8 bg-white rounded-2xl shadow-xl px-6 py-4">
-                <p className="text-3xl font-bold text-sky-700">4.9 ★</p>
-
-                <p className="text-gray-500 text-sm">Guest Rating</p>
-              </div>
+            
             </div>
 
             {/* Content */}
 
             <div className="order-1 lg:order-2">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[94px]  text-sky-900 text-center leading-tight"
+             style={{ fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive' }}>
                 Why Guests Love
-                <span className="block text-sky-700">Staying With Us</span>
+                Staying With Us 
               </h2>
 
               <p className="mt-6 text-gray-600 leading-8 text-lg">
@@ -323,8 +323,121 @@ export default function About({ userId }) {
         </div>
       </section>
 
+<section className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
+  <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+    <div className="grid lg:grid-cols-2 gap-16 items-center">
+
       
-      <FeaturedActivities />
+
+      <div className="order-2 lg:order-1">
+        <h2
+          className="mt-6 text-[#2C5A7B] leading-tight text-5xl sm:text-6xl"
+          style={{
+            fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive',
+          }}
+        >
+          More Than A Stay...
+         
+          It's Your Beach Escape
+        </h2>
+
+        <p className="mt-8 text-lg leading-9 text-gray-600 font-montserrat">
+          Paradise Found and Sun N Sea were thoughtfully designed to give
+          families and groups a relaxing beachfront experience. From sunrise
+          over the Gulf to evenings spent on your private balcony, every moment
+          is an opportunity to slow down, reconnect, and enjoy the beauty of
+          Florida's Emerald Coast.
+        </p>
+
+        <p className="mt-6 text-lg leading-9 text-gray-600 font-montserrat">
+          Spacious interiors, fully equipped kitchens, resort-style amenities,
+          private beach access, and breathtaking coastal views come together to
+          create a vacation you'll remember long after you return home.
+        </p>
+      </div>
+
+      
+
+      <div className="order-1 lg:order-2 relative">
+
+        <div className="absolute -top-6 -left-6 w-40 h-40 rounded-full bg-blue-100 blur-3xl opacity-60"></div>
+
+        <div className="overflow-hidden rounded-[30px] shadow-2xl">
+
+          <img
+            src={image}
+            alt="Surfside Resort"
+            className="w-full h-[350px] sm:h-[500px] lg:h-[620px] object-cover transition duration-700 hover:scale-105"
+          />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section className="relative py-20 lg:py-28 overflow-hidden">
+ 
+
+  <div className="absolute inset-0">
+    <img
+      src={Guestsimg}
+      alt="Surfside Resort"
+      className="w-[50%] h-full object-cover"
+    />
+ 
+  </div>
+
+  <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+
+    <div className="flex justify-center lg:justify-end">
+
+ 
+
+      <div className="w-full max-w-2xl  backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
+
+        <h2
+          className="mt-6 text-[#2C5A7B] text-4xl sm:text-5xl leading-tight"
+          style={{
+            fontFamily:
+              'Yellowtail, "Yellowtail Fallback", cursive',
+          }}
+        >
+          Why Guests Love
+           
+          Staying With Us
+        </h2>
+
+        <p className="mt-8 text-lg leading-8 text-gray-600 font-montserrat">
+          Paradise Found and Sun N Sea combine the comfort of home with
+          the beauty of Florida's Emerald Coast. Every detail has been
+          thoughtfully prepared to give families and groups a relaxing,
+          convenient, and memorable beachfront vacation experience.
+        </p>
+
+        <p className="mt-6 text-lg leading-8 text-gray-600 font-montserrat">
+          Spacious three-bedroom layouts, panoramic Gulf views, private
+          balconies, fully equipped kitchens, and premium resort amenities
+          make every stay comfortable from arrival through departure.
+          Whether you're visiting for a family vacation, beach wedding,
+          or weekend escape, you'll enjoy everything Surfside Resort has
+          to offer.
+        </p>
+
+       
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+      
+      {/* <FeaturedActivities /> */}
     </>
   );
 }

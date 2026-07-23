@@ -76,27 +76,23 @@ export default function PropertyManagementIntro() {
       <div className="text-center max-w-4xl mx-auto">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[94px]  text-sky-900 text-center leading-tight"
              style={{ fontFamily: 'Yellowtail, "Yellowtail Fallback", cursive' }}>
-          Experience the Best of
-          <br />
-          Surfside Beach Resort
+         List Your Property With Us
+         
         </h2>
 
         <p className="font-montserrat p-5 text-gray-600 text-center max-w-3xl mx-auto text-lg md:text-xl">
-          Our Surfside Resort vacation homes are thoughtfully designed for
-          families and groups looking to enjoy the Emerald Coast. Choose from
-          spacious three-bedroom beachfront accommodations featuring panoramic
-          Gulf views, oversized private balconies, modern interiors, and direct
-          access to one of Destin's most beautiful private beaches.
+         
+Looking for a reliable property manager? I'm currently accepting new vacation rental properties and would love to help you maximize your rental income. From guest communication and bookings to day-to-day management, I provide personalized service so you can enjoy hassle-free ownership.
         </p>
       </div>
 
       {/* Divider */}
 
-      <div className="my-16 h-px bg-gray-200"></div>
+      
 
-      <div className="max-w-4xl mx-auto">
+      {/* <div className="max-w-4xl mx-auto">
         <h3 className="text-3xl font-bold text-gray-900 mb-6">
-          What You'll Enjoy During Your Stay
+          Now Accepting New Properties
         </h3>
 
         <div className="space-y-4">
@@ -148,15 +144,15 @@ export default function PropertyManagementIntro() {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
      <PropertyShowcase galleryImages={galleryImages} />
 
      {/* SECTION 1 */}
-<section className="bg-gray-50 py-16 lg:py-24">
+{/* <section className="bg-gray-50 py-16 lg:py-24">
   <div className="max-w-7xl mx-auto px-6 lg:px-8">
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-center">
 
-      {/* Left - Video */}
+       
 
       <div className="order-2 lg:order-1">
   <div className="relative overflow-hidden rounded-3xl shadow-2xl">
@@ -175,7 +171,7 @@ export default function PropertyManagementIntro() {
   </div>
 </div>
 
-      {/* Right - Content */}
+      
 
       <div className="order-1 lg:order-2 text-center lg:text-left">
         <h2
@@ -206,7 +202,7 @@ export default function PropertyManagementIntro() {
           Florida's Emerald Coast.
         </p>
 
-        {/* Highlights */}
+        
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
 
@@ -240,7 +236,7 @@ export default function PropertyManagementIntro() {
 
         </div>
 
-        {/* Buttons */}
+       
 
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 
@@ -264,14 +260,14 @@ export default function PropertyManagementIntro() {
 
     </div>
   </div>
-</section>
+</section> */}
 
-<section className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
+{/* <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
   <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
     <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-      {/* Left Content */}
+      
 
       <div className="order-2 lg:order-1">
         <h2
@@ -300,7 +296,7 @@ export default function PropertyManagementIntro() {
         </p>
       </div>
 
-      {/* Right Image */}
+      
 
       <div className="order-1 lg:order-2 relative">
 
@@ -321,9 +317,10 @@ export default function PropertyManagementIntro() {
     </div>
 
   </div>
-</section>
-<section className="relative py-20 lg:py-28 overflow-hidden">
-  {/* Background Image */}
+</section> */}
+
+{/* <section className="relative py-20 lg:py-28 overflow-hidden">
+ 
 
   <div className="absolute inset-0">
     <img
@@ -338,7 +335,7 @@ export default function PropertyManagementIntro() {
 
     <div className="flex justify-center lg:justify-end">
 
-      {/* Floating Card */}
+ 
 
       <div className="w-full max-w-2xl  backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
 
@@ -377,7 +374,7 @@ export default function PropertyManagementIntro() {
     </div>
 
   </div>
-</section>
+</section> */}
 
     </>
   );

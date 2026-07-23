@@ -41,15 +41,15 @@ const PropertyCard = ({ listing }) => {
 
   return (
     <Link to={`/${listing?._id}`} className="block h-full">
-      <div className=" group bg-white rounded-[28px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100 h-full flex flex-col ">
+     <div className="relative group bg-white rounded-[28px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100 h-full flex flex-col"> 
         {/* DEAL RIBBON */}
-        {listing?.deal && (
-          <div
-            className="   top-16 left-4 bg-red-500 text-center text-white px-4 py-1 rounded-full text-xs font-bold shadow " >
-              Special Deal
-          </div>
-        )}
-
+      {listing?.deal && (
+  <div className="absolute top-7 -left-15 z-20 rotate-[-45deg]">
+    <div className="bg-gradient-to-r from-red-600 via-red-500  to-orange-500 text-white   font-bold text-[10px] uppercase tracking-wider px-12 py-2 shadow-2xl">
+      <p className="mx-4 ">Special Deal</p> 
+    </div>
+  </div>
+)}
         {/* IMAGE */}
         <div className="relative overflow-hidden">
           <img

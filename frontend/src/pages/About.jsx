@@ -36,8 +36,8 @@ export default function About({ userId }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const image = galleryImages?.[12]?.image
-    ? getImageUrl(galleryImages[12].image)
+  const image = galleryImages?.[17]?.image
+    ? getImageUrl(galleryImages[17].image)
     : "https://www.coastaldreamrentals.com/img/home/d74d56b0-b8ac-4d34-84c0-ede6d2f0569c.jpeg";
 
   const heroImage = galleryImages[0]?.image

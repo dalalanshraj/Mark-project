@@ -158,9 +158,9 @@ const PropertyDetail = () => {
       {/* GALLERY */}
       <PropertyGallery images={imageUrls} />
 
-      <div className="max-w-7xl mx-auto px-4 mt-10 grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20">
+      <div className="max-w-7xl mx-auto  px-4 mt-10 grid grid-cols-1 lg:grid-cols-3 gap-10 mb-20">
         {/* LEFT */}
-        <div className="lg:col-span-2 bg-white rounded-3xl shadow-lg p-6 md:p-10">
+        <div className="lg:col-span-2 top-0 translate-y-[-4.6rem] bg-white rounded-3xl shadow-lg p-6 md:p-10">
           <p className="text-gray-500 text-sm mb-2">
             {listing.location?.address || "Location"}
           </p>
@@ -333,7 +333,7 @@ const PropertyDetail = () => {
         {/* CALENDAR */}
 
         <div className="lg:col-span-0">
-          <div className=" sticky top-24 bg-white rounded-[32px] relative shadow-[0_25px_70px_rgba(0,0,0,.12)] ">
+          <div className=" sticky  top-0 translate-y-[-10%] bg-white rounded-[32px] relative shadow-[0_25px_70px_rgba(0,0,0,.12)] ">
             {/* ================= OWNER ================= */}
 
             <div

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios.js";
-import FeaturedActivities from "../components/homeSection/FeaturedActivities";
+import FeaturedActivities from "../components/FeaturedActivitiesCard.jsx";
 import DiscoverDestinSection from "../components/homeSection/DiscoverDestin";
 import DatePicker from "react-datepicker";
 import PropertyCard from "../components/PropertyCard";
@@ -76,6 +76,8 @@ const HeroSection = ({ listingId, userId }) => {
 
     return new Date(year, month - 1, day);
   };
+
+  
   return (
     <>
       {/* HERO */}
@@ -200,7 +202,15 @@ const HeroSection = ({ listingId, userId }) => {
         </div>
       </div>
       {/* <AboutSection userId="6a59081d8e08e38026c7b78b" /> */}
-      <FeaturedActivities />
+     <FeaturedActivities limit={4} />
+       <Link to={"/activities"} className="flex justify-center">
+            <button
+              onClick={() => setOpen(true)}
+              className="px-8  py-3 text-center rounded-full  text-black font-medium shadow-md bg-[#F8F812]  hover:bg-[#1B252F] hover:text-white hover:scale-105  transition duration-300"
+            >
+              View More →
+            </button>
+          </Link>
       <PropertyIcon />
       <DealsCTA />
       <ContactSection />

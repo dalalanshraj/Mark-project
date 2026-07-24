@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import AboutSection from "../components/homeSection/AboutSection";
-import FeaturedActivities from "../components/homeSection/FeaturedActivities";
+import FeaturedActivities from "../components/FeaturedActivitiesCard";
 import herobg from "../assets/herobg.jpg";
 import surfsideVideo from "../assets/surfside.mp4";
+import herobg2 from "../assets/herobg2.jpg";
 import {
   MapPin,
   Home,
@@ -61,14 +62,12 @@ export default function About({ userId }) {
   return (
     <>
       {/* 🔥 HERO (FIXED IMAGE) */}
-      <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center text-white">
-        {/* FIXED BACKGROUND */}
-        <div
-          className="absolute inset-0 bg-fixed bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${herobg})`,
-          }}
-        />
+      <section
+             className="relative h-[60vh] md:h-[70vh]  bg-cover bg-center flex items-center justify-center text-white"
+             style={{
+                 backgroundImage: `url(${herobg2})`,
+               }}
+           >
 
         <div className="absolute inset-0 bg-black/60" />
 

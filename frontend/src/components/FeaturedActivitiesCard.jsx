@@ -3,51 +3,146 @@ import { Link } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 
-import img1 from "../../assets/activity-img.jpg";
-import img2 from "../../assets/activity-img2.jpg";
-import img3 from "../../assets/activity-img3.jpg";
-import img4 from "../../assets/activity-img4.jpg";
-
+ 
 const activities = [
   {
     id: "big-kahuna-water-park",
     title: "Big Kahuna Water Park",
-    location:"Destin Florida",
+    location: "Destin, FL",
     description:
       "Spend the day enjoying exciting water slides, lazy rivers, wave pools, and family-friendly attractions at one of Destin's most popular water parks.",
-    image: img1,
+    image: "/ActivitiesImg/activity-img.jpg",
     type: "Water Park",
   },
   {
     id: "ajs-seafood-oyster-bar",
-    title: "AJ’s Seafood & Oyster Bar",
-    location:"Destin Florida Restaurants",
+    title: "AJ's Seafood & Oyster Bar",
+    location: "Destin Harbor",
     description:
-      "Experience fresh Gulf seafood, live music, waterfront dining, and a lively atmosphere at the iconic AJ’s Seafood & Oyster Bar.",
-    image: img2,
-    type: "Dining",
+      "Experience fresh Gulf seafood, live music, waterfront dining, and a lively atmosphere at the iconic AJ's Seafood & Oyster Bar.",
+    image: "/ActivitiesImg/activity-img2.jpg",
+    type: "Restaurant",
   },
   {
     id: "big-daddys-bike-rental",
     title: "Big Daddy's Bike Rental",
-    location:"30A-Beaches-South Walton",
+    location: "30A & South Walton",
     description:
-      "Explore the scenic 30A trails with quality bike rentals, perfect for families, couples, and outdoor enthusiasts of all ages.",
-    image: img3,
+      "Explore the scenic 30A trails with quality bike rentals, perfect for families, couples, and outdoor enthusiasts.",
+    image: "/ActivitiesImg/activity-img3.jpg",
     type: "Bike Rental",
   },
   {
     id: "great-southern-cafe",
     title: "Great Southern Cafe",
-    location:"30A-Beaches-South Walton Restaurants",
+    location: "Seaside, 30A",
     description:
       "Enjoy Southern-inspired cuisine, fresh local seafood, and a relaxed atmosphere at the award-winning Great Southern Cafe.",
-    image: img4, // Replace with a dedicated image if available
+    image: "/ActivitiesImg/activity-img4.jpg",
     type: "Restaurant",
   },
+  {
+  id: "boat-rentals",
+  title: "Boat Rentals",
+  location: "Destin Harbor",
+  description:
+    "Rent a pontoon or luxury boat and explore the beautiful Emerald Coast at your own pace.",
+  image: "/ActivitiesImg/activity-img5.jpg",
+  type: "Boat Rental",
+},
+{
+  id: "jet-ski-rentals",
+  title: "Jet Ski Rentals",
+  location: "Destin Harbor",
+  description:
+    "Experience the thrill of riding jet skis across the beautiful Emerald Coast with hourly and daily rentals available.",
+  image: "/ActivitiesImg/activity-img6.jpg",
+  type: "Water Sports",
+},
+  {
+    id: "parasailing",
+    title: "Parasailing Adventure",
+    location: "Destin Beach",
+    description:
+      "Take in breathtaking aerial views of the Emerald Coast with an unforgettable parasailing experience.",
+    image: "/ActivitiesImg/activity-img7.jpg",
+    type: "Adventure",
+  },
+  {
+    id: "fishing-charters",
+    title: "Deep Sea Fishing Charters",
+    location: "Destin Harbor",
+    description:
+      "Join experienced captains for deep-sea fishing adventures targeting snapper, grouper, amberjack, and more.",
+    image: "/ActivitiesImg/activity-img8.jpg",
+    type: "Fishing",
+  },
+  {
+    id: "golf-courses",
+    title: "Championship Golf Courses",
+    location: "Destin & Miramar Beach",
+    description:
+      "Play on championship golf courses featuring scenic fairways, challenging layouts, and coastal views.",
+    image: "/ActivitiesImg/activity-img9.jpg",
+    type: "Golf",
+  },
+  {
+    id: "mcguires-irish-pub",
+    title: "McGuire's Irish Pub",
+    location: "Destin",
+    description:
+      "Enjoy famous steaks, burgers, Irish favorites, handcrafted beers, and live entertainment.",
+    image: "/ActivitiesImg/activity-img10.jpg",
+    type: "Restaurant",
+  },
+  {
+    id: "boshamps-seafood",
+    title: "Boshamps Seafood & Oyster House",
+    location: "Destin Harbor",
+    description:
+      "Savor fresh Gulf seafood while enjoying beautiful harbor views in a relaxed waterfront setting.",
+    image: "/ActivitiesImg/activity-img11.jpg",
+    type: "Restaurant",
+  },
+  {
+    id: "marina-cafe",
+    title: "Marina Cafe",
+    location: "Destin Harbor",
+    description:
+      "Enjoy premium seafood, steaks, handcrafted cocktails, and spectacular sunset views.",
+    image: "/ActivitiesImg/activity-img12.jpg",
+    type: "Fine Dining",
+  },
+  {
+    id: "louisiana-lagniappe",
+    title: "Louisiana Lagniappe",
+    location: "Sandpiper Cove, Destin",
+    description:
+      "Experience award-winning Louisiana-inspired seafood in an elegant waterfront atmosphere.",
+    image: "/ActivitiesImg/activity-img13.jpg",
+    type: "Fine Dining",
+  },
+  {
+    id: "destin-harbor-boardwalk",
+    title: "Destin Harbor Boardwalk",
+    location: "Destin Harbor",
+    description:
+      "Explore waterfront shopping, local restaurants, family attractions, live entertainment, and seasonal fireworks.",
+    image: "/ActivitiesImg/activity-img14.jpg",
+    type: "Shopping",
+  },
+   
 ];
 
-const FeaturedActivities = () => {
+const FeaturedActivities = ({ limit }) => {
+
+
+  
+
+  const displayedActivities = limit
+    ? activities.slice(0, limit)
+    : activities;
+
   return (
     <section className="py-16 lg:py-24 bg-gradient-to-b from-white via-slate-50 to-white">
       <div className="max-w-7xl mx-auto px-5">
@@ -72,8 +167,7 @@ const FeaturedActivities = () => {
 
         <div id="activities" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
 
-          {activities.map((item) => (
-
+         {displayedActivities.map((item) => (
             <div
               key={item.id}
               className="
@@ -161,10 +255,10 @@ const FeaturedActivities = () => {
 
               <div className="p-6 flex flex-col flex-1">
 
-                <div className="flex items-center gap-2 text-sky-600 text-sm font-medium mb-3">
+                {/* <div className="flex items-center gap-2 text-sky-600 text-sm font-medium mb-3">
                   <HiOutlineLocationMarker />
                   {item.location}
-                </div>
+                </div> */}
 
                 <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-sky-600 duration-300">
                   {item.title}

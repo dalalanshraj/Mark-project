@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/axios.js";
 import ReviewModal from "../components/homeSection/ReviewModal";
 import herobg from "../assets/herobg.jpg";
+import herobg2 from "../assets/herobg2.jpg";
 
 export default function Reviews() {
   const [reviews, setReviews] = useState([]);
@@ -99,13 +100,12 @@ export default function Reviews() {
   return (
     <>
       {/* HERO */}
-      <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center text-white">
-        <div
-          className="absolute inset-0 bg-fixed bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${herobg})`,
-          }}
-        />
+      <section
+             className="relative h-[60vh] md:h-[70vh]  bg-cover bg-center flex items-center justify-center text-white"
+             style={{
+                 backgroundImage: `url(${herobg2})`,
+               }}
+           >
 
         <div className="absolute inset-0 bg-black/60" />
 

@@ -86,7 +86,7 @@ const faqs = [
     icon: "❌",
     question: "What is the cancellation policy?",
     answer:
-      "Reservations canceled 60 or more days before arrival receive a full refund. Cancellations within 60 days are refunded only if the dates are successfully rebooked."
+      "100% refund 30 days or more before check-in 50% refund 14-30 days before check-in Otherwise, no refund"
   },
 
   {

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import api from "../api/axios";
 import YearCalendar from "../components/adminCalendar/YearCalendar";
 import herobg from "../assets/herobg.jpg";
+import herobg2 from "../assets/herobg2.jpg";
 
 export default function AdminCalendar() {
   // ==========================================
@@ -161,14 +162,12 @@ export default function AdminCalendar() {
 
   return (
     <>
-    <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center text-white">
-           {/* FIXED BACKGROUND */}
-           <div
-             className="absolute inset-0 bg-fixed bg-cover bg-center"
-             style={{
-               backgroundImage: `url(${herobg})`,
+    <section
+           className="relative h-[60vh] md:h-[70vh]  bg-cover bg-center flex items-center justify-center text-white"
+           style={{
+               backgroundImage: `url(${herobg2})`,
              }}
-           />
+         >
    
            <div className="absolute inset-0 bg-black/60" />
    

@@ -34,6 +34,9 @@ import ScrollToTop from "./components/ScrollToTop";
 import ScrollToHash from "./components/ScrollToHash";
 import PropertyManagementIntro from "./pages/PropertyManagementHero";
 import AdminCalendar from "./pages/AdminCalendar";
+ 
+import Activities from "./pages/Activities";
+ 
 
 function App() {
   const location = useLocation();
@@ -63,7 +66,8 @@ function App() {
         <Route path="/gallery" element={<Gallery />} />
          <Route path="/property-management" element={<PropertyManagementIntro />} />
          <Route path="/properties-calendar" element={<AdminCalendar />} />
-
+         <Route path="/activities" element={<Activities />} />
+         
 
         
           

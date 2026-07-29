@@ -12,7 +12,7 @@ export default function PropertyIcon({ listing }) {
       links: {
         ecbyo: "https://www.emeraldcoastbyowner.com/e1641",
         vrbo: "https://www.vrbo.com/1079434?dateless=true&brandcid=VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&shortlink=xxluafk1&af_siteid=9001001&af_sub1=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&af_ad=BRAND.VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&deep_link_value=https%3A%2F%2Fwww.vrbo.com%2F1079434%3Fdateless%3Dtrue&af_adset=VRBO&pid=BRAND&source_caller=api_v2&custom_web_attribute=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&s_dev_type=DESKTOP&c=SHARELINK-LODGINGPDP&af_sub_siteid=SHARELINK-LODGINGPDP",
-        airbnb:" ",
+        airbnb:"https://www.airbnb.co.in/rooms/1731449317304746642?check_in=2026-08-02&check_out=2026-08-07&guests=1&adults=1&s=67&unique_share_id=4819226b-4825-43d0-9f8a-bf5941916977&locale=en&source_impression_id=p3_1785337307_P34Qem302XsAfHdH",
         FloridaRentals:"https://www.floridarentals.com/5214/?utm_source=shared_listing&utm_medium=referral&utm_campaign=copyPropertyLink",
       },
     },
@@ -22,7 +22,7 @@ export default function PropertyIcon({ listing }) {
       links: {
         ecbyo: "https://www.emeraldcoastbyowner.com/e1907",
         vrbo: "https://www.vrbo.com/1079379?dateless=true&brandcid=VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&custom_web_attribute=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&c=SHARELINK-LODGINGPDP&deep_link_value=https%3A%2F%2Fwww.vrbo.com%2F1079379%3Fdateless%3Dtrue&af_adset=VRBO&source_caller=api_v2&af_siteid=9001001&af_sub1=3ea1cbb6-08b0-cd2f-3d2e-f5de3307d53f&af_sub_siteid=SHARELINK-LODGINGPDP&af_ad=BRAND.VRBO.OWNED.MMP.LODGINGPDP.DESKTOP-SHARELINK&shortlink=bwnkzcju&pid=BRAND&s_dev_type=DESKTOP",
-        airbnb:" ",
+        airbnb:"https://www.airbnb.co.in/rooms/1607417823409296472?check_in=2026-08-21&check_out=2026-08-26&guests=1&adults=1&s=67&unique_share_id=9689cacc-e8b4-456b-8bb8-1fd5280a21d3&locale=en&source_impression_id=p3_1785337286_P3A9l-JnWoTWR6bT",
         FloridaRentals:"https://www.floridarentals.com/1277/?utm_source=shared_listing&utm_medium=referral&utm_campaign=copyPropertyLink",
       },
     },

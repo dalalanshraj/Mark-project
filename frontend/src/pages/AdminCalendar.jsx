@@ -75,6 +75,18 @@ export default function AdminCalendar() {
       setLoading(true);
 
       const res = await api.get(`/calendar/${selectedListing}/calendar`);
+      console.table(
+      res.data.calendar
+        .filter((e) => {
+          const d = String(e.date).slice(0, 10);
+          return d >= "2026-08-01" && d <= "2026-08-10";
+        })
+        .map((e) => ({
+          date: String(e.date).slice(0, 10),
+          status: e.status,
+          source: e.source,
+        }))
+    );
 
       setCalendar(res.data.calendar || []);
     } catch (err) {
@@ -91,16 +103,18 @@ export default function AdminCalendar() {
   // ==========================================
 
   const formatDate = (date) => {
-    const d = new Date(date);
+  if (!date) return "";
 
-    const y = d.getFullYear();
+  if (typeof date === "string") {
+    return date.substring(0, 10);
+  }
 
-    const m = String(d.getMonth() + 1).padStart(2, "0");
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
 
-    const day = String(d.getDate()).padStart(2, "0");
-
-    return `${y}-${m}-${day}`;
-  };
+  return `${y}-${m}-${d}`;
+};
 
   // ==========================================
   // CALENDAR MAP
@@ -118,6 +132,7 @@ export default function AdminCalendar() {
 
       map[key].push(item);
     });
+     
 
     return map;
   }, [calendar]);
@@ -148,6 +163,28 @@ export default function AdminCalendar() {
       .catch(console.log)
       .finally(() => setLoading(false));
   }, []);
+
+  const syncCalendar = async () => {
+  if (!selectedListing) return;
+
+  try {
+    setLoading(true);
+
+    await api.post(
+      `/calendar/${selectedListing}/calendar/merge-ical`
+    );
+
+    await loadCalendar();
+
+    alert("Calendar Synced Successfully");
+  } catch (err) {
+    console.log(err);
+
+    alert("Sync Failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const image = galleryImages?.[1]?.image
     ? getImageUrl(galleryImages[0].image)
@@ -229,14 +266,22 @@ export default function AdminCalendar() {
 
           {/* Refresh */}
 
-          <div className="flex items-end">
-            <button
-              onClick={refreshCalendar}
-              className="w-full rounded-lg bg-blue-600 py-3 text-white font-semibold transition hover:bg-blue-700"
-            >
-              Refresh Calendar
-            </button>
-          </div>
+         <div className="flex items-end gap-3">
+  <button
+    onClick={refreshCalendar}
+    className="flex-1 rounded-lg bg-blue-600 py-3 text-white font-semibold"
+  >
+    Refresh Calendar
+  </button>
+
+  <button
+    onClick={syncCalendar}
+    disabled={loading}
+    className="flex-1 rounded-lg bg-green-600 py-3 text-white font-semibold"
+  >
+    {loading ? "Syncing..." : "Sync iCal"}
+  </button>
+</div>
         </div>
       </div>
 

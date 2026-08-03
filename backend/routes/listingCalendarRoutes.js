@@ -10,7 +10,10 @@ import {
   importICal,
   getAllListingCalendars,
   resetICal,
+  saveICalSources,
+  mergeICalSources,
 } from "../controllers/calendarController.js";
+
 import { isAuth, isAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -36,6 +39,16 @@ router.post("/:id/calendar/unblock", isAuth, isAdmin, unblockDates);
 
 router.put("/:id/calendar/clean-duplicates", cleanDuplicateCalendar);
 router.put("/:id/calendar/clear", clearCalendar);
+router.put(
+  "/:id/calendar/ical-sources",
+  saveICalSources
+);
+router.post(
+  "/:id/calendar/merge-ical",
+  isAuth,
+  isAdmin,
+  mergeICalSources
+);
 router.post("/:id/calendar/import-ical", isAuth, isAdmin, importICal);
 
 router.put("/:id/calendar/reset-ical", resetICal);

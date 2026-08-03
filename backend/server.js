@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import startCalendarCron from "./cron/calendarCron.js";
 
 // import axios from "axios";
 // import Property from "./models/Property.js";
@@ -27,7 +28,7 @@ import inquiryRoutes from "./routes/inquiryRoutes.js";
 import calendarRoutes from "./routes/listingCalendarRoutes.js";
 import dealRoutes from    "./routes/dealRoutes.js"
 import galleryRoutes from "./routes/galleryRoutes.js";
-import icalcalendarRoutes from "./routes/icalRoutes.js";
+// import icalcalendarRoutes from "./routes/icalRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 
@@ -102,7 +103,7 @@ app.use(
 );
 
 
-app.use("/api", icalcalendarRoutes);
+// app.use("/api", icalcalendarRoutes);
 app.use("/api/profile", profileRoutes);
 
 
@@ -120,6 +121,7 @@ mongoose
     console.error("❌ MongoDB Error:", err);
   });
 
+   startCalendarCron();
 app.listen(PORT, () =>
   console.log(`🚀 Server running at http://localhost:${PORT}`)
 );

@@ -65,6 +65,12 @@ export default function MonthCalendar({ month, year, monthName, calendarMap }) {
   // ==========================================
 
   const getStatus = (events) => {
+     if (
+    events.some(e => e.date?.slice?.(0, 10) === "2026-08-16") ||
+    events.length
+  ) {
+   
+  }
     if (!events.length) return "A";
 
     const statuses = events.map((e) => e.status);

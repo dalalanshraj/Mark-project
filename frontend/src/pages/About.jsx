@@ -56,8 +56,8 @@ export default function About({ userId }) {
   const whyChooseUsImage = galleryImages[18]?.image
     ? getImageUrl(galleryImages[18].image)
     : "/placeholder.png";
-     const Guestsimg  = galleryImages?.[15]?.image
-    ? getImageUrl(galleryImages[15].image)
+     const Guestsimg  = galleryImages?.[7]?.image
+    ? getImageUrl(galleryImages[7].image)
     : "https://destinbeachcondorentals.com/gallery-uploads/1784561207521-97328694.webp";
   return (
     <>
@@ -213,15 +213,72 @@ export default function About({ userId }) {
 
         <div className="relative text-center px-4 sm:px-6"></div>
       </section>
-      {/* 🔥 WHY CHOOSE THIS PROPERTY */}
+
+      <section className="relative py-20 lg:py-28 overflow-hidden">
+ 
+
+  <div className="absolute inset-0">
+    <img
+      src={Guestsimg}
+      alt="Surfside Resort"
+      className="w-[50%] h-full object-cover"
+    />
+ 
+  </div>
+
+  <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+
+    <div className="flex justify-center lg:justify-end">
+
+ 
+
+      <div className="w-full max-w-2xl  backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
+
+        <h2
+          className="mt-6 text-[#2C5A7B] text-4xl sm:text-5xl leading-tight"
+          style={{
+            fontFamily:
+              'Yellowtail, "Yellowtail Fallback", cursive',
+          }}
+        >
+          Why Guests Love
+           
+          Staying With Us
+        </h2>
+
+        <p className="mt-8 text-lg leading-8 text-gray-600 font-montserrat">
+          Paradise Found and Sun N Sea combine the comfort of home with
+          the beauty of Florida's Emerald Coast. Every detail has been
+          thoughtfully prepared to give families and groups a relaxing,
+          convenient, and memorable beachfront vacation experience.
+        </p>
+
+        <p className="mt-6 text-lg leading-8 text-gray-600 font-montserrat">
+          Spacious three-bedroom layouts, panoramic Gulf views, private
+          balconies, fully equipped kitchens, and premium resort amenities
+          make every stay comfortable from arrival through departure.
+          Whether you're visiting for a family vacation, beach wedding,
+          or weekend escape, you'll enjoy everything Surfside Resort has
+          to offer.
+        </p>
+
+       
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+      {/* 🔥 WHY CHOOSE THIS PROPERTY 
       <section className="relative py-20 lg:py-28 bg-gradient-to-b from-slate-50 via-white to-slate-100 overflow-hidden">
-        {/* Background Decoration */}
+ 
         <div className="absolute -top-20 -left-20 w-72 h-72 bg-sky-200/30 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-yellow-200/30 rounded-full blur-3xl"></div>
 
         <div className="relative max-w-7xl mx-auto px-5 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-14 items-center">
-            {/* Image */}
+ 
             <div className="relative order-2 lg:order-1">
               <div className="overflow-hidden rounded-[32px] shadow-2xl group">
                 <img
@@ -231,12 +288,12 @@ export default function About({ userId }) {
                 />
               </div>
 
-              {/* Floating Badge */}
+ 
 
             
             </div>
 
-            {/* Content */}
+   
 
             <div className="order-1 lg:order-2">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[94px]  text-sky-900 text-center leading-tight"
@@ -257,7 +314,7 @@ export default function About({ userId }) {
                 stay on the Emerald Coast.
               </p>
 
-              {/* Features */}
+         
 
               <div className="grid sm:grid-cols-2 gap-5 mt-10">
                 <div className="flex gap-4 p-5 rounded-2xl bg-white shadow-md hover:shadow-xl duration-300">
@@ -321,7 +378,7 @@ export default function About({ userId }) {
           </div>
         </div>
       </section>
-
+*/}
 <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
   <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
@@ -379,62 +436,7 @@ export default function About({ userId }) {
   </div>
 </section>
 
-<section className="relative py-20 lg:py-28 overflow-hidden">
- 
 
-  <div className="absolute inset-0">
-    <img
-      src={Guestsimg}
-      alt="Surfside Resort"
-      className="w-[50%] h-full object-cover"
-    />
- 
-  </div>
-
-  <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-
-    <div className="flex justify-center lg:justify-end">
-
- 
-
-      <div className="w-full max-w-2xl  backdrop-blur-md rounded-3xl shadow-2xl p-8 md:p-12">
-
-        <h2
-          className="mt-6 text-[#2C5A7B] text-4xl sm:text-5xl leading-tight"
-          style={{
-            fontFamily:
-              'Yellowtail, "Yellowtail Fallback", cursive',
-          }}
-        >
-          Why Guests Love
-           
-          Staying With Us
-        </h2>
-
-        <p className="mt-8 text-lg leading-8 text-gray-600 font-montserrat">
-          Paradise Found and Sun N Sea combine the comfort of home with
-          the beauty of Florida's Emerald Coast. Every detail has been
-          thoughtfully prepared to give families and groups a relaxing,
-          convenient, and memorable beachfront vacation experience.
-        </p>
-
-        <p className="mt-6 text-lg leading-8 text-gray-600 font-montserrat">
-          Spacious three-bedroom layouts, panoramic Gulf views, private
-          balconies, fully equipped kitchens, and premium resort amenities
-          make every stay comfortable from arrival through departure.
-          Whether you're visiting for a family vacation, beach wedding,
-          or weekend escape, you'll enjoy everything Surfside Resort has
-          to offer.
-        </p>
-
-       
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
       
       {/* <FeaturedActivities /> */}
     </>

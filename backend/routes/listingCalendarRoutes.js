@@ -10,6 +10,7 @@ import {
   importICal,
   getAllListingCalendars,
   resetICal,
+  exportICal,
   saveICalSources,
   mergeICalSources,
 } from "../controllers/calendarController.js";
@@ -52,6 +53,10 @@ router.post(
 router.post("/:id/calendar/import-ical", isAuth, isAdmin, importICal);
 
 router.put("/:id/calendar/reset-ical", resetICal);
+router.get(
+  "/:id/calendar/export-ical",
+  exportICal
+);
 
 // router.put("/:id/calendar/clear", clearCalendar);
 

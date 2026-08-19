@@ -1,4 +1,5 @@
 import Listing from "../models/Listing.js";
+
 import fetch from "node-fetch";
 import ical from "ical";
 import mongoose from "mongoose";
@@ -6,6 +7,8 @@ import {
   syncListingCalendars,
   buildCalendarEntries,
 } from "../helpers/icalHelper.js";
+
+import { generateICal } from "../helpers/icalExportHelper.js";
 
 const toValidDate = (value) => {
   const d = new Date(value);
@@ -744,6 +747,148 @@ export const mergeICalSources = async (req, res) => {
     res.status(500).json({
       message: err.message,
     });
+  }
+};
+
+// =====================================================
+// EXPORT UNIFIED ICAL
+// =====================================================
+
+// =====================================================
+// EXPORT UNIFIED ICAL
+// =====================================================
+
+export const exportICal = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // ==========================================
+    // VALIDATE LISTING ID
+    // ==========================================
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send("Invalid listing ID");
+    }
+
+    // ==========================================
+    // FIND LISTING
+    // ==========================================
+
+    const listing = await Listing.findById(id);
+
+    if (!listing) {
+      return res.status(404).send("Listing not found");
+    }
+
+    // ==========================================
+    // GET CALENDAR
+    // ==========================================
+
+    const calendar = normalizeCalendar(
+      listing.calendar || []
+    );
+
+    // ==========================================
+    // SORT BY DATE
+    // ==========================================
+
+    calendar.sort(
+      (a, b) =>
+        new Date(a.date).getTime() -
+        new Date(b.date).getTime()
+    );
+
+    // ==========================================
+    // BUILD BOOKINGS
+    // ==========================================
+
+    const bookings = [];
+
+    let currentBooking = null;
+
+    for (const item of calendar) {
+      const status = item.status;
+
+      // ------------------------------------------
+      // CHECK-IN
+      // ------------------------------------------
+
+      if (status === "CIN") {
+        currentBooking = {
+          start: new Date(item.date),
+          source: item.source,
+        };
+
+        continue;
+      }
+
+      // ------------------------------------------
+      // CHECK-OUT
+      // ------------------------------------------
+
+      if (status === "COUT" && currentBooking) {
+        const start = currentBooking.start;
+        const end = new Date(item.date);
+
+        // Make sure end is after start
+        if (end > start) {
+          bookings.push({
+            start,
+            end,
+            summary: "Reserved",
+            uid: `${id}-${dateOnly(start)}-${dateOnly(end)}`,
+          });
+        }
+
+        currentBooking = null;
+      }
+    }
+
+    // ==========================================
+    // PROPERTY NAME
+    // ==========================================
+
+    const propertyTitle =
+      listing.property?.title ||
+      "Property Calendar";
+
+    // ==========================================
+    // GENERATE ICS
+    // ==========================================
+
+    const ics = generateICal(
+      bookings,
+      propertyTitle
+    );
+
+    // ==========================================
+    // RESPONSE HEADERS
+    // ==========================================
+
+    res.setHeader(
+      "Content-Type",
+      "text/calendar; charset=utf-8"
+    );
+
+    res.setHeader(
+      "Content-Disposition",
+      `inline; filename="${propertyTitle
+        .replace(/[^a-z0-9]/gi, "-")
+        .toLowerCase()}-calendar.ics"`
+    );
+
+    // ==========================================
+    // SEND ICS
+    // ==========================================
+
+    res.send(ics);
+
+  } catch (err) {
+    console.error("EXPORT ICAL ERROR:", err);
+
+    res.status(500).send(
+      "Failed to generate iCal calendar"
+    );
   }
 };
 // export const clearCalendar = async (

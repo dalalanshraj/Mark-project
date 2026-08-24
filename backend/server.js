@@ -91,18 +91,9 @@ app.use("/api/listings", calendarRoutes);
 app.use("/api/deals" , dealRoutes);
 app.use("/api/inquiries" , inquiryRoutes);
 app.use("/api/gallery", galleryRoutes);
-app.use(
-  "/gallery-uploads",
-  express.static("gallery-uploads")
-);
+app.use( "/gallery-uploads", express.static("gallery-uploads") );
 app.use("/api/contact", contactRoutes);
-
-app.use(
-  "/uploads",
-  express.static("uploads")
-);
-
-
+app.use( "/uploads", express.static("uploads") );
 // app.use("/api", icalcalendarRoutes);
 app.use("/api/profile", profileRoutes);
 

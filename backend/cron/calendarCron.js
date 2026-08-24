@@ -1,4 +1,4 @@
- import cron from "node-cron";
+import cron from "node-cron";
 import Listing from "../models/Listing.js";
 
 import {
@@ -6,14 +6,31 @@ import {
   buildCalendarEntries,
 } from "../helpers/icalHelper.js";
 
+let isSyncRunning = false;
+
 const startCalendarCron = () => {
   console.log("🚀 Calendar Cron initialized");
+  console.log("⏱️ Schedule: Every 5 minutes");
 
   // ==========================================
-  // RUN EVERY HOUR
+  // RUN EVERY 5 MINUTES
   // ==========================================
 
   cron.schedule("0 * * * *", async () => {
+
+    // ==========================================
+    // PREVENT OVERLAPPING SYNC
+    // ==========================================
+
+    if (isSyncRunning) {
+      console.log(
+        "⏭️ Previous iCal sync is still running. Skipping this run."
+      );
+      return;
+    }
+
+    isSyncRunning = true;
+
     const start = Date.now();
 
     console.log("\n========================================");
@@ -22,6 +39,7 @@ const startCalendarCron = () => {
     console.log("========================================");
 
     try {
+
       // ==========================================
       // FIND LISTINGS HAVING ICAL SOURCES
       // ==========================================
@@ -49,6 +67,7 @@ const startCalendarCron = () => {
       // ==========================================
 
       for (const listing of listings) {
+
         const propertyTitle =
           listing.property?.title || "Untitled Property";
 
@@ -57,6 +76,7 @@ const startCalendarCron = () => {
         console.log(`🆔 Listing ID: ${listing._id}`);
 
         try {
+
           // ========================================
           // GET ENABLED ICAL SOURCES
           // ========================================
@@ -74,7 +94,9 @@ const startCalendarCron = () => {
 
           sources.forEach((source, index) => {
             console.log(
-              `   ${index + 1}. ${source.name || "Unknown Source"}`
+              `   ${index + 1}. ${
+                source.name || "Unknown Source"
+              }`
             );
           });
 
@@ -84,7 +106,8 @@ const startCalendarCron = () => {
 
           console.log("📥 Fetching iCal calendars...");
 
-          const events = await syncListingCalendars(listing);
+          const events =
+            await syncListingCalendars(listing);
 
           console.log(
             `📦 Events received: ${events.length}`
@@ -105,21 +128,19 @@ const startCalendarCron = () => {
           // REMOVE OLD ICAL ENTRIES
           // ========================================
 
-          const oldICalCount = (
-            listing.calendar || []
-          ).filter(
-            (item) => item.source === "ical"
-          ).length;
+          const oldICalCount =
+            (listing.calendar || []).filter(
+              (item) => item.source === "ical"
+            ).length;
 
           console.log(
             `🗑️ Old iCal entries: ${oldICalCount}`
           );
 
-          listing.calendar = (
-            listing.calendar || []
-          ).filter(
-            (item) => item.source !== "ical"
-          );
+          listing.calendar =
+            (listing.calendar || []).filter(
+              (item) => item.source !== "ical"
+            );
 
           // ========================================
           // ADD NEW ICAL ENTRIES
@@ -149,6 +170,7 @@ const startCalendarCron = () => {
           );
 
         } catch (err) {
+
           console.error(
             `❌ ${propertyTitle} sync failed`
           );
@@ -175,10 +197,19 @@ const startCalendarCron = () => {
       console.log("========================================\n");
 
     } catch (err) {
+
       console.error(
         "❌ ICAL CRON ERROR:",
         err
       );
+
+    } finally {
+
+      // ==========================================
+      // RELEASE LOCK
+      // ==========================================
+
+      isSyncRunning = false;
     }
   });
 };

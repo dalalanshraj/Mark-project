@@ -85,52 +85,71 @@ export const syncListingCalendars = async (listing) => {
 
    
 
-  for (const source of sources) {
-    try {
-     
-      const response = await fetch(source.url.trim(), {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
-          Accept: "text/calendar,text/plain,*/*",
-          "Accept-Language": "en-US,en;q=0.9",
-          Referer: "https://www.airbnb.com/",
-          Connection: "keep-alive",
-        },
-      });
- 
+ for (const source of sources) {
+  try {
+    console.log("=================================");
+    console.log("ICAL SOURCE:", source.name);
+    console.log("ICAL URL:", source.url);
 
-      const text = await response.text();
-     
+    const response = await fetch(source.url.trim(), {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/138.0.0.0 Safari/537.36",
+        Accept: "text/calendar,text/plain,*/*",
+      },
+    });
 
-      const parsed = ical.parseICS(text);
+    console.log("ICAL STATUS:", response.status);
+    console.log("ICAL CONTENT TYPE:", response.headers.get("content-type"));
 
-      Object.values(parsed).forEach((event) => {
-        if (event.type !== "VEVENT") return;
+    const text = await response.text();
 
-        events.push({
-          source: source.name,
+    console.log("ICAL RESPONSE LENGTH:", text.length);
+    console.log("ICAL RESPONSE START:", text.substring(0, 300));
 
-          summary: event.summary || "",
-
-          guest: cleanGuestName(event.summary),
-
-          reservationId: getReservationId(event.summary),
-
-          start: event.start,
-
-          end: event.end,
-
-          checkIn: formatDate(event.start),
-
-          checkOut: formatDate(event.end),
-        });
-        
-      });
-    } catch (err) {
-      console.log(`ICAL ERROR (${source.name}):`, err.message);
+    if (!response.ok) {
+      throw new Error(
+        `iCal fetch failed: ${response.status} ${response.statusText}`
+      );
     }
+
+    const parsed = ical.parseICS(text);
+
+    console.log(
+      "ICAL PARSED EVENTS:",
+      Object.values(parsed).filter(
+        (event) => event.type === "VEVENT"
+      ).length
+    );
+
+    Object.values(parsed).forEach((event) => {
+      if (event.type !== "VEVENT") return;
+      if (!event.start || !event.end) return;
+
+      console.log("EVENT:", {
+        summary: event.summary,
+        start: event.start,
+        end: event.end,
+      });
+
+      events.push({
+        source: source.name,
+        summary: event.summary || "",
+        guest: cleanGuestName(event.summary),
+        reservationId: getReservationId(event.summary),
+        start: event.start,
+        end: event.end,
+        checkIn: formatDate(event.start),
+        checkOut: formatDate(event.end),
+      });
+    });
+  } catch (err) {
+    console.log(
+      `ICAL ERROR (${source.name}):`,
+      err.message
+    );
   }
+}
 
  
 

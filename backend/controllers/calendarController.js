@@ -719,28 +719,37 @@ export const mergeICalSources = async (req, res) => {
       });
     }
 
+    console.log("========== MERGE ICAL ==========");
+    console.log("LISTING:", listing._id);
+    console.log("ICAL SOURCES:", listing.icalSources);
+
     const events = await syncListingCalendars(listing);
 
+    console.log("SYNCED EVENTS:", events);
 
     const mergedCalendar = buildCalendarEntries(events);
 
-     
-    // Remove old iCal entries
-    listing.calendar = listing.calendar.filter(
+    console.log("MERGED CALENDAR:", mergedCalendar);
+
+    listing.calendar = (listing.calendar || []).filter(
       (item) => item.source !== "ical"
     );
 
-    // Add merged entries
     listing.calendar.push(...mergedCalendar);
- 
+
     await listing.save();
+
+    console.log(
+      "SAVED CALENDAR COUNT:",
+      listing.calendar.length
+    );
 
     res.json({
       success: true,
       imported: mergedCalendar.length,
+      calendar: mergedCalendar,
     });
-    
-    
+
   } catch (err) {
     console.error("Merge Error:", err);
 

@@ -174,44 +174,30 @@ const listingSchema = new mongoose.Schema(
         checkOutDate: Date,
       },
     ],
-    
-
-    // icalUrl: {
-    //   type: String,
-    //   default: "",
-    // },
-   icalSources: [
+    icalSources: [
   {
     name: {
       type: String,
       default: "",
+      trim: true,
     },
-
     url: {
       type: String,
       default: "",
+      trim: true,
     },
-
     enabled: {
       type: Boolean,
       default: true,
     },
-
-    lastSync: {
-      type: Date,
-      default: null,
-    },
   },
 ],
 
-// Temporary (backward compatibility)
-icalUrl: {
-  type: String,
-  default: "",
-},
+    icalUrl: {
+      type: String,
+      default: "",
+    },
   },
-  
-  
 
   { timestamps: true },
 );

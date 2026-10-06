@@ -225,22 +225,52 @@ export const deleteListing = async (req, res) => {
 };
 
 export const updateDescription = async (req, res) => {
-  const listing = await Listing.findById(req.params.id);
+  try {
+    const listing = await Listing.findById(req.params.id);
 
-  listing.description = req.body.description;
+    if (!listing) {
+      return res.status(404).json({
+        success: false,
+        message: "Listing not found",
+      });
+    }
 
-  if (
-    listing.property?.title &&
-    listing.description &&
-    listing.photos.length > 0 &&
-    listing.location?.lat
-  ) {
-    listing.status = "published";
+    const { description } = req.body;
+
+    if (!description || !description.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Description cannot be empty",
+      });
+    }
+
+    listing.description = description;
+
+    if (
+      listing.property?.title &&
+      listing.description &&
+      listing.photos?.length > 0 &&
+      listing.location?.lat
+    ) {
+      listing.status = "published";
+    }
+
+    await listing.save();
+
+    return res.json({
+      success: true,
+      message: "Description updated successfully",
+      description: listing.description,
+    });
+  } catch (error) {
+    console.error("UPDATE DESCRIPTION ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update description",
+      error: error.message,
+    });
   }
-
-  await listing.save();
-
-  res.json({ success: true });
 };
 export const updateAmenities = async (req, res) => {
   await Listing.findByIdAndUpdate(req.params.id, {

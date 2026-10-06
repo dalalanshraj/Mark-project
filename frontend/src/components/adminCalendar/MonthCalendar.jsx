@@ -106,28 +106,28 @@ export default function MonthCalendar({ month, year, monthName, calendarMap }) {
   const getDayClass = (status) => {
     switch (status) {
       case "A":
-        return "bg-[#d9f8e8] text-black";
+        return "bg-[#FFE7E7] text-black";
 
       case "R":
-        return "bg-[#5B5BF7] text-white";
+        return "bg-[#ADB8D6] text-white";
 
       case "H":
         return "bg-[#FFC107] text-black";
 
       // Green background + Blue triangle (bottom-right)
       case "CIN":
-        return "bg-[linear-gradient(135deg,#d9f8e8_0%,#d9f8e8_50%,#5B5BF7_50%,#5B5BF7_100%)] text-black";
+        return "bg-[linear-gradient(135deg,#FFE7E7_0%,#FFE7E7_50%,#ADB8D6_50%,#ADB8D6_100%)] text-black";
 
       // Green background + Blue triangle (top-left)
       case "COUT":
-        return "bg-[linear-gradient(315deg,#d9f8e8_0%,#d9f8e8_50%,#5B5BF7_50%,#5B5BF7_100%)] text-black";
+        return "bg-[linear-gradient(315deg,#FFE7E7_0%,#FFE7E7_50%,#ADB8D6_50%,#ADB8D6_100%)] text-black";
 
       // Blue background
       case "TURN":
-        return "bg-[#5B5BF7] text-white";
+        return "bg-[#ADB8D6] text-white";
 
       default:
-        return "bg-[#d9f8e8] text-black";
+        return "bg-[#FFE7E7] text-black";
     }
   };
 

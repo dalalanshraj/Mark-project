@@ -292,7 +292,7 @@ export default function AdminCalendar() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <div className="flex items-center gap-2">
-            <span className="h-5 w-5 rounded bg-[#d9f8e8]"></span>
+            <span className="h-5 w-5 rounded bg-[#FFE7E7]"></span>
             <span>Available</span>
           </div>
 
@@ -307,12 +307,12 @@ export default function AdminCalendar() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="h-5 w-5 rounded bg-[linear-gradient(135deg,#d9f8e8_0%,#d9f8e8_50%,#5B5BF7_50%,#5B5BF7_100%)]"></span>
+            <span className="h-5 w-5 rounded bg-[linear-gradient(135deg,#FFE7E7_0%,#FFE7E7_50%,#ADB8D6_50%,#ADB8D6_100%)]"></span>
             <span>Check In</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="h-5 w-5 rounded bg-[linear-gradient(315deg,#d9f8e8_0%,#d9f8e8_50%,#5B5BF7_50%,#5B5BF7_100%)]"></span>
+            <span className="h-5 w-5 rounded bg-[linear-gradient(315deg,#FFE7E7_0%,#FFE7E7_50%,#ADB8D6_50%,#ADB8D6_100%)]"></span>
             <span>Check Out</span>
           </div>
 

@@ -5,6 +5,10 @@ import api from "../../api/axios";
 import {
   DndContext,
   closestCenter,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 
 import {
@@ -22,7 +26,6 @@ import {
   FaTrash,
   FaImages,
   FaCheckCircle,
-  FaEye,
   FaEyeSlash,
 } from "react-icons/fa";
 
@@ -53,7 +56,7 @@ function SortableImage({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 50 : "auto",
+    zIndex: isDragging ? 100 : "auto",
   };
 
   const isPublished =
@@ -68,20 +71,32 @@ function SortableImage({
         group
         relative
         bg-white
-        rounded-3xl
+        rounded-2xl
+        sm:rounded-3xl
         border
         overflow-hidden
         transition-all
         duration-300
         ${
           isDragging
-            ? "border-blue-500 shadow-2xl scale-[1.02]"
-            : "border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1"
+            ? `
+              border-blue-500
+              shadow-2xl
+              scale-[1.03]
+              rotate-[1deg]
+            `
+            : `
+              border-slate-200
+              shadow-sm
+              hover:shadow-xl
+              hover:-translate-y-1
+            `
         }
       `}
     >
+
       {/* ======================================================
-          IMAGE
+          IMAGE / DRAG AREA
       ======================================================= */}
 
       <div
@@ -93,6 +108,8 @@ function SortableImage({
           cursor-grab
           active:cursor-grabbing
           overflow-hidden
+          touch-none
+          select-none
         "
       >
         <img
@@ -102,18 +119,36 @@ function SortableImage({
             w-full
             h-full
             object-cover
+            pointer-events-none
+            select-none
             transition-transform
             duration-500
             group-hover:scale-105
           "
-          draggable="false"
+          draggable={false}
         />
 
         {/* DARK OVERLAY */}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div
+          className="
+            absolute
+            inset-0
+            bg-gradient-to-t
+            from-black/50
+            via-transparent
+            to-transparent
+            opacity-0
+            md:group-hover:opacity-100
+            transition-opacity
+            duration-300
+            pointer-events-none
+          "
+        />
 
-        {/* DRAG INDICATOR */}
+        {/* ==================================================
+            DRAG INDICATOR
+        =================================================== */}
 
         <div
           className="
@@ -123,22 +158,48 @@ function SortableImage({
             w-9
             h-9
             rounded-xl
-            bg-black/45
+            bg-black/50
             backdrop-blur-md
             text-white
             flex
             items-center
             justify-center
-            opacity-0
-            group-hover:opacity-100
+            opacity-100
+            md:opacity-0
+            md:group-hover:opacity-100
             transition
+            pointer-events-none
           "
           title="Drag to reorder"
         >
           <FaGripVertical size={14} />
         </div>
 
-        {/* STATUS */}
+        {/* MOBILE DRAG LABEL */}
+
+        <div
+          className="
+            absolute
+            bottom-3
+            left-3
+            md:hidden
+            px-2.5
+            py-1
+            rounded-lg
+            bg-black/50
+            backdrop-blur-sm
+            text-white
+            text-[10px]
+            font-semibold
+            pointer-events-none
+          "
+        >
+          Hold & drag
+        </div>
+
+        {/* ==================================================
+            STATUS
+        =================================================== */}
 
         <div className="absolute top-3 right-3">
           {isPublished ? (
@@ -146,53 +207,60 @@ function SortableImage({
               className="
                 inline-flex
                 items-center
-                gap-1.5
-                px-3
+                gap-1
+                px-2
+                sm:px-3
                 py-1.5
                 rounded-full
                 bg-[#047edf]
                 backdrop-blur-md
                 text-white
-                text-[11px]
+                text-[10px]
+                sm:text-[11px]
                 font-bold
                 shadow-lg
               "
             >
-              <FaCheckCircle size={10} />
-              Published
+              <FaCheckCircle size={9} />
+
+              <span>
+                Published
+              </span>
             </span>
           ) : (
             <span
               className="
                 inline-flex
                 items-center
-                gap-1.5
-                px-3
+                gap-1
+                px-2
+                sm:px-3
                 py-1.5
                 rounded-full
                 bg-slate-800/75
                 backdrop-blur-md
                 text-white
-                text-[11px]
+                text-[10px]
+                sm:text-[11px]
                 font-bold
               "
             >
-              <FaEyeSlash size={10} />
-              Hidden
+              <FaEyeSlash size={9} />
+
+              <span>
+                Hidden
+              </span>
             </span>
           )}
         </div>
-
-        {/* IMAGE NUMBER */}
-
-       
       </div>
+
 
       {/* ======================================================
           CARD FOOTER
       ======================================================= */}
 
-      <div className="p-4">
+      <div className="p-3 sm:p-4">
 
         <div className="flex items-center justify-between gap-3">
 
@@ -200,23 +268,36 @@ function SortableImage({
 
           <button
             type="button"
-            onClick={() => toggle(img._id)}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+            }}
+            onTouchStart={(e) => {
+              e.stopPropagation();
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggle(img._id);
+            }}
             className="
               flex
               items-center
               gap-2
-              text-sm
+              text-xs
+              sm:text-sm
               font-semibold
               text-slate-700
               hover:text-blue-600
               transition
+              touch-auto
             "
           >
             <span
               className={`
                 relative
-                w-11
-                h-6
+                w-10
+                h-5
+                sm:w-11
+                sm:h-6
                 rounded-full
                 transition
                 ${
@@ -229,8 +310,7 @@ function SortableImage({
               <span
                 className={`
                   absolute
-                  top-1
-                  right-7
+                  top-0.5
                   w-4
                   h-4
                   rounded-full
@@ -239,24 +319,41 @@ function SortableImage({
                   transition-transform
                   ${
                     isPublished
-                      ? "translate-x-6"
-                      : "translate-x-1"
+                      ? "translate-x-[20px] sm:translate-x-[22px]"
+                      : "translate-x-0.5"
                   }
                 `}
               />
             </span>
 
-            
+            <span className="hidden sm:inline">
+              {isPublished
+                ? "Published"
+                : "Hidden"}
+            </span>
           </button>
+
 
           {/* DELETE */}
 
           <button
             type="button"
-            onClick={() => remove(img._id)}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+            }}
+            onTouchStart={(e) => {
+              e.stopPropagation();
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              remove(img._id);
+            }}
             className="
               w-9
               h-9
+              sm:w-10
+              sm:h-10
+              shrink-0
               rounded-xl
               bg-red-50
               text-red-500
@@ -265,21 +362,47 @@ function SortableImage({
               justify-center
               hover:bg-red-500
               hover:text-white
+              active:scale-95
               transition
+              touch-auto
             "
             title="Delete image"
           >
             <FaTrash size={13} />
           </button>
+
         </div>
+
 
         {/* DRAG HELP */}
 
-        <div className="mt-3 pt-3 border-t border-slate-100 flex items-center gap-2 text-xs text-slate-400">
-          <MdDragIndicator size={16} />
-          Drag image to change order
+        <div
+          className="
+            mt-3
+            pt-3
+            border-t
+            border-slate-100
+            flex
+            items-center
+            gap-2
+            text-[10px]
+            sm:text-xs
+            text-slate-400
+          "
+        >
+          <MdDragIndicator size={15} />
+
+          <span className="hidden sm:inline">
+            Drag image to change order
+          </span>
+
+          <span className="sm:hidden">
+            Hold & drag to reorder
+          </span>
         </div>
+
       </div>
+
     </div>
   );
 }
@@ -290,6 +413,7 @@ function SortableImage({
 // ============================================================
 
 export default function GalleryAdmin() {
+
   const [images, setImages] = useState([]);
 
   const [uploading, setUploading] =
@@ -305,10 +429,33 @@ export default function GalleryAdmin() {
 
 
   // ==========================================================
+  // DND SENSORS
+  // ==========================================================
+
+  const sensors = useSensors(
+
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 180,
+        tolerance: 8,
+      },
+    })
+
+  );
+
+
+  // ==========================================================
   // IMAGE URL
   // ==========================================================
 
   const getImageUrl = (path) => {
+
     if (!path) return "";
 
     const base =
@@ -327,19 +474,27 @@ export default function GalleryAdmin() {
   // ==========================================================
 
   const fetchData = async () => {
+
     try {
-      const res = await api.get("/gallery");
+
+      const res =
+        await api.get("/gallery");
 
       setImages(res.data || []);
+
     } catch (err) {
+
       console.log(err);
 
       alert(
         err.response?.data?.message ||
           "Unable to load gallery."
       );
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
@@ -354,17 +509,25 @@ export default function GalleryAdmin() {
   // ==========================================================
 
   const upload = async (files) => {
+
     if (!files || files.length === 0) {
       return;
     }
 
     try {
+
       setUploading(true);
 
-      const formData = new FormData();
+      const formData =
+        new FormData();
 
       for (const file of files) {
-        formData.append("images", file);
+
+        formData.append(
+          "images",
+          file
+        );
+
       }
 
       await api.post(
@@ -375,18 +538,22 @@ export default function GalleryAdmin() {
       await fetchData();
 
     } catch (err) {
+
       console.log(err);
 
       alert(
         err.response?.data?.message ||
           "Image upload failed."
       );
+
     } finally {
+
       setUploading(false);
 
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
+
     }
   };
 
@@ -396,13 +563,17 @@ export default function GalleryAdmin() {
   // ==========================================================
 
   const toggle = async (id) => {
+
     try {
+
       await api.put(
         `/gallery/${id}/toggle`
       );
 
       await fetchData();
+
     } catch (err) {
+
       console.log(err);
 
       alert(
@@ -418,9 +589,6 @@ export default function GalleryAdmin() {
   // ==========================================================
 
   const remove = async (id) => {
-    const image = images.find(
-      (item) => item._id === id
-    );
 
     if (
       !window.confirm(
@@ -431,6 +599,7 @@ export default function GalleryAdmin() {
     }
 
     try {
+
       await api.delete(
         `/gallery/${id}`
       );
@@ -442,6 +611,7 @@ export default function GalleryAdmin() {
       );
 
     } catch (err) {
+
       console.log(err);
 
       alert(
@@ -457,6 +627,7 @@ export default function GalleryAdmin() {
   // ==========================================================
 
   const handleDragEnd = async (event) => {
+
     const {
       active,
       over,
@@ -487,11 +658,12 @@ export default function GalleryAdmin() {
       return;
     }
 
-    const updated = arrayMove(
-      images,
-      oldIndex,
-      newIndex
-    );
+    const updated =
+      arrayMove(
+        images,
+        oldIndex,
+        newIndex
+      );
 
     const reordered =
       updated.map(
@@ -502,10 +674,10 @@ export default function GalleryAdmin() {
       );
 
     // Optimistic UI
-
     setImages(reordered);
 
     try {
+
       setDragSaving(true);
 
       await api.put(
@@ -514,7 +686,9 @@ export default function GalleryAdmin() {
           images: reordered,
         }
       );
+
     } catch (err) {
+
       console.log(err);
 
       alert(
@@ -522,11 +696,12 @@ export default function GalleryAdmin() {
           "Unable to save image order."
       );
 
-      // Restore server data
-
       await fetchData();
+
     } finally {
+
       setDragSaving(false);
+
     }
   };
 
@@ -551,14 +726,18 @@ export default function GalleryAdmin() {
   // ==========================================================
 
   if (loading) {
+
     return (
-      <div className="min-h-[70vh] flex items-center justify-center">
+      <div className="min-h-[70vh] flex items-center justify-center px-4">
+
         <div className="flex flex-col items-center gap-4">
 
           <div
             className="
-              w-12
-              h-12
+              w-10
+              h-10
+              sm:w-12
+              sm:h-12
               border-4
               border-blue-100
               border-t-blue-600
@@ -567,11 +746,12 @@ export default function GalleryAdmin() {
             "
           />
 
-          <p className="text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-slate-500">
             Loading gallery...
           </p>
 
         </div>
+
       </div>
     );
   }
@@ -582,23 +762,55 @@ export default function GalleryAdmin() {
   // ==========================================================
 
   return (
-    <div className="min-h-screen bg-slate-50">
 
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen w-full bg-slate-50">
+
+      <div
+        className="
+          w-full
+          max-w-7xl
+          mx-auto
+          px-3
+          sm:px-4
+          md:px-6
+          lg:px-8
+          py-4
+          sm:py-5
+          lg:py-6
+          pb-24
+          md:pb-6
+        "
+      >
 
         {/* ====================================================
             HEADER
         ===================================================== */}
 
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+        <div
+          className="
+            flex
+            flex-col
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+            gap-4
+            sm:gap-5
+            mb-5
+            sm:mb-6
+          "
+        >
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 min-w-0">
 
             <div
               className="
-                w-12
-                h-12
-                rounded-2xl
+                w-10
+                h-10
+                sm:w-12
+                sm:h-12
+                shrink-0
+                rounded-xl
+                sm:rounded-2xl
                 bg-blue-600
                 text-white
                 flex
@@ -608,17 +820,36 @@ export default function GalleryAdmin() {
                 shadow-blue-200
               "
             >
-              <FaImages size={21} />
+              <FaImages size={18} />
             </div>
 
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-900">
+            <div className="min-w-0">
+
+              <h1
+                className="
+                  text-xl
+                  sm:text-2xl
+                  md:text-3xl
+                  font-bold
+                  text-slate-900
+                "
+              >
                 Gallery Manager
               </h1>
 
-              <p className="text-sm text-slate-500 mt-1">
-                Upload, manage and reorder your website images.
+              <p
+                className="
+                  text-xs
+                  sm:text-sm
+                  text-slate-500
+                  mt-1
+                  leading-5
+                "
+              >
+                Upload, manage and reorder your
+                website images.
               </p>
+
             </div>
 
           </div>
@@ -628,26 +859,30 @@ export default function GalleryAdmin() {
 
           <label
             className="
+              w-full
+              sm:w-auto
               inline-flex
               items-center
               justify-center
               gap-2
-              px-6
-              py-3.5
+              px-5
+              sm:px-6
+              py-3
+              sm:py-3.5
               rounded-xl
-              bg-blue-500
-              hover:from-blue-700
-              hover:to-indigo-700
+              bg-blue-600
+              hover:bg-blue-700
               text-white
               text-sm
               font-bold
-              
-            
               cursor-pointer
               transition
+              active:scale-[0.98]
             "
           >
+
             {uploading ? (
+
               <>
                 <span
                   className="
@@ -663,12 +898,15 @@ export default function GalleryAdmin() {
 
                 Uploading...
               </>
+
             ) : (
+
               <>
                 <FaCloudUploadAlt size={18} />
 
                 Upload Images
               </>
+
             )}
 
             <input
@@ -682,34 +920,58 @@ export default function GalleryAdmin() {
                 upload(e.target.files)
               }
             />
+
           </label>
 
         </div>
 
 
         {/* ====================================================
-            STAT CARDS
+            STATS
         ===================================================== */}
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div
+          className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-3
+            gap-3
+            sm:gap-4
+            mb-5
+            sm:mb-6
+          "
+        >
 
           {/* TOTAL */}
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div
+            className="
+              bg-white
+              border
+              border-slate-200
+              rounded-2xl
+              p-4
+              sm:p-5
+              shadow-sm
+            "
+          >
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-sm text-slate-500 font-medium">
+
+                <p className="text-xs sm:text-sm text-slate-500 font-medium">
                   Total Images
                 </p>
 
-                <h2 className="text-3xl font-bold text-slate-900 mt-1">
+                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
                   {images.length}
                 </h2>
+
               </div>
 
-              <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                 <FaImages />
               </div>
 
@@ -720,21 +982,33 @@ export default function GalleryAdmin() {
 
           {/* PUBLISHED */}
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div
+            className="
+              bg-white
+              border
+              border-slate-200
+              rounded-2xl
+              p-4
+              sm:p-5
+              shadow-sm
+            "
+          >
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-sm text-slate-500 font-medium">
+
+                <p className="text-xs sm:text-sm text-slate-500 font-medium">
                   Published
                 </p>
 
-                <h2 className="text-3xl font-bold text-emerald-600 mt-1">
+                <h2 className="text-2xl sm:text-3xl font-bold text-emerald-600 mt-1">
                   {publishedCount}
                 </h2>
+
               </div>
 
-              <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                 <FaCheckCircle />
               </div>
 
@@ -745,21 +1019,33 @@ export default function GalleryAdmin() {
 
           {/* HIDDEN */}
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div
+            className="
+              bg-white
+              border
+              border-slate-200
+              rounded-2xl
+              p-4
+              sm:p-5
+              shadow-sm
+            "
+          >
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-sm text-slate-500 font-medium">
+
+                <p className="text-xs sm:text-sm text-slate-500 font-medium">
                   Hidden
                 </p>
 
-                <h2 className="text-3xl font-bold text-slate-600 mt-1">
+                <h2 className="text-2xl sm:text-3xl font-bold text-slate-600 mt-1">
                   {hiddenCount}
                 </h2>
+
               </div>
 
-              <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center">
                 <FaEyeSlash />
               </div>
 
@@ -775,26 +1061,33 @@ export default function GalleryAdmin() {
         ===================================================== */}
 
         {uploading && (
+
           <div
             className="
               flex
               items-center
               gap-3
-              px-5
-              py-4
+              px-4
+              sm:px-5
+              py-3
+              sm:py-4
+              mb-5
               rounded-2xl
               bg-blue-50
               border
               border-blue-100
               text-blue-700
-              text-sm
+              text-xs
+              sm:text-sm
               font-semibold
             "
           >
+
             <span
               className="
                 w-4
                 h-4
+                shrink-0
                 border-2
                 border-blue-200
                 border-t-blue-600
@@ -804,7 +1097,9 @@ export default function GalleryAdmin() {
             />
 
             Uploading your images...
+
           </div>
+
         )}
 
 
@@ -813,25 +1108,35 @@ export default function GalleryAdmin() {
         ===================================================== */}
 
         {dragSaving && (
+
           <div
             className="
               fixed
-              bottom-6
-              right-6
-              z-50
+              bottom-[82px]
+              md:bottom-6
+              left-1/2
+              -translate-x-1/2
+              md:left-auto
+              md:right-6
+              md:translate-x-0
+              z-[60]
               flex
               items-center
               gap-3
-              px-5
+              px-4
+              sm:px-5
               py-3
               rounded-2xl
               bg-slate-900
               text-white
               shadow-2xl
-              text-sm
+              text-xs
+              sm:text-sm
               font-semibold
+              whitespace-nowrap
             "
           >
+
             <span
               className="
                 w-4
@@ -845,7 +1150,9 @@ export default function GalleryAdmin() {
             />
 
             Saving order...
+
           </div>
+
         )}
 
 
@@ -853,59 +1160,147 @@ export default function GalleryAdmin() {
             GALLERY
         ===================================================== */}
 
-        <div className="bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-sm">
+        <div
+          className="
+            bg-white
+            border
+            border-slate-200
+            rounded-2xl
+            sm:rounded-3xl
+            p-3
+            sm:p-5
+            md:p-6
+            shadow-sm
+          "
+        >
 
           {/* SECTION HEADER */}
 
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+          <div
+            className="
+              flex
+              flex-col
+              sm:flex-row
+              sm:items-center
+              sm:justify-between
+              gap-3
+              mb-5
+              sm:mb-6
+            "
+          >
 
             <div>
-              <h2 className="text-lg font-bold text-slate-900">
+
+              <h2 className="text-base sm:text-lg font-bold text-slate-900">
                 All Images
               </h2>
 
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
                 Drag and drop images to change their order.
               </p>
+
             </div>
 
             {images.length > 0 && (
-              <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-600 w-fit">
-                <FaImages size={12} />
+
+              <div
+                className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  px-3
+                  py-2
+                  rounded-xl
+                  bg-slate-50
+                  border
+                  border-slate-200
+                  text-[11px]
+                  sm:text-xs
+                  font-semibold
+                  text-slate-600
+                  w-fit
+                "
+              >
+
+                <FaImages size={11} />
 
                 {images.length}{" "}
+
                 {images.length === 1
                   ? "Image"
                   : "Images"}
+
               </div>
+
             )}
 
           </div>
 
 
+          {/* MOBILE DRAG INSTRUCTION */}
+
+          {images.length > 1 && (
+
+            <div
+              className="
+                md:hidden
+                flex
+                items-start
+                gap-2
+                px-3
+                py-2.5
+                mb-4
+                rounded-xl
+                bg-blue-50
+                border
+                border-blue-100
+                text-blue-700
+              "
+            >
+
+              <span className="text-sm">
+                ☝️
+              </span>
+
+              <p className="text-[11px] leading-5">
+                Press and hold an image, then drag
+                it up, down, left or right to change
+                its order.
+              </p>
+
+            </div>
+
+          )}
+
+
           {/* EMPTY STATE */}
 
           {images.length === 0 ? (
+
             <div
               className="
-                min-h-[360px]
+                min-h-[300px]
+                sm:min-h-[360px]
                 border-2
                 border-dashed
                 border-slate-200
-                rounded-3xl
+                rounded-2xl
+                sm:rounded-3xl
                 flex
                 flex-col
                 items-center
                 justify-center
                 text-center
-                px-6
+                px-5
               "
             >
 
               <div
                 className="
-                  w-20
-                  h-20
+                  w-16
+                  h-16
+                  sm:w-20
+                  sm:h-20
                   rounded-3xl
                   bg-blue-50
                   text-blue-600
@@ -915,24 +1310,28 @@ export default function GalleryAdmin() {
                   mb-5
                 "
               >
-                <FaCloudUploadAlt size={32} />
+                <FaCloudUploadAlt size={28} />
               </div>
 
-              <h3 className="text-xl font-bold text-slate-800">
+              <h3 className="text-lg sm:text-xl font-bold text-slate-800">
                 No images yet
               </h3>
 
-              <p className="text-sm text-slate-500 max-w-md mt-2">
-                Upload your first gallery images to get started.
-                You can reorder them anytime using drag and drop.
+              <p className="text-xs sm:text-sm text-slate-500 max-w-md mt-2 leading-5">
+                Upload your first gallery images to
+                get started. You can reorder them
+                anytime using drag and drop.
               </p>
 
               <label
                 className="
-                  mt-6
+                  mt-5
                   inline-flex
                   items-center
+                  justify-center
                   gap-2
+                  w-full
+                  sm:w-auto
                   px-5
                   py-3
                   rounded-xl
@@ -945,6 +1344,7 @@ export default function GalleryAdmin() {
                   transition
                 "
               >
+
                 <FaCloudUploadAlt />
 
                 Upload Images
@@ -958,9 +1358,11 @@ export default function GalleryAdmin() {
                     upload(e.target.files)
                   }
                 />
+
               </label>
 
             </div>
+
           ) : (
 
             /* =================================================
@@ -968,6 +1370,7 @@ export default function GalleryAdmin() {
             ================================================== */
 
             <DndContext
+              sensors={sensors}
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
             >
@@ -982,15 +1385,17 @@ export default function GalleryAdmin() {
                 <div
                   className="
                     grid
-                    grid-cols-1
+                    grid-cols-2
                     sm:grid-cols-2
                     lg:grid-cols-3
                     xl:grid-cols-4
-                    gap-5
+                    gap-3
+                    sm:gap-5
                   "
                 >
 
                   {images.map((img) => (
+
                     <SortableImage
                       key={img._id}
                       img={img}
@@ -1000,6 +1405,7 @@ export default function GalleryAdmin() {
                       toggle={toggle}
                       remove={remove}
                     />
+
                   ))}
 
                 </div>
@@ -1007,11 +1413,13 @@ export default function GalleryAdmin() {
               </SortableContext>
 
             </DndContext>
+
           )}
 
         </div>
 
       </div>
+
     </div>
   );
 }

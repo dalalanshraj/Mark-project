@@ -667,13 +667,13 @@ const getDateType = (date) => {
         <div className="flex flex-wrap justify-center gap-5 mt-8">
           {/* AVAILABLE */}
           <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded bg-[#d1fae5]"></span>
+            <span className="w-4 h-4 rounded bg-[#FFE7E7]"></span>
             Available
           </div>
 
           {/* BOOKED */}
           <div className="flex items-center gap-2">
-            <span className="w-4 h-4 rounded bg-[#5C5CFF]"></span>
+            <span className="w-4 h-4 rounded bg-[#ADB8D6]"></span>
             Booked
           </div>
 
@@ -682,7 +682,7 @@ const getDateType = (date) => {
             <span
               className="w-4 h-4 rounded border"
               style={{
-                background: "linear-gradient(135deg, #5C5CFF 50%, #d1fae5 50%)",
+                background: "linear-gradient(135deg, #ADB8D6 50%, #FFE7E7 50%)",
               }}
             ></span>
             Check-Out
@@ -693,7 +693,7 @@ const getDateType = (date) => {
             <span
               className="w-4 h-4 rounded border"
               style={{
-                background: "linear-gradient(315deg, #5C5CFF 50%, #d1fae5 50%)",
+                background: "linear-gradient(315deg, #ADB8D6 50%, #FFE7E7 50%)",
               }}
             ></span>
             Check-In
@@ -701,7 +701,7 @@ const getDateType = (date) => {
 
           {/* TURNOVER */}
           <div className="flex items-center gap-2">
-            <span className="relative w-4 h-4 rounded bg-[#5C5CFF] overflow-hidden">
+            <span className="relative w-4 h-4 rounded bg-[#ADB8D6] overflow-hidden">
               <span className="absolute w-[140%] h-[2px] bg-black top-1/2 left-[-20%] rotate-135"></span>
             </span>
             Turnover
@@ -767,18 +767,18 @@ const getDateType = (date) => {
   } 
   /* AVAILABLE */ 
   .react-datepicker__day.available-day {
-   background: #d1fae5 !important; 
+   background: #FFE7E7 !important; 
    color: black !important; 
    } 
    /* AVAILABLE */
    .react-datepicker__day.available-day 
    { 
-   background: #d1fae5 !important; 
+   background: #FFE7E7 !important; 
    color: black !important; 
    } 
    /* BOOKED */ 
    .react-datepicker__day.blocked-day { 
-   background: #5C5CFF !important; 
+   background: #ADB8D6 !important; 
    color: white !important; 
    }
     /* HOLD */ 
@@ -788,12 +788,12 @@ const getDateType = (date) => {
     } 
     /* CHECK-IN */ 
     .react-datepicker__day.checkin-day { 
-    background: linear-gradient( 135deg, #d1fae5 50%, #5C5CFF 50% ) !important; 
+    background: linear-gradient( 135deg, #FFE7E7 50%, #ADB8D6 50% ) !important; 
     color: black !important; 
     } 
     /* CHECK-OUT */ 
     .react-datepicker__day.checkout-day { 
-    background: linear-gradient( 315deg, #d1fae5 50%, #5C5CFF 50% ) !important; 
+    background: linear-gradient( 315deg, #FFE7E7 50%, #ADB8D6 50% ) !important; 
     color: black !important; 
     } 
 
@@ -802,12 +802,12 @@ const getDateType = (date) => {
 .react-datepicker__day.turnover-day {
   background: linear-gradient(
     135deg,
-    #5C5CFF 0%,
-    #5C5CFF 48%,
+    #ADB8D6 0%,
+    #ADB8D6 48%,
     #000 48%,
     #000 52%,
-    #5C5CFF 52%,
-    #5C5CFF 100%
+    #ADB8D6 52%,
+    #ADB8D6 100%
   ) !important;
 
   color: white !important;
@@ -823,7 +823,7 @@ const getDateType = (date) => {
      pointer-events: none !important; 
      } 
    .react-datepicker__day.past-day {
-  background: #d1fae5 !important;
+  background: #FFE7E7 !important;
   color: #94a3b8 !important;
   opacity: 0.7 !important;
   cursor: not-allowed !important;

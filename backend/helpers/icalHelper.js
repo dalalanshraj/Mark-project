@@ -159,72 +159,28 @@ export const syncListingCalendars = async (listing) => {
 
   const seen = new Map();
 
-  for (const event of events) {
-    let key;
+for (const event of events) {
+  let key;
 
-    // Highest confidence
-    if (event.reservationId) {
-      key = `RID:${event.reservationId}`;
-    }
+  if (event.reservationId) {
+    key = `RID:${event.reservationId}`;
+  } else {
+    key = [
+      event.source,
+      event.guest,
+      event.checkIn,
+      event.checkOut,
+    ]
+      .join("|")
+      .toLowerCase();
+  }
 
-    // Guest + Dates
-    else if (event.guest) {
-      key = `GUEST:${event.guest}-${event.checkIn}-${event.checkOut}`;
-    }
-
-    // Dates only
-    else {
-      key = `DATE:${event.checkIn}-${event.checkOut}`;
-    }
-
-    const existing = seen.get(key);
-
-    /* ---------------------------
-       SAME BOOKING
-    --------------------------- */
-
-    if (existing) {
-      const currentPriority = getPriority(event.source);
-      const existingPriority = getPriority(existing.source);
-
-      if (currentPriority < existingPriority) {
-       
-
-        seen.set(key, event);
-      }
-
-      continue;
-    }
-
-    /* ---------------------------
-       OVERLAP CHECK
-    --------------------------- */
-
-    const overlap = [...seen.values()].find((item) =>
-      datesOverlap(item, event),
-    );
-
-    if (overlap) {
-      const currentPriority = getPriority(event.source);
-      const overlapPriority = getPriority(overlap.source);
-
-      if (currentPriority < overlapPriority) {
-        for (const [k, v] of seen.entries()) {
-          if (v === overlap) {
-            seen.delete(k);
-            break;
-          }
-        }
-
-        seen.set(key, event);
- 
-      }
-
-      continue;
-    }
-
+  if (!seen.has(key)) {
     seen.set(key, event);
   }
+}
+
+return [...seen.values()];
 
   const uniqueEvents = [...seen.values()];
  
@@ -232,83 +188,106 @@ export const syncListingCalendars = async (listing) => {
   return uniqueEvents;
 };
 
- export const buildCalendarEntries = (events) => {
+export const buildCalendarEntries = (events = []) => {
   const occupied = new Map();
 
-  // ----------------------------
-  // Helper
-  // ----------------------------
+  // ==========================================
+  // DATE HELPER
+  // ==========================================
+
   const addDays = (dateString, days) => {
     const [y, m, d] = dateString.split("-").map(Number);
 
     const dt = new Date(Date.UTC(y, m - 1, d));
+
     dt.setUTCDate(dt.getUTCDate() + days);
 
     return dt.toISOString().slice(0, 10);
   };
 
-  // =====================================================
-  // STEP 1 : BUILD OCCUPANCY MAP
-  // =====================================================
+  // ==========================================
+  // CREATE DATE OBJECT
+  // ==========================================
+
+  const createDate = (dateString) => {
+    const [y, m, d] = dateString.split("-").map(Number);
+
+    return new Date(
+      Date.UTC(y, m - 1, d, 12, 0, 0)
+    );
+  };
+
+  // ==========================================
+  // EMPTY DATE OBJECT
+  // ==========================================
+
+  const createEmptyDate = () => ({
+    occupied: false,
+    bookings: [],
+    checkIn: [],
+    checkOut: [],
+  });
+
+  // ==========================================
+  // STEP 1
+  // BUILD OCCUPANCY MAP
+  // ==========================================
 
   for (const event of events) {
-    const checkIn = event.checkIn;     // YYYY-MM-DD
-    const checkOut = event.checkOut;   // YYYY-MM-DD
+    const checkIn = event.checkIn;
+    const checkOut = event.checkOut;
 
-    if (!checkIn || !checkOut) continue;
+    if (!checkIn || !checkOut) {
+      continue;
+    }
 
-    // ---------------------------------
-    // Occupied Nights
-    // ---------------------------------
+    // ------------------------------------------
+    // OCCUPIED NIGHTS
+    // ------------------------------------------
 
     let current = checkIn;
 
     while (current < checkOut) {
       if (!occupied.has(current)) {
-        occupied.set(current, {
-          occupied: false,
-          checkIn: [],
-          checkOut: [],
-        });
+        occupied.set(current, createEmptyDate());
       }
 
-      occupied.get(current).occupied = true;
+      const info = occupied.get(current);
+
+      info.occupied = true;
+
+      // IMPORTANT:
+      // Keep EVERY booking/source
+      info.bookings.push(event);
 
       current = addDays(current, 1);
     }
 
-    // ---------------------------------
-    // Check-In
-    // ---------------------------------
+    // ------------------------------------------
+    // CHECK-IN
+    // ------------------------------------------
 
     if (!occupied.has(checkIn)) {
-      occupied.set(checkIn, {
-        occupied: true,
-        checkIn: [],
-        checkOut: [],
-      });
+      occupied.set(checkIn, createEmptyDate());
     }
 
     occupied.get(checkIn).checkIn.push(event);
 
-    // ---------------------------------
-    // Check-Out
-    // ---------------------------------
+    // ------------------------------------------
+    // CHECK-OUT
+    // ------------------------------------------
 
     if (!occupied.has(checkOut)) {
-      occupied.set(checkOut, {
-        occupied: false,
-        checkIn: [],
-        checkOut: [],
-      });
+      occupied.set(checkOut, createEmptyDate());
     }
 
     occupied.get(checkOut).checkOut.push(event);
   }
 
-  // =====================================================
-  // STEP 2 : SORT DATES
-  // =====================================================
+  // ==========================================
+  // STEP 2
+  // BUILD CALENDAR
+  // ==========================================
 
   const dates = [...occupied.keys()].sort();
 
@@ -320,94 +299,188 @@ export const syncListingCalendars = async (listing) => {
     const hasCheckIn = info.checkIn.length > 0;
     const hasCheckOut = info.checkOut.length > 0;
 
-    // IMPORTANT
-    // 12:00 UTC prevents timezone shifting
-    const [y, m, d] = date.split("-").map(Number);
+    const currentDate = createDate(date);
 
-    const currentDate = new Date(
-      Date.UTC(y, m - 1, d, 12, 0, 0)
-    );
-
-    // ---------------------------------
-    // Turnover
-    // ---------------------------------
+    // ========================================
+    // TURNOVER
+    // ========================================
 
     if (hasCheckIn && hasCheckOut) {
-      calendar.push({
-        date: currentDate,
-        status: "COUT",
-        source: "ical",
-      });
+      // --------------------------------------
+      // ALL CHECK-OUT EVENTS
+      // --------------------------------------
 
-      calendar.push({
-        date: currentDate,
-        status: "CIN",
-        source: "ical",
-      });
+      for (const event of info.checkOut) {
+        calendar.push({
+          date: currentDate,
+          status: "COUT",
+          source: "ical",
+
+          guest: event?.guest || "",
+
+          summary: event?.summary || "",
+
+          reservationId:
+            event?.reservationId || "",
+
+          sourceName:
+            event?.source || "",
+        });
+      }
+
+      // --------------------------------------
+      // ALL CHECK-IN EVENTS
+      // --------------------------------------
+
+      for (const event of info.checkIn) {
+        calendar.push({
+          date: currentDate,
+          status: "CIN",
+          source: "ical",
+
+          guest: event?.guest || "",
+
+          summary: event?.summary || "",
+
+          reservationId:
+            event?.reservationId || "",
+
+          sourceName:
+            event?.source || "",
+        });
+      }
 
       continue;
     }
 
-    // ---------------------------------
-    // Check In
-    // ---------------------------------
+    // ========================================
+    // CHECK-IN
+    // ========================================
 
     if (hasCheckIn) {
-      calendar.push({
-        date: currentDate,
-        status: "CIN",
-        source: "ical",
-      });
+      for (const event of info.checkIn) {
+        calendar.push({
+          date: currentDate,
+          status: "CIN",
+          source: "ical",
+
+          guest: event?.guest || "",
+
+          summary: event?.summary || "",
+
+          reservationId:
+            event?.reservationId || "",
+
+          sourceName:
+            event?.source || "",
+        });
+      }
+
+      continue;
     }
 
-    // ---------------------------------
-    // Check Out
-    // ---------------------------------
+    // ========================================
+    // CHECK-OUT
+    // ========================================
 
     if (hasCheckOut) {
-      calendar.push({
-        date: currentDate,
-        status: "COUT",
-        source: "ical",
-      });
+      for (const event of info.checkOut) {
+        calendar.push({
+          date: currentDate,
+          status: "COUT",
+          source: "ical",
+
+          guest: event?.guest || "",
+
+          summary: event?.summary || "",
+
+          reservationId:
+            event?.reservationId || "",
+
+          sourceName:
+            event?.source || "",
+        });
+      }
+
+      continue;
     }
 
-    // ---------------------------------
-    // Reserved
-    // ---------------------------------
+    // ========================================
+    // RESERVED
+    // ========================================
 
     if (info.occupied) {
-      calendar.push({
-        date: currentDate,
-        status: "R",
-        source: "ical",
-      });
+      // IMPORTANT:
+      // Don't use bookings[0].
+      // Save EVERY booking separately.
+
+      for (const event of info.bookings) {
+        calendar.push({
+          date: currentDate,
+          status: "R",
+          source: "ical",
+
+          guest: event?.guest || "",
+
+          summary: event?.summary || "",
+
+          reservationId:
+            event?.reservationId || "",
+
+          sourceName:
+            event?.source || "",
+        });
+      }
     }
   }
 
-  // =====================================================
-  // STEP 3 : REMOVE DUPLICATES
-  // =====================================================
+  // ==========================================
+  // STEP 3
+  // DO NOT REMOVE SAME DATE/STATUS EVENTS
+  // ==========================================
 
-  const deduped = new Map();
+  // IMPORTANT:
+  //
+  // DON'T DO:
+  //
+  // date-status dedupe
+  //
+  // Because:
+  //
+  // Oct 10 - R - VRBO
+  // Oct 10 - R - Airbnb
+  // Oct 10 - R - Florida Rentals
+  //
+  // are 3 different records.
+  //
+  // We want to keep all 3.
 
-  for (const item of calendar) {
-    const key = `${item.date.toISOString().slice(0, 10)}-${item.status}`;
+  // ==========================================
+  // STEP 4
+  // SORT
+  // ==========================================
 
-    if (!deduped.has(key)) {
-      deduped.set(key, item);
+  return calendar.sort((a, b) => {
+    const dateDifference =
+      new Date(a.date).getTime() -
+      new Date(b.date).getTime();
+
+    if (dateDifference !== 0) {
+      return dateDifference;
     }
-  }
 
-  // =====================================================
-  // STEP 4 : SORT
-  // =====================================================
+    // Keep a stable order for same-date entries
+    const statusOrder = {
+      COUT: 1,
+      CIN: 2,
+      R: 3,
+      H: 4,
+      A: 5,
+    };
 
-  const finalCalendar = [...deduped.values()].sort(
-    (a, b) => a.date - b.date
-  );
-
-   
-
-  return finalCalendar;
+    return (
+      (statusOrder[a.status] || 99) -
+      (statusOrder[b.status] || 99)
+    );
+  });
 };

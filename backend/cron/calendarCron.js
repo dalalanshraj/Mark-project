@@ -9,14 +9,14 @@ import {
 let isSyncRunning = false;
 
 const startCalendarCron = () => {
-  console.log("🚀 Calendar Cron initialized");
-  console.log("⏱️ Schedule: Every 5 minutes");
+  // console.log("🚀 Calendar Cron initialized");
+  // console.log("⏱️ Schedule: Every 5 minutes");
 
   // ==========================================
   // RUN EVERY 5 MINUTES
   // ==========================================
 
-  cron.schedule("0 * * * *", async () => {
+cron.schedule("*/5 * * * *", async () => {
 
     // ==========================================
     // PREVENT OVERLAPPING SYNC

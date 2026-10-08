@@ -132,7 +132,7 @@ setIcalSources(merged);
   }, [blockedDates]);
   
 
-const getDateType = (date) => {
+ const getDateType = (date) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -141,61 +141,128 @@ const getDateType = (date) => {
 
   const key = formatLocalDate(current);
 
-  // Past
+  // ========================================
+  // PAST
+  // ========================================
+
   if (current < today) {
     return "past-day";
   }
 
-  const statuses = [...new Set(blockedMap[key] || [])];
+  const statuses = [
+    ...new Set(blockedMap[key] || []),
+  ];
 
   const hasR = statuses.includes("R");
   const hasH = statuses.includes("H");
   const hasCIN = statuses.includes("CIN");
   const hasCOUT = statuses.includes("COUT");
 
-  // ----------------------------------------------------
-  // TURNOVER (same day checkin + checkout)
-  // ----------------------------------------------------
+  // ========================================
+  // PREVIOUS / NEXT DATE
+  // ========================================
 
+  const previousDate = new Date(current);
+  previousDate.setDate(
+    previousDate.getDate() - 1
+  );
+
+  const nextDate = new Date(current);
+  nextDate.setDate(
+    nextDate.getDate() + 1
+  );
+
+  const previousKey =
+    formatLocalDate(previousDate);
+
+  const nextKey =
+    formatLocalDate(nextDate);
+
+  const previousStatuses = [
+    ...new Set(
+      blockedMap[previousKey] || []
+    ),
+  ];
+
+  const nextStatuses = [
+    ...new Set(
+      blockedMap[nextKey] || []
+    ),
+  ];
+
+  const previousHasCOUT =
+    previousStatuses.includes("COUT");
+
+  const nextHasCIN =
+    nextStatuses.includes("CIN");
+
+  // ========================================
+  // TURNOVER
+  // ========================================
+
+  // Same date:
+  // CIN + COUT
   if (hasCIN && hasCOUT) {
     return "turnover-day";
   }
 
-  // ----------------------------------------------------
+  // Current date = CHECK-OUT
+  // Next date = CHECK-IN
+  //
+  // 10 = COUT
+  // 11 = CIN
+  //
+  // 10 = TURNOVER
+  if (hasCOUT && nextHasCIN) {
+    return "turnover-day";
+  }
+
+  // Current date = CHECK-IN
+  // Previous date = CHECK-OUT
+  //
+  // 10 = COUT
+  // 11 = CIN
+  //
+  // 11 = TURNOVER
+  if (hasCIN && previousHasCOUT) {
+    return "turnover-day";
+  }
+
+  // ========================================
   // CHECK-IN
-  // ----------------------------------------------------
+  // ========================================
 
   if (hasCIN) {
     return "checkin-day";
   }
 
-  // ----------------------------------------------------
+  // ========================================
   // CHECK-OUT
-  // ----------------------------------------------------
+  // ========================================
 
   if (hasCOUT) {
     return "checkout-day";
   }
 
-  // ----------------------------------------------------
+  // ========================================
   // RESERVED
-  // ----------------------------------------------------
+  // ========================================
 
   if (hasR) {
     return "blocked-day";
   }
 
-  // ----------------------------------------------------
+  // ========================================
   // HOLD
-  // ----------------------------------------------------
+  // ========================================
 
   if (hasH) {
     return "hold-day";
   }
 
-  // ----------------------------------------------------
+  // ========================================
   // AVAILABLE
-  // ----------------------------------------------------
+  // ========================================
 
   return "available-day";
 };

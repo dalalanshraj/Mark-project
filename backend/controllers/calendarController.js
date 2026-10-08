@@ -39,15 +39,30 @@ const normalizeCalendar = (calendar = []) => {
 
         date: d,
 
-        status: ["A", "R", "H", "CIN", "COUT"].includes(item?.status)
+        status: ["A", "R", "H", "CIN", "COUT"].includes(
+          item?.status
+        )
           ? item.status
           : "A",
 
-        source: ["internal", "booking", "admin", "ical"].includes(
-          item?.source
-        )
+        source: [
+          "internal",
+          "booking",
+          "admin",
+          "ical",
+        ].includes(item?.source)
           ? item.source
           : "internal",
+
+        guest: item?.guest || "",
+
+        summary: item?.summary || "",
+
+        reservationId:
+          item?.reservationId || "",
+
+        sourceName:
+          item?.sourceName || "",
 
         price: item?.price,
       };

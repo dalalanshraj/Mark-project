@@ -226,7 +226,7 @@ export default function Reviews() {
             ))
           ) : (
             <div className="text-center py-20 text-gray-500 text-lg">
-              No Reviews Found
+            Loading Reviews...
             </div>
           )}
         </div>

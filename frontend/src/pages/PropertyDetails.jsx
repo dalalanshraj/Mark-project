@@ -106,7 +106,29 @@ const PropertyDetail = () => {
     }
   }, [arrival, departure, listing]);
 
-  if (loading) return <p className="p-10">Loading...</p>;
+  if (loading) return  <div className="min-h-screen bg-white animate-pulse">
+        {/* Hero */}
+        <div className="h-[450px] bg-gray-200" />
+
+        <div className="max-w-7xl mx-auto px-6 py-10">
+          {/* Title */}
+          <div className="h-8 w-2/3 bg-gray-200 rounded mb-4" />
+
+          {/* Location */}
+          <div className="h-5 w-1/3 bg-gray-200 rounded mb-10" />
+
+          {/* Content */}
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="md:col-span-2 space-y-4">
+              <div className="h-5 w-full bg-gray-200 rounded" />
+              <div className="h-5 w-5/6 bg-gray-200 rounded" />
+              <div className="h-5 w-4/6 bg-gray-200 rounded" />
+            </div>
+
+            <div className="h-48 bg-gray-200 rounded-xl" />
+          </div>
+        </div>
+      </div>;
   if (!listing) return <p className="p-10">Property not found</p>;
 
   // ================= IMAGES =================

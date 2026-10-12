@@ -43,21 +43,21 @@ export default function CalendarTab({ listingId }) {
 
       setBlockedDates(res.data.calendar || []);
 
-     const defaults = [
-  { name: "Airbnb", url: "" },
-  { name: "VRBO", url: "" },
-  { name: "Florida Rentals", url: "" },
-  { name: "OwnerRez", url: "" },
-];
+      const defaults = [
+        { name: "Airbnb", url: "" },
+        { name: "VRBO", url: "" },
+        { name: "Florida Rentals", url: "" },
+        { name: "OwnerRez", url: "" },
+      ];
 
-const saved = res.data.icalSources || [];
+      const saved = res.data.icalSources || [];
 
-const merged = defaults.map((item) => {
-  const found = saved.find((s) => s.name === item.name);
-  return found || item;
-});
+      const merged = defaults.map((item) => {
+        const found = saved.find((s) => s.name === item.name);
+        return found || item;
+      });
 
-setIcalSources(merged);
+      setIcalSources(merged);
 
       // ❌ Ye remove kar do
       // else {
@@ -71,7 +71,7 @@ setIcalSources(merged);
   const saveICalSources = async () => {
     const validSources = icalSources.filter((item) => item.url.trim() !== "");
 
- 
+
 
     await api.put(`/calendar/${listingId}/calendar/ical-sources`, {
       icalSources: validSources,
@@ -103,18 +103,18 @@ setIcalSources(merged);
   const TIMEZONE = "America/Chicago";
 
   const formatLocalDate = (date) => {
-  if (!date) return "";
+    if (!date) return "";
 
-  if (typeof date === "string") {
-    return date.substring(0, 10);
-  }
+    if (typeof date === "string") {
+      return date.substring(0, 10);
+    }
 
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
 
-  return `${y}-${m}-${d}`;
-};
+    return `${y}-${m}-${d}`;
+  };
   const blockedMap = useMemo(() => {
     const map = {};
 
@@ -130,142 +130,142 @@ setIcalSources(merged);
 
     return map;
   }, [blockedDates]);
-  
 
- const getDateType = (date) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
 
-  const current = new Date(date);
-  current.setHours(0, 0, 0, 0);
+  const getDateType = (date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  const key = formatLocalDate(current);
+    const current = new Date(date);
+    current.setHours(0, 0, 0, 0);
 
-  // ========================================
-  // PAST
-  // ========================================
+    const key = formatLocalDate(current);
 
-  if (current < today) {
-    return "past-day";
-  }
+    // ========================================
+    // PAST
+    // ========================================
 
-  const statuses = [
-    ...new Set(blockedMap[key] || []),
-  ];
+    if (current < today) {
+      return "past-day";
+    }
 
-  const hasR = statuses.includes("R");
-  const hasH = statuses.includes("H");
-  const hasCIN = statuses.includes("CIN");
-  const hasCOUT = statuses.includes("COUT");
+    const statuses = [
+      ...new Set(blockedMap[key] || []),
+    ];
 
-  // ========================================
-  // PREVIOUS / NEXT DATE
-  // ========================================
+    const hasR = statuses.includes("R");
+    const hasH = statuses.includes("H");
+    const hasCIN = statuses.includes("CIN");
+    const hasCOUT = statuses.includes("COUT");
 
-  const previousDate = new Date(current);
-  previousDate.setDate(
-    previousDate.getDate() - 1
-  );
+    // ========================================
+    // PREVIOUS / NEXT DATE
+    // ========================================
 
-  const nextDate = new Date(current);
-  nextDate.setDate(
-    nextDate.getDate() + 1
-  );
+    const previousDate = new Date(current);
+    previousDate.setDate(
+      previousDate.getDate() - 1
+    );
 
-  const previousKey =
-    formatLocalDate(previousDate);
+    const nextDate = new Date(current);
+    nextDate.setDate(
+      nextDate.getDate() + 1
+    );
 
-  const nextKey =
-    formatLocalDate(nextDate);
+    const previousKey =
+      formatLocalDate(previousDate);
 
-  const previousStatuses = [
-    ...new Set(
-      blockedMap[previousKey] || []
-    ),
-  ];
+    const nextKey =
+      formatLocalDate(nextDate);
 
-  const nextStatuses = [
-    ...new Set(
-      blockedMap[nextKey] || []
-    ),
-  ];
+    const previousStatuses = [
+      ...new Set(
+        blockedMap[previousKey] || []
+      ),
+    ];
 
-  const previousHasCOUT =
-    previousStatuses.includes("COUT");
+    const nextStatuses = [
+      ...new Set(
+        blockedMap[nextKey] || []
+      ),
+    ];
 
-  const nextHasCIN =
-    nextStatuses.includes("CIN");
+    const previousHasCOUT =
+      previousStatuses.includes("COUT");
 
-  // ========================================
-  // TURNOVER
-  // ========================================
+    const nextHasCIN =
+      nextStatuses.includes("CIN");
 
-  // Same date:
-  // CIN + COUT
-  if (hasCIN && hasCOUT) {
-    return "turnover-day";
-  }
+    // ========================================
+    // TURNOVER
+    // ========================================
 
-  // Current date = CHECK-OUT
-  // Next date = CHECK-IN
-  //
-  // 10 = COUT
-  // 11 = CIN
-  //
-  // 10 = TURNOVER
-  if (hasCOUT && nextHasCIN) {
-    return "turnover-day";
-  }
+    // Same date:
+    // CIN + COUT
+    if (hasCIN && hasCOUT) {
+      return "turnover-day";
+    }
 
-  // Current date = CHECK-IN
-  // Previous date = CHECK-OUT
-  //
-  // 10 = COUT
-  // 11 = CIN
-  //
-  // 11 = TURNOVER
-  if (hasCIN && previousHasCOUT) {
-    return "turnover-day";
-  }
+    // Current date = CHECK-OUT
+    // Next date = CHECK-IN
+    //
+    // 10 = COUT
+    // 11 = CIN
+    //
+    // 10 = TURNOVER
+    if (hasCOUT && nextHasCIN) {
+      return "turnover-day";
+    }
 
-  // ========================================
-  // CHECK-IN
-  // ========================================
+    // Current date = CHECK-IN
+    // Previous date = CHECK-OUT
+    //
+    // 10 = COUT
+    // 11 = CIN
+    //
+    // 11 = TURNOVER
+    if (hasCIN && previousHasCOUT) {
+      return "turnover-day";
+    }
 
-  if (hasCIN) {
-    return "checkin-day";
-  }
+    // ========================================
+    // CHECK-IN
+    // ========================================
 
-  // ========================================
-  // CHECK-OUT
-  // ========================================
+    if (hasCIN) {
+      return "checkin-day";
+    }
 
-  if (hasCOUT) {
-    return "checkout-day";
-  }
+    // ========================================
+    // CHECK-OUT
+    // ========================================
 
-  // ========================================
-  // RESERVED
-  // ========================================
+    if (hasCOUT) {
+      return "checkout-day";
+    }
 
-  if (hasR) {
-    return "blocked-day";
-  }
+    // ========================================
+    // RESERVED
+    // ========================================
 
-  // ========================================
-  // HOLD
-  // ========================================
+    if (hasR) {
+      return "blocked-day";
+    }
 
-  if (hasH) {
-    return "hold-day";
-  }
+    // ========================================
+    // HOLD
+    // ========================================
 
-  // ========================================
-  // AVAILABLE
-  // ========================================
+    if (hasH) {
+      return "hold-day";
+    }
 
-  return "available-day";
-};
+    // ========================================
+    // AVAILABLE
+    // ========================================
+
+    return "available-day";
+  };
   // =====================================
   // MANUAL DATE SELECT
   // =====================================
@@ -448,7 +448,7 @@ setIcalSources(merged);
       await api.post(`/calendar/${listingId}/calendar/merge-ical`);
 
       await fetchDates();
- 
+
     } catch (err) {
       console.error(err);
 
@@ -515,11 +515,10 @@ setIcalSources(merged);
         transition-all
         duration-300
         hover:shadow-lg
-        ${
-          !hasICal
-            ? "border-green-500 bg-green-50 shadow-md scale-[1.02]"
-            : "border-gray-200 bg-white hover:border-green-300"
-        }
+        ${!hasICal
+                  ? "border-green-500 bg-green-50 shadow-md scale-[1.02]"
+                  : "border-gray-200 bg-white hover:border-green-300"
+                }
       `}
             >
               <div className="flex items-center justify-between">
@@ -558,11 +557,10 @@ setIcalSources(merged);
         transition-all
         duration-300
         hover:shadow-lg
-        ${
-          hasICal
-            ? "border-blue-500 bg-blue-50 shadow-md scale-[1.02]"
-            : "border-gray-200 bg-white hover:border-blue-300"
-        }
+        ${hasICal
+                  ? "border-blue-500 bg-blue-50 shadow-md scale-[1.02]"
+                  : "border-gray-200 bg-white hover:border-blue-300"
+                }
       `}
             >
               <div className="flex items-center justify-between">
@@ -587,18 +585,17 @@ setIcalSources(merged);
 
           {/* STATUS */}
           <div
-            className={`mt-4 rounded-xl px-4 py-3 text-sm font-medium border ${
-              hasICal
+            className={`mt-4 rounded-xl px-4 py-3 text-sm font-medium border ${hasICal
                 ? "bg-blue-50 border-blue-200 text-blue-700"
                 : "bg-green-50 border-green-200 text-green-700"
-            }`}
+              }`}
           >
             {hasICal
               ? "🔗 iCal Sync Active — Manual booking disabled"
               : "📅 Manual Calendar Active — iCal import disabled"}
           </div>
         </div>
-        
+
 
         {/* ICAL SECTION */}
         {calendarSource === "ical" && (
@@ -685,10 +682,10 @@ setIcalSources(merged);
             </button> */}
 
             <button
-              
-   
+
+
             >
-              
+
             </button>
           </div>
         )}
